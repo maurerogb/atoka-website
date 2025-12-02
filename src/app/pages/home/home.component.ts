@@ -1,0 +1,17 @@
+import { Component } from '@angular/core';
+import { ButtonComponent } from '../../shared/button/button.component';
+import { NewsletterComponent } from '../../shared/newsletter/newsletter.component';
+
+@Component({
+  selector: 'app-home',
+  standalone: true,
+  imports: [
+    ButtonComponent,
+    NewsletterComponent
+  ],
+  templateUrl: './home.component.html',
+  styleUrl: './home.component.scss'
+})
+export class HomeComponent {
+
+}

@@ -1,0 +1,38 @@
+.active{
+ color: #0090C7;
+ font-weight: 700;
+}
+.submenu {
+  position: fixed;
+  top: 12%;
+  left: 0;
+  width: 100%;
+  background-color: white;
+  z-index: 9999;
+  overflow-y: auto;
+}
+.solutionMenu {
+  position: fixed;
+  top: 12%;
+  left: 0;
+  width: 100%;
+  background-color: white;
+  z-index: 9999;
+  overflow-y: auto;
+}
+
+.product-menu:hover{
+  font-weight: 800;
+  color:#0090C7
+}
+
+.product:hover .submenu {
+  display: block;
+  opacity: 1;
+  transform: translateY(0);
+}
+.solution:hover .solutionMenu {
+  display: block;
+  opacity: 1;
+  transform: translateY(0);
+}

@@ -1,0 +1,48 @@
+.choose{
+  background-image: url("/assets/images/choose-background.svg");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.circle-dot{
+  background-image: url("/assets/images/cirlce-dot.svg");
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+.phone{
+  background-image: url("/assets/images/phone-bg.svg");
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: right;
+}
+.all-in-one-background{
+  background-image: url("/assets/images/all-in-one-background.svg");
+  background-repeat: no-repeat;
+  background-size: 100%;
+}
+.location{
+  background-image: url("/assets/images/bro.svg");
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
+.collapse .collapse-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.collapse .collapse-title::after {
+  // content: '\2795'; /* Unicode for plus sign */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border: 2px solid #005677;
+  border-radius: 50%;
+  color: #005677;
+  font-size: 14px;
+  transition: transform 0.3s ease;
+}
+
+

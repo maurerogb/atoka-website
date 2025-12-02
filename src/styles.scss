@@ -1,0 +1,112 @@
+/* You can add global styles to this file, and also import other style files */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+// @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700;800&family=Poppins:wght@300;400;500;600;700;800&display=swap");
+
+html,
+body {
+  height: 100%;
+}
+@font-face {
+  font-family: Averta-Black;
+  src: url(assets/fonts/Averta/Averta/Averta-Black.otf) format("trueType");
+}
+
+@font-face {
+  font-family: Averta-Bold;
+  src: url(assets/fonts/Averta/Averta/Averta-Bold.otf) format("trueType");
+}
+
+@font-face {
+  font-family: Averta-Extrathin;
+  src: url(assets/fonts/Averta/Averta/Averta-Extrathin.otf) format("trueType");
+}
+
+@font-face {
+  font-family: Averta-Light;
+  src: url(assets/fonts/Averta/Averta/Averta-Light.otf) format("trueType");
+}
+
+@font-face {
+  font-family: Averta;
+  src: url(assets/fonts/Averta/Averta/Averta-Regular.otf) format("trueType");
+}
+
+@font-face {
+  font-family: Averta-Semibold;
+  src: url(assets/fonts/Averta/Averta/Averta-Semibold.otf) format("trueType");
+}
+
+@font-face {
+  font-family: Averta-Thin;
+  src: url(assets/fonts/Averta/Averta/Averta-Thin.otf) format("trueType");
+}
+body {
+  margin: 0;
+  font-family: "Averta", sans-serif;
+  font-style: normal;
+
+  p{
+    color: #01171F;
+  }
+}
+
+.landing-padding-x{
+  @apply px-6 md:px-[50px] lg:px-[80px];
+}
+
+.hide-scrollbar {
+  -ms-overflow-style: none !important;
+  scrollbar-width: none !important;
+}
+.hide-scrollbar::-webkit-scrollbar {
+  display: none !important;
+}
+.zoom-effect {
+  transition: transform 0.4s ease;
+  cursor: pointer;
+}
+.zoom-effect3 {
+  transition: transform 0.2s ease;
+  cursor: pointer;
+}
+.zoom-effect2 {
+  transition: transform 0.4s ease;
+  cursor: pointer;
+}
+
+
+.zoom-effect:hover {
+  transform: scale(1.1);
+  box-shadow: 0px 4px 8px 0px #094A6387;
+  border: 1px solid #0090C7;
+}
+.zoom-effect3:hover {
+  transform: scale(1.05);
+  padding: 10px;
+  box-shadow: 0px 4px 8px 0px #094A6387;
+  border: 1px solid #0090C7;
+}
+.zoom-effect2:hover {
+  transform: scale(1);
+  box-shadow: 0px 4px 8px 0px #094A6387;
+  border: #0090C7 1px solid;
+}
+.phone{
+  background-image: url("/assets/images/phone-bg.svg");
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: right;
+}
+.location{
+  background-image: url("/assets/images/bro.svg");
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+.hero{
+  background-image: url("/assets/images/bro.svg");
+  background-repeat: no-repeat;
+  background-size: 90%;
+}

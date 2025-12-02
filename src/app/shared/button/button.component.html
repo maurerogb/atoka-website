@@ -1,0 +1,16 @@
+<button
+  (click)="onClick()"
+  [disabled]="disabled"
+  class="py-3 block font-medium text-base bg-[#0090C7] text-white rounded-lg"
+  [class]="buttonStyles || ''" [ngClass]="{
+    'hasImage': iconUrl,
+    'isDisabled': disabled
+}"
+>
+  <span class="relative w-fit mx-auto flex gap-4">
+    <span>
+      {{ buttonText }}
+    </span>
+    <img *ngIf="iconUrl" class="w-5" [src]="iconUrl" alt="">
+  </span>
+</button>
