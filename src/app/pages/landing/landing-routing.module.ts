@@ -23,7 +23,7 @@ const routes: Routes = [
       {path: '', component: HomeComponent},
       {
         path: 'products', loadChildren: () => import('../products/products/products.module').then(m => m.ProductsModule)
-    },
+      },
       {path: 'pricing', component: PricingComponent},
       {path: 'developer', component: DeveloperComponent},
       {path: 'career', component: CareerComponent},

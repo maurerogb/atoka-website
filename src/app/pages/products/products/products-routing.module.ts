@@ -8,6 +8,7 @@ import { EmployeeVerificationComponent } from '../employee-verification/employee
 import { LandlordVerificationComponent } from '../landlord-verification/landlord-verification.component';
 import { ProductsComponent } from '../products.component';
 import { VerifyAddressComponent } from '../verify-address/verify-address.component';
+import { EmailVerificationComponent } from '../email-verification/email-verification.component';
 
 const routes: Routes = [
   {path: '', component: ProductsComponent,
@@ -19,6 +20,7 @@ const routes: Routes = [
         {path: 'business-verification', component: BusinessVerificationComponent},
         {path: 'employee-verification', component: EmployeeVerificationComponent},
         {path: 'landlord-verification', component: LandlordVerificationComponent},
+        {path: 'email-verification', component: EmailVerificationComponent},
       ]
     },
 ];
