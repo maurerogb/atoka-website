@@ -13,6 +13,7 @@ import { GovernmentComponent } from '../solution/government/government.component
 import { RetailsComponent } from '../solution/retails/retails.component';
 import { RiskComponent } from '../solution/risk/risk.component';
 import { SolutionPageComponent } from '../solution/solution-page/solution-page.component';
+import { EcommerceComponent } from '../solution/ecommerce/ecommerce.component';
 ;
 
 const routes: Routes = [
@@ -35,6 +36,7 @@ const routes: Routes = [
         {path: 'retails', component: RetailsComponent},
         {path: 'risk', component: RiskComponent},
         {path: 'solution-page', component: SolutionPageComponent},
+        {path: 'ecommerce', component: EcommerceComponent},
       ]
       },
       {path: 'blog', component: BlogComponent},

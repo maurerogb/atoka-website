@@ -3,202 +3,201 @@
     <div class="cursor-pointer" (mouseenter)="closeList(); closeMenu()">
       <img src="assets/images/logo.png" alt="" class="w-full" routerLink="/">
     </div>
-   <nav class="hidden md:block ">
-    <ul class="flex gap-6 cursor-pointer">
-      <li class="product relative" [class.active]="isParentActive" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (mouseenter)="showMenu(); closeList()">
-        <p class=" text-base text-[#1D2433] font-bold leading-5">Products</p>
-        <div class="submenu transition ease-in delay-10 px-10 py-10 shadow-xl" *ngIf="menu" (mouseenter)="showMenu()" (mouseleave)="closeMenu()">
-          <div class=" grid grid-cols-3 gap-4 pb-6">
-            <div class="flex flex-col justify-center gap-4 border-r-2 border-r-[#C3C4CD] px-2" routerLink="/products/address-verification" (click)="closeMenu();">
-              <div>
-                <svg width="50" height="50" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <circle cx="32" cy="32" r="32" fill="#BEB8E1"/>
-                  <path d="M33.36 25.045L33.36 22.75L30.64 22.75L30.62 25.045L25.12 25.045L22.825 27.34L25.14 29.63L30.64 29.63M33.36 25.045L35.44 25.045L35.44 29.63L33.36 29.63M33.36 25.045L30.64 25.045M33.36 29.63L33.36 31.28M33.36 29.63L30.64 29.63M33.36 31.28L38.86 31.28L41.155 33.575L38.86 35.87L33.36 35.87L33.36 42.25L30.64 42.25L30.64 35.87M33.36 31.28L30.64 31.28M30.64 35.87L28.56 35.87L28.56 31.28L30.64 31.28M30.64 35.87L33.485 35.87M30.64 31.28L30.64 29.63" stroke="#090429" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </div>
-              <p class="text-[#211854] font-bold text-lg lg:text-lg product-menu">Address verification</p>
-              <p class="text-[#1A124C]">Quick and easy way to keep track of your transaction</p>
-              <p class="text-[#322870] font-bold">Learn more</p>
-            </div>
-            <div class="flex flex-col gap-8 border-r-2 border-r-[#C3C4CD] px-3">
-              <div class="flex gap-4 items-center" routerLink="/products/address-lookup" (click)="closeMenu();">
-                <p>
+    <nav class="hidden md:block">
+      <ul class="flex gap-6 cursor-pointer">
+        <li class="product relative" [class.active]="isParentActive" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (mouseenter)="showMenu(); closeList()">
+          <p class=" text-base text-[#1D2433] font-bold leading-5">Products</p>
+          <div class="submenu transition ease-in delay-10 px-10 py-10 shadow-xl" *ngIf="menu" (mouseenter)="showMenu()" (mouseleave)="closeMenu()">
+            <div class=" grid grid-cols-3 gap-4 pb-6">
+              <div class="flex flex-col justify-center gap-4 border-r-2 border-r-[#C3C4CD] px-2" routerLink="/products/address-verification" (click)="closeMenu();">
+                <div>
                   <svg width="50" height="50" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <circle cx="32" cy="32" r="32" fill="#E7F9FF"/>
-                    <path d="M33.36 25.045L33.36 22.75L30.64 22.75L30.62 25.045L25.12 25.045L22.825 27.34L25.14 29.63L30.64 29.63M33.36 25.045L35.44 25.045L35.44 29.63L33.36 29.63M33.36 25.045L30.64 25.045M33.36 29.63L33.36 31.28M33.36 29.63L30.64 29.63M33.36 31.28L38.86 31.28L41.155 33.575L38.86 35.87L33.36 35.87L33.36 42.25L30.64 42.25L30.64 35.87M33.36 31.28L30.64 31.28M30.64 35.87L28.56 35.87L28.56 31.28L30.64 31.28M30.64 35.87L33.485 35.87M30.64 31.28L30.64 29.63" stroke="#064A64" stroke-linecap="round" stroke-linejoin="round"/>
+                    <circle cx="32" cy="32" r="32" fill="#BEB8E1"/>
+                    <path d="M33.36 25.045L33.36 22.75L30.64 22.75L30.62 25.045L25.12 25.045L22.825 27.34L25.14 29.63L30.64 29.63M33.36 25.045L35.44 25.045L35.44 29.63L33.36 29.63M33.36 25.045L30.64 25.045M33.36 29.63L33.36 31.28M33.36 29.63L30.64 29.63M33.36 31.28L38.86 31.28L41.155 33.575L38.86 35.87L33.36 35.87L33.36 42.25L30.64 42.25L30.64 35.87M33.36 31.28L30.64 31.28M30.64 35.87L28.56 35.87L28.56 31.28L30.64 31.28M30.64 35.87L33.485 35.87M30.64 31.28L30.64 29.63" stroke="#090429" stroke-linecap="round" stroke-linejoin="round"/>
                   </svg>
-                </p>
-                <p class="flex flex-col lg:gap-2 xl:gap-3">
-                  <span class="text-[#065979] text-lg font-bold product-menu">Address Lookup</span>
-                  <span class="font-normal lg:w-[218px]">Solution for Insurance and risk assessment.</span>
-                </p>
+                </div>
+                <p class="text-[#211854] font-bold text-lg lg:text-lg product-menu">Address verification</p>
+                <p class="text-[#1A124C]">Quick and easy way to keep track of your transaction</p>
+                <p class="text-[#322870] font-bold">Learn more</p>
               </div>
-              <div class="flex gap-4 items-center" routerLink="/products/landlord-verification" (click)="closeMenu();">
-                <p>
-                  <svg width="50" height="50" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <circle cx="32" cy="32" r="32" fill="#FDEAD2"/>
-                    <path d="M33.36 25.045L33.36 22.75L30.64 22.75L30.62 25.045L25.12 25.045L22.825 27.34L25.14 29.63L30.64 29.63M33.36 25.045L35.44 25.045L35.44 29.63L33.36 29.63M33.36 25.045L30.64 25.045M33.36 29.63L33.36 31.28M33.36 29.63L30.64 29.63M33.36 31.28L38.86 31.28L41.155 33.575L38.86 35.87L33.36 35.87L33.36 42.25L30.64 42.25L30.64 35.87M33.36 31.28L30.64 31.28M30.64 35.87L28.56 35.87L28.56 31.28L30.64 31.28M30.64 35.87L33.485 35.87M30.64 31.28L30.64 29.63" stroke="#DA7B07" stroke-linecap="round" stroke-linejoin="round"/>
-                  </svg>
+              <div class="flex flex-col gap-8 border-r-2 border-r-[#C3C4CD] px-3">
+                <div class="flex gap-4 items-center" routerLink="/products/address-lookup" (click)="closeMenu();">
+                  <p>
+                    <svg width="50" height="50" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <circle cx="32" cy="32" r="32" fill="#E7F9FF"/>
+                      <path d="M33.36 25.045L33.36 22.75L30.64 22.75L30.62 25.045L25.12 25.045L22.825 27.34L25.14 29.63L30.64 29.63M33.36 25.045L35.44 25.045L35.44 29.63L33.36 29.63M33.36 25.045L30.64 25.045M33.36 29.63L33.36 31.28M33.36 29.63L30.64 29.63M33.36 31.28L38.86 31.28L41.155 33.575L38.86 35.87L33.36 35.87L33.36 42.25L30.64 42.25L30.64 35.87M33.36 31.28L30.64 31.28M30.64 35.87L28.56 35.87L28.56 31.28L30.64 31.28M30.64 35.87L33.485 35.87M30.64 31.28L30.64 29.63" stroke="#064A64" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </p>
+                  <p class="flex flex-col lg:gap-2 xl:gap-3">
+                    <span class="text-[#065979] text-lg font-bold product-menu">Address Lookup</span>
+                    <span class="font-normal lg:w-[218px]">Solution for Insurance and risk assessment.</span>
+                  </p>
+                </div>
+                <div class="flex gap-4 items-center" routerLink="/products/landlord-verification" (click)="closeMenu();">
+                  <p>
+                    <svg width="50" height="50" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <circle cx="32" cy="32" r="32" fill="#FDEAD2"/>
+                      <path d="M33.36 25.045L33.36 22.75L30.64 22.75L30.62 25.045L25.12 25.045L22.825 27.34L25.14 29.63L30.64 29.63M33.36 25.045L35.44 25.045L35.44 29.63L33.36 29.63M33.36 25.045L30.64 25.045M33.36 29.63L33.36 31.28M33.36 29.63L30.64 29.63M33.36 31.28L38.86 31.28L41.155 33.575L38.86 35.87L33.36 35.87L33.36 42.25L30.64 42.25L30.64 35.87M33.36 31.28L30.64 31.28M30.64 35.87L28.56 35.87L28.56 31.28L30.64 31.28M30.64 35.87L33.485 35.87M30.64 31.28L30.64 29.63" stroke="#DA7B07" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
 
-                </p>
-                <p class="flex flex-col lg:gap-2 xl:gap-3">
-                  <span class="text-[#915102] text-lg font-bold product-menu">Landlord Verification</span>
-                  <span class="font-normal text-[#4C2A02] lg:w-[218px]">Solution for Insurance and risk assessment.</span>
-                </p>
-              </div>
-              <div class="flex gap-4 items-center" routerLink="/products/employee-verification" (click)="closeMenu();">
-                <p>
-                  <svg width="50" height="50" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <circle cx="32" cy="32" r="32" fill="#D7F9E9"/>
-                    <path d="M33.36 25.045L33.36 22.75L30.64 22.75L30.62 25.045L25.12 25.045L22.825 27.34L25.14 29.63L30.64 29.63M33.36 25.045L35.44 25.045L35.44 29.63L33.36 29.63M33.36 25.045L30.64 25.045M33.36 29.63L33.36 31.28M33.36 29.63L30.64 29.63M33.36 31.28L38.86 31.28L41.155 33.575L38.86 35.87L33.36 35.87L33.36 42.25L30.64 42.25L30.64 35.87M33.36 31.28L30.64 31.28M30.64 35.87L28.56 35.87L28.56 31.28L30.64 31.28M30.64 35.87L33.485 35.87M30.64 31.28L30.64 29.63" stroke="#04502B" stroke-linecap="round" stroke-linejoin="round"/>
-                  </svg>
+                  </p>
+                  <p class="flex flex-col lg:gap-2 xl:gap-3">
+                    <span class="text-[#915102] text-lg font-bold product-menu">Landlord Verification</span>
+                    <span class="font-normal text-[#4C2A02] lg:w-[218px]">Solution for Insurance and risk assessment.</span>
+                  </p>
+                </div>
+                <div class="flex gap-4 items-center" routerLink="/products/employee-verification" (click)="closeMenu();">
+                  <p>
+                    <svg width="50" height="50" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <circle cx="32" cy="32" r="32" fill="#D7F9E9"/>
+                      <path d="M33.36 25.045L33.36 22.75L30.64 22.75L30.62 25.045L25.12 25.045L22.825 27.34L25.14 29.63L30.64 29.63M33.36 25.045L35.44 25.045L35.44 29.63L33.36 29.63M33.36 25.045L30.64 25.045M33.36 29.63L33.36 31.28M33.36 29.63L30.64 29.63M33.36 31.28L38.86 31.28L41.155 33.575L38.86 35.87L33.36 35.87L33.36 42.25L30.64 42.25L30.64 35.87M33.36 31.28L30.64 31.28M30.64 35.87L28.56 35.87L28.56 31.28L30.64 31.28M30.64 35.87L33.485 35.87M30.64 31.28L30.64 29.63" stroke="#04502B" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
 
-                </p>
-                <p class="flex flex-col lg:gap-2 xl:gap-3">
-                  <span class="text-[#01562D] text-lg font-bold product-menu">Employee Verification</span>
-                  <span class="font-normal text-[#01190D] lg:w-[218px]">Unique solution for Government parastates</span>
-                </p>
+                  </p>
+                  <p class="flex flex-col lg:gap-2 xl:gap-3">
+                    <span class="text-[#01562D] text-lg font-bold product-menu">Employee Verification</span>
+                    <span class="font-normal text-[#01190D] lg:w-[218px]">Unique solution for Government parastates</span>
+                  </p>
+                </div>
               </div>
-            </div>
-            <div class="flex flex-col gap-8 px-3">
-              <div class="flex gap-4 items-center" routerLink="/products/business-verification" (click)="closeMenu();">
-                <p>
-                  <svg width="50" height="50" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <circle cx="32" cy="32" r="32" fill="#FDEAD2"/>
-                    <path d="M33.36 25.045L33.36 22.75L30.64 22.75L30.62 25.045L25.12 25.045L22.825 27.34L25.14 29.63L30.64 29.63M33.36 25.045L35.44 25.045L35.44 29.63L33.36 29.63M33.36 25.045L30.64 25.045M33.36 29.63L33.36 31.28M33.36 29.63L30.64 29.63M33.36 31.28L38.86 31.28L41.155 33.575L38.86 35.87L33.36 35.87L33.36 42.25L30.64 42.25L30.64 35.87M33.36 31.28L30.64 31.28M30.64 35.87L28.56 35.87L28.56 31.28L30.64 31.28M30.64 35.87L33.485 35.87M30.64 31.28L30.64 29.63" stroke="#DA7B07" stroke-linecap="round" stroke-linejoin="round"/>
-                  </svg>
+              <div class="flex flex-col gap-8 px-3">
+                <div class="flex gap-4 items-center" routerLink="/products/business-verification" (click)="closeMenu();">
+                  <p>
+                    <svg width="50" height="50" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <circle cx="32" cy="32" r="32" fill="#FDEAD2"/>
+                      <path d="M33.36 25.045L33.36 22.75L30.64 22.75L30.62 25.045L25.12 25.045L22.825 27.34L25.14 29.63L30.64 29.63M33.36 25.045L35.44 25.045L35.44 29.63L33.36 29.63M33.36 25.045L30.64 25.045M33.36 29.63L33.36 31.28M33.36 29.63L30.64 29.63M33.36 31.28L38.86 31.28L41.155 33.575L38.86 35.87L33.36 35.87L33.36 42.25L30.64 42.25L30.64 35.87M33.36 31.28L30.64 31.28M30.64 35.87L28.56 35.87L28.56 31.28L30.64 31.28M30.64 35.87L33.485 35.87M30.64 31.28L30.64 29.63" stroke="#DA7B07" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
 
-                </p>
-                <p class="flex flex-col lg:gap-2 xl:gap-3">
-                  <span class="text-[#915102] text-lg font-bold product-menu">Business Verification</span>
-                  <span class="font-normal text-[#4C2A02] lg:w-[218px]">Address verification is vital for business</span>
-                </p>
-              </div>
-              <div class="flex gap-4 items-center" routerLink="/products/amenities-check" (click)="closeMenu();">
-                <p>
-                  <svg width="50" height="50" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <circle cx="32" cy="32" r="32" fill="#E7F9FF"/>
-                    <path d="M33.36 25.045L33.36 22.75L30.64 22.75L30.62 25.045L25.12 25.045L22.825 27.34L25.14 29.63L30.64 29.63M33.36 25.045L35.44 25.045L35.44 29.63L33.36 29.63M33.36 25.045L30.64 25.045M33.36 29.63L33.36 31.28M33.36 29.63L30.64 29.63M33.36 31.28L38.86 31.28L41.155 33.575L38.86 35.87L33.36 35.87L33.36 42.25L30.64 42.25L30.64 35.87M33.36 31.28L30.64 31.28M30.64 35.87L28.56 35.87L28.56 31.28L30.64 31.28M30.64 35.87L33.485 35.87M30.64 31.28L30.64 29.63" stroke="#064A64" stroke-linecap="round" stroke-linejoin="round"/>
-                  </svg>
-                </p>
-                <p class="flex flex-col lg:gap-2 xl:gap-3">
-                  <span class="text-[#065979] text-lg font-bold product-menu">Amenities Check</span>
-                  <span class="font-normal lg:w-[218px]">Address verification is vital for business</span>
-                </p>
-              </div>
+                  </p>
+                  <p class="flex flex-col lg:gap-2 xl:gap-3">
+                    <span class="text-[#915102] text-lg font-bold product-menu">Business Verification</span>
+                    <span class="font-normal text-[#4C2A02] lg:w-[218px]">Address verification is vital for business</span>
+                  </p>
+                </div>
+                <div class="flex gap-4 items-center" routerLink="/products/amenities-check" (click)="closeMenu();">
+                  <p>
+                    <svg width="50" height="50" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <circle cx="32" cy="32" r="32" fill="#E7F9FF"/>
+                      <path d="M33.36 25.045L33.36 22.75L30.64 22.75L30.62 25.045L25.12 25.045L22.825 27.34L25.14 29.63L30.64 29.63M33.36 25.045L35.44 25.045L35.44 29.63L33.36 29.63M33.36 25.045L30.64 25.045M33.36 29.63L33.36 31.28M33.36 29.63L30.64 29.63M33.36 31.28L38.86 31.28L41.155 33.575L38.86 35.87L33.36 35.87L33.36 42.25L30.64 42.25L30.64 35.87M33.36 31.28L30.64 31.28M30.64 35.87L28.56 35.87L28.56 31.28L30.64 31.28M30.64 35.87L33.485 35.87M30.64 31.28L30.64 29.63" stroke="#064A64" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </p>
+                  <p class="flex flex-col lg:gap-2 xl:gap-3">
+                    <span class="text-[#065979] text-lg font-bold product-menu">Amenities Check</span>
+                    <span class="font-normal lg:w-[218px]">Address verification is vital for business</span>
+                  </p>
+                </div>
 
-              <div class="flex gap-4 items-center" routerLink="/products/email-verification" (click)="closeMenu();">
-                <p>
-                  <svg width="50" height="50" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <circle cx="32" cy="32" r="32" fill="#D7F9E9"/>
-                    <path d="M33.36 25.045L33.36 22.75L30.64 22.75L30.62 25.045L25.12 25.045L22.825 27.34L25.14 29.63L30.64 29.63M33.36 25.045L35.44 25.045L35.44 29.63L33.36 29.63M33.36 25.045L30.64 25.045M33.36 29.63L33.36 31.28M33.36 29.63L30.64 29.63M33.36 31.28L38.86 31.28L41.155 33.575L38.86 35.87L33.36 35.87L33.36 42.25L30.64 42.25L30.64 35.87M33.36 31.28L30.64 31.28M30.64 35.87L28.56 35.87L28.56 31.28L30.64 31.28M30.64 35.87L33.485 35.87M30.64 31.28L30.64 29.63" stroke="#04502B" stroke-linecap="round" stroke-linejoin="round"/>
-                  </svg>
+                <div class="flex gap-4 items-center" routerLink="/products/email-verification" (click)="closeMenu();">
+                  <p>
+                    <svg width="50" height="50" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <circle cx="32" cy="32" r="32" fill="#D7F9E9"/>
+                      <path d="M33.36 25.045L33.36 22.75L30.64 22.75L30.62 25.045L25.12 25.045L22.825 27.34L25.14 29.63L30.64 29.63M33.36 25.045L35.44 25.045L35.44 29.63L33.36 29.63M33.36 25.045L30.64 25.045M33.36 29.63L33.36 31.28M33.36 29.63L30.64 29.63M33.36 31.28L38.86 31.28L41.155 33.575L38.86 35.87L33.36 35.87L33.36 42.25L30.64 42.25L30.64 35.87M33.36 31.28L30.64 31.28M30.64 35.87L28.56 35.87L28.56 31.28L30.64 31.28M30.64 35.87L33.485 35.87M30.64 31.28L30.64 29.63" stroke="#04502B" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
 
-                </p>
-                <p class="flex flex-col lg:gap-2 xl:gap-3">
-                  <span class="text-[#01562D] text-lg font-bold product-menu">Email verification</span>
-                  <span class="font-normal text-[#01190D] lg:w-[218px]">Solution for Insurance and risk assessment.</span>
-                </p>
+                  </p>
+                  <p class="flex flex-col lg:gap-2 xl:gap-3">
+                    <span class="text-[#01562D] text-lg font-bold product-menu">Email verification</span>
+                    <span class="font-normal text-[#01190D] lg:w-[218px]">Solution for Insurance and risk assessment.</span>
+                  </p>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </li>
-      <li class="solution relative" routerLink="/solution" routerLinkActive="active" (mouseenter)="showList();closeMenu()">
-       <p class="text-base text-[#1D2433] font-bold leading-5"> Solution</p>
+        </li>
+        <li class="solution relative" routerLink="/solution" routerLinkActive="active" (mouseenter)="showList();closeMenu()">
+          <p class="text-base text-[#1D2433] font-bold leading-5"> Solution</p>
+          <div class="solutionMenu transition ease-in delay-10 px-10 py-10 shadow-xl" *ngIf="list" (mouseenter)="showList()" (mouseleave)="closeList()">
+            <div class=" grid grid-cols-3 gap-4 pb-6">
+              <div class="flex flex-col justify-center gap-4 border-r-2 border-r-[#C3C4CD] px-2" routerLink="/education" (click)="closeList();">
+                <div>
+                  <svg width="50" height="50" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="32" cy="32" r="32" fill="#BEB8E1"/>
+                    <path d="M33.36 25.045L33.36 22.75L30.64 22.75L30.62 25.045L25.12 25.045L22.825 27.34L25.14 29.63L30.64 29.63M33.36 25.045L35.44 25.045L35.44 29.63L33.36 29.63M33.36 25.045L30.64 25.045M33.36 29.63L33.36 31.28M33.36 29.63L30.64 29.63M33.36 31.28L38.86 31.28L41.155 33.575L38.86 35.87L33.36 35.87L33.36 42.25L30.64 42.25L30.64 35.87M33.36 31.28L30.64 31.28M30.64 35.87L28.56 35.87L28.56 31.28L30.64 31.28M30.64 35.87L33.485 35.87M30.64 31.28L30.64 29.63" stroke="#090429" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+                <p class="text-[#211854] font-bold text-lg lg:text-lg product-menu">Education</p>
+                <p class="text-[#1A124C]">Solutions for education</p>
+                <p class="text-[#322870] font-bold text-xs xl:text-sm">Learn more</p>
+              </div>
+              <div class="flex flex-col gap-8 border-r-2 border-r-[#C3C4CD] px-3">
+                <div class="flex gap-4 items-center" routerLink="/fintech" (click)="closeList();">
+                  <p>
+                    <svg width="50" height="50" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <circle cx="32" cy="32" r="32" fill="#E7F9FF"/>
+                      <path d="M33.36 25.045L33.36 22.75L30.64 22.75L30.62 25.045L25.12 25.045L22.825 27.34L25.14 29.63L30.64 29.63M33.36 25.045L35.44 25.045L35.44 29.63L33.36 29.63M33.36 25.045L30.64 25.045M33.36 29.63L33.36 31.28M33.36 29.63L30.64 29.63M33.36 31.28L38.86 31.28L41.155 33.575L38.86 35.87L33.36 35.87L33.36 42.25L30.64 42.25L30.64 35.87M33.36 31.28L30.64 31.28M30.64 35.87L28.56 35.87L28.56 31.28L30.64 31.28M30.64 35.87L33.485 35.87M30.64 31.28L30.64 29.63" stroke="#064A64" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </p>
+                  <p class="flex flex-col lg:gap-2 xl:gap-3">
+                    <span class="text-[#065979] text-lg font-bold product-menu">Fintech</span>
+                    <span class="whitespace-nowrap font-normal">Unique solution for fintech</span>
+                  </p>
+                </div>
+                <div class="flex gap-4 items-center" routerLink="/government" (click)="closeList();">
+                  <p>
+                    <svg width="50" height="50" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <circle cx="32" cy="32" r="32" fill="#FDEAD2"/>
+                      <path d="M33.36 25.045L33.36 22.75L30.64 22.75L30.62 25.045L25.12 25.045L22.825 27.34L25.14 29.63L30.64 29.63M33.36 25.045L35.44 25.045L35.44 29.63L33.36 29.63M33.36 25.045L30.64 25.045M33.36 29.63L33.36 31.28M33.36 29.63L30.64 29.63M33.36 31.28L38.86 31.28L41.155 33.575L38.86 35.87L33.36 35.87L33.36 42.25L30.64 42.25L30.64 35.87M33.36 31.28L30.64 31.28M30.64 35.87L28.56 35.87L28.56 31.28L30.64 31.28M30.64 35.87L33.485 35.87M30.64 31.28L30.64 29.63" stroke="#DA7B07" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
 
-       <div class="solutionMenu transition ease-in delay-10 px-10 py-10 shadow-xl" *ngIf="list" (mouseenter)="showList()" (mouseleave)="closeList()">
-        <div class=" grid grid-cols-3 gap-4 pb-6">
-          <div class="flex flex-col justify-center gap-4 border-r-2 border-r-[#C3C4CD] px-2" routerLink="/education" (click)="closeList();">
-            <div>
-              <svg width="50" height="50" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="32" cy="32" r="32" fill="#BEB8E1"/>
-                <path d="M33.36 25.045L33.36 22.75L30.64 22.75L30.62 25.045L25.12 25.045L22.825 27.34L25.14 29.63L30.64 29.63M33.36 25.045L35.44 25.045L35.44 29.63L33.36 29.63M33.36 25.045L30.64 25.045M33.36 29.63L33.36 31.28M33.36 29.63L30.64 29.63M33.36 31.28L38.86 31.28L41.155 33.575L38.86 35.87L33.36 35.87L33.36 42.25L30.64 42.25L30.64 35.87M33.36 31.28L30.64 31.28M30.64 35.87L28.56 35.87L28.56 31.28L30.64 31.28M30.64 35.87L33.485 35.87M30.64 31.28L30.64 29.63" stroke="#090429" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
+                  </p>
+                  <p class="flex flex-col lg:gap-2 xl:gap-3">
+                    <span class="text-[#915102] text-lg font-bold product-menu">Government</span>
+                    <span class=" font-normal text-[#4C2A02] lg:w-[218px]">Unique solution for Government parastates</span>
+                  </p>
+                </div>
+                <div class="flex gap-4 items-center" routerLink="/risk" (click)="closeList();">
+                  <p>
+                    <svg width="50" height="50" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <circle cx="32" cy="32" r="32" fill="#D7F9E9"/>
+                      <path d="M33.36 25.045L33.36 22.75L30.64 22.75L30.62 25.045L25.12 25.045L22.825 27.34L25.14 29.63L30.64 29.63M33.36 25.045L35.44 25.045L35.44 29.63L33.36 29.63M33.36 25.045L30.64 25.045M33.36 29.63L33.36 31.28M33.36 29.63L30.64 29.63M33.36 31.28L38.86 31.28L41.155 33.575L38.86 35.87L33.36 35.87L33.36 42.25L30.64 42.25L30.64 35.87M33.36 31.28L30.64 31.28M30.64 35.87L28.56 35.87L28.56 31.28L30.64 31.28M30.64 35.87L33.485 35.87M30.64 31.28L30.64 29.63" stroke="#04502B" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+
+                  </p>
+                  <p class="flex flex-col lg:gap-2 xl:gap-3">
+                    <span class="text-[#01562D] text-lg  font-bold product-menu">Insurance</span>
+                    <span class="font-normal text-[#01190D] lg:w-[218px]">Solution for Insurance and risk assessment.</span>
+                  </p>
+                </div>
+              </div>
+              <div class="flex flex-col gap-8 px-3">
+                <div class="flex gap-4 items-center" routerLink="/retails" (click)="closeList();">
+                  <p>
+                    <svg width="50" height="50" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <circle cx="32" cy="32" r="32" fill="#FDEAD2"/>
+                      <path d="M33.36 25.045L33.36 22.75L30.64 22.75L30.62 25.045L25.12 25.045L22.825 27.34L25.14 29.63L30.64 29.63M33.36 25.045L35.44 25.045L35.44 29.63L33.36 29.63M33.36 25.045L30.64 25.045M33.36 29.63L33.36 31.28M33.36 29.63L30.64 29.63M33.36 31.28L38.86 31.28L41.155 33.575L38.86 35.87L33.36 35.87L33.36 42.25L30.64 42.25L30.64 35.87M33.36 31.28L30.64 31.28M30.64 35.87L28.56 35.87L28.56 31.28L30.64 31.28M30.64 35.87L33.485 35.87M30.64 31.28L30.64 29.63" stroke="#DA7B07" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+
+                  </p>
+                  <p class="flex flex-col lg:gap-2 xl:gap-3">
+                    <span class="text-[#915102] text-lg font-bold product-menu">Retails</span>
+                    <span class="whitespace-nowrap font-normal text-[#4C2A02]">Unique Solution for Retails.</span>
+                  </p>
+                </div>
+                <div class="flex gap-4 items-center" routerLink="/ecommerce" (click)="closeList();">
+                  <p>
+                    <svg width="50" height="50" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <circle cx="32" cy="32" r="32" fill="#E7F9FF"/>
+                      <path d="M33.36 25.045L33.36 22.75L30.64 22.75L30.62 25.045L25.12 25.045L22.825 27.34L25.14 29.63L30.64 29.63M33.36 25.045L35.44 25.045L35.44 29.63L33.36 29.63M33.36 25.045L30.64 25.045M33.36 29.63L33.36 31.28M33.36 29.63L30.64 29.63M33.36 31.28L38.86 31.28L41.155 33.575L38.86 35.87L33.36 35.87L33.36 42.25L30.64 42.25L30.64 35.87M33.36 31.28L30.64 31.28M30.64 35.87L28.56 35.87L28.56 31.28L30.64 31.28M30.64 35.87L33.485 35.87M30.64 31.28L30.64 29.63" stroke="#064A64" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </p>
+                  <p class="flex flex-col lg:gap-2 xl:gap-3">
+                    <span class="text-[#065979] text-lg font-bold product-menu">Ecommerce</span>
+                    <span class="font-normal lg:w-[218px]">Unique Solution for Ecommerce business.</span>
+                  </p>
+                </div>
+              </div>
             </div>
-            <p class="text-[#211854] font-bold text-lg lg:text-lg product-menu">Education</p>
-            <p class="text-[#1A124C]">Solutions for education</p>
-            <p class="text-[#322870] font-bold text-xs xl:text-sm">Learn more</p>
           </div>
-          <div class="flex flex-col gap-8 border-r-2 border-r-[#C3C4CD] px-3">
-            <div class="flex gap-4 items-center" routerLink="/fintech" (click)="closeList();">
-              <p>
-                <svg width="50" height="50" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <circle cx="32" cy="32" r="32" fill="#E7F9FF"/>
-                  <path d="M33.36 25.045L33.36 22.75L30.64 22.75L30.62 25.045L25.12 25.045L22.825 27.34L25.14 29.63L30.64 29.63M33.36 25.045L35.44 25.045L35.44 29.63L33.36 29.63M33.36 25.045L30.64 25.045M33.36 29.63L33.36 31.28M33.36 29.63L30.64 29.63M33.36 31.28L38.86 31.28L41.155 33.575L38.86 35.87L33.36 35.87L33.36 42.25L30.64 42.25L30.64 35.87M33.36 31.28L30.64 31.28M30.64 35.87L28.56 35.87L28.56 31.28L30.64 31.28M30.64 35.87L33.485 35.87M30.64 31.28L30.64 29.63" stroke="#064A64" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </p>
-              <p class="flex flex-col lg:gap-2 xl:gap-3">
-                <span class="text-[#065979] text-lg font-bold product-menu">Fintech</span>
-                <span class="whitespace-nowrap font-normal">Unique solution for fintech</span>
-              </p>
-            </div>
-            <div class="flex gap-4 items-center" routerLink="/government" (click)="closeList();">
-              <p>
-                <svg width="50" height="50" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <circle cx="32" cy="32" r="32" fill="#FDEAD2"/>
-                  <path d="M33.36 25.045L33.36 22.75L30.64 22.75L30.62 25.045L25.12 25.045L22.825 27.34L25.14 29.63L30.64 29.63M33.36 25.045L35.44 25.045L35.44 29.63L33.36 29.63M33.36 25.045L30.64 25.045M33.36 29.63L33.36 31.28M33.36 29.63L30.64 29.63M33.36 31.28L38.86 31.28L41.155 33.575L38.86 35.87L33.36 35.87L33.36 42.25L30.64 42.25L30.64 35.87M33.36 31.28L30.64 31.28M30.64 35.87L28.56 35.87L28.56 31.28L30.64 31.28M30.64 35.87L33.485 35.87M30.64 31.28L30.64 29.63" stroke="#DA7B07" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-
-              </p>
-              <p class="flex flex-col lg:gap-2 xl:gap-3">
-                <span class="text-[#915102] text-lg font-bold product-menu">Government</span>
-                <span class=" font-normal text-[#4C2A02] lg:w-[218px]">Unique solution for Government parastates</span>
-              </p>
-            </div>
-            <div class="flex gap-4 items-center" routerLink="/risk" (click)="closeList();">
-              <p>
-                <svg width="50" height="50" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <circle cx="32" cy="32" r="32" fill="#D7F9E9"/>
-                  <path d="M33.36 25.045L33.36 22.75L30.64 22.75L30.62 25.045L25.12 25.045L22.825 27.34L25.14 29.63L30.64 29.63M33.36 25.045L35.44 25.045L35.44 29.63L33.36 29.63M33.36 25.045L30.64 25.045M33.36 29.63L33.36 31.28M33.36 29.63L30.64 29.63M33.36 31.28L38.86 31.28L41.155 33.575L38.86 35.87L33.36 35.87L33.36 42.25L30.64 42.25L30.64 35.87M33.36 31.28L30.64 31.28M30.64 35.87L28.56 35.87L28.56 31.28L30.64 31.28M30.64 35.87L33.485 35.87M30.64 31.28L30.64 29.63" stroke="#04502B" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-
-              </p>
-              <p class="flex flex-col lg:gap-2 xl:gap-3">
-                <span class="text-[#01562D] text-lg  font-bold product-menu">Insurance</span>
-                <span class="font-normal text-[#01190D] lg:w-[218px]">Solution for Insurance and risk assessment.</span>
-              </p>
-            </div>
-          </div>
-          <div class="flex flex-col gap-8 px-3">
-            <div class="flex gap-4 items-center" routerLink="/retails" (click)="closeList();">
-              <p>
-                <svg width="50" height="50" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <circle cx="32" cy="32" r="32" fill="#FDEAD2"/>
-                  <path d="M33.36 25.045L33.36 22.75L30.64 22.75L30.62 25.045L25.12 25.045L22.825 27.34L25.14 29.63L30.64 29.63M33.36 25.045L35.44 25.045L35.44 29.63L33.36 29.63M33.36 25.045L30.64 25.045M33.36 29.63L33.36 31.28M33.36 29.63L30.64 29.63M33.36 31.28L38.86 31.28L41.155 33.575L38.86 35.87L33.36 35.87L33.36 42.25L30.64 42.25L30.64 35.87M33.36 31.28L30.64 31.28M30.64 35.87L28.56 35.87L28.56 31.28L30.64 31.28M30.64 35.87L33.485 35.87M30.64 31.28L30.64 29.63" stroke="#DA7B07" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-
-              </p>
-              <p class="flex flex-col lg:gap-2 xl:gap-3">
-                <span class="text-[#915102] text-lg font-bold product-menu">Retails</span>
-                <span class="whitespace-nowrap font-normal text-[#4C2A02]">Unique Solution for Retails.</span>
-              </p>
-            </div>
-            <div class="flex gap-4 items-center" routerLink="/amenities-check" (click)="closeList();">
-              <p>
-                <svg width="50" height="50" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <circle cx="32" cy="32" r="32" fill="#E7F9FF"/>
-                  <path d="M33.36 25.045L33.36 22.75L30.64 22.75L30.62 25.045L25.12 25.045L22.825 27.34L25.14 29.63L30.64 29.63M33.36 25.045L35.44 25.045L35.44 29.63L33.36 29.63M33.36 25.045L30.64 25.045M33.36 29.63L33.36 31.28M33.36 29.63L30.64 29.63M33.36 31.28L38.86 31.28L41.155 33.575L38.86 35.87L33.36 35.87L33.36 42.25L30.64 42.25L30.64 35.87M33.36 31.28L30.64 31.28M30.64 35.87L28.56 35.87L28.56 31.28L30.64 31.28M30.64 35.87L33.485 35.87M30.64 31.28L30.64 29.63" stroke="#064A64" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </p>
-              <p class="flex flex-col lg:gap-2 xl:gap-3">
-                <span class="text-[#065979] text-lg font-bold product-menu">Ecommerce</span>
-                <span class="font-normal lg:w-[218px]">Unique Solution for Ecommerce business.</span>
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-      </li>
-      <li class="text-base text-[#1D2433] font-bold leading-5" routerLink="/pricing"  routerLinkActive="active" (mouseenter)="closeList(); closeMenu()">Pricing</li>
-      <li class="text-base text-[#1D2433] font-bold leading-5" routerLink="/developer"  routerLinkActive="active" (mouseenter)="closeList(); closeMenu()">Developer</li>
-      <li class="text-base text-[#1D2433] font-bold leading-5" routerLink="/career"  routerLinkActive="active" (mouseenter)="closeList(); closeMenu()">Career</li>
-      <!-- <li class="text-base text-[#6C707A] font-bold leading-5" routerLink="/blog"  routerLinkActive="active">Blog</li> -->
-    </ul>
-   </nav>
-   <div class="gap-4 hidden md:flex">
-    <app-button buttonText="Login" buttonStyles="px-8 !py-2 text-base bg-white !text-[#1D2433] !font-bold"></app-button>
-    <app-button buttonText="Signup" buttonStyles="px-6 !py-2 text-base font-bold w-[112px]"></app-button>
-   </div>
+        </li>
+        <li class="text-base text-[#1D2433] font-bold leading-5" routerLink="/pricing"  routerLinkActive="active" (mouseenter)="closeList(); closeMenu()">Pricing</li>
+        <li class="text-base text-[#1D2433] font-bold leading-5" routerLink="/developer"  routerLinkActive="active" (mouseenter)="closeList(); closeMenu()">Developer</li>
+        <li class="text-base text-[#1D2433] font-bold leading-5" routerLink="/career"  routerLinkActive="active" (mouseenter)="closeList(); closeMenu()">Career</li>
+        <!-- <li class="text-base text-[#6C707A] font-bold leading-5" routerLink="/blog"  routerLinkActive="active">Blog</li> -->
+      </ul>
+    </nav>
+    <div class="gap-4 hidden md:flex">
+      <app-button buttonText="Login" buttonStyles="px-8 !py-2 text-base bg-white !text-[#1D2433] !font-bold"></app-button>
+      <app-button buttonText="Signup" buttonStyles="px-6 !py-2 text-base font-bold w-[112px]"></app-button>
+    </div>
   </div>
 </div>

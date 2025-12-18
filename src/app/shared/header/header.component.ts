@@ -23,32 +23,31 @@ export class HeaderComponent {
   showMenu(){
     this.menu = true
   }
+  
   isParentActive: boolean = false;
 
+  constructor(private router: Router, private route: ActivatedRoute) {}
 
-
-
-
-    constructor(private router: Router, private route: ActivatedRoute) {}
-
-    ngOnInit(): void {
-      this.router.events.pipe(
-        filter(event => event instanceof NavigationEnd)
-      ).subscribe(() => {
-        this.checkActiveState();
-      });
-    }
-
+  ngOnInit(): void {
+    this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe(() => {
+      this.checkActiveState();
+    });
+  }
 
   closeMenu(): void {
     this.menu = false;
   }
+
   showList(){
     this.list = true
   }
+
   closeList(): void {
     this.list = false;
   }
+
   checkActiveState() {
     // Check if the current route matches the parent route or any of its child routes
     this.isParentActive = this.router.url.startsWith('/products');
