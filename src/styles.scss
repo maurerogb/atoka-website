@@ -54,7 +54,11 @@ body {
 }
 
 .landing-padding-x{
-  @apply px-6 md:px-[50px] lg:px-[80px];
+  @apply px-10 md:px-[50px] lg:px-[100px];
+}
+
+.landing-padding-y{
+  @apply py-6 md:py-[50px] lg:py-[100px];
 }
 
 .hide-scrollbar {
