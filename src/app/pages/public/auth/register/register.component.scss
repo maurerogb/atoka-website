@@ -1,0 +1,57 @@
+.atoka-form-steps {
+  @apply flex flex-col gap-x-3 lg:pl-24 lg:pr-12 lg:pt-9 p-4;
+  .atoka-form-steps-item {
+    @apply flex flex-row items-start gap-4 cursor-pointer mb-12 transition-all duration-300;
+    .atoka-form-steps-item-tracker {
+      @apply flex items-center justify-center rounded-full text-center w-6 h-6 text-sm border border-slate-400 bg-slate-400 text-white transition-all duration-150;
+      mat-icon {
+        @apply text-lg hidden;
+        line-height: 24px
+      }
+    }
+    .atoka-form-steps-item-label-wrapper {
+      @apply flex flex-col leading-tight gap-3;
+      .atoka-form-steps-item-label {
+        @apply transition-all duration-300;
+      }
+      .atoka-form-steps-item-description {
+        @apply text-slate-500 text-sm leading-tight;
+      }
+    }
+    &:hover {
+      .atoka-form-steps-item-label {
+        @apply text-accent;
+      }
+
+      .atoka-form-steps-item-tracker {
+        @apply border-accent bg-transparent;
+      }
+    }
+    &.active {
+      .atoka-form-steps-item-label {
+        @apply text-accent;
+      }
+      .atoka-form-steps-item-tracker {
+        @apply border-accent bg-transparent text-white;
+        span {
+          @apply hidden;
+        }
+      }
+    }
+    &.completed {
+      .atoka-form-steps-item-tracker {
+        @apply text-white bg-accent border-accent;
+        span {
+          @apply hidden;
+        }
+        mat-icon {
+          @apply block;
+        }
+      }
+    }
+  }
+}
+
+.registration-form-section {
+  @apply col-span-2 py-16 px-10 md:px-20 lg:px-28 xl:px-48 flex;
+}

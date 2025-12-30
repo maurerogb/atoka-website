@@ -1,0 +1,24 @@
+<div class="flex mx-auto gap-4">
+  <img [src]="image.value" class="w-[75px] h-[75px] border border-[#EAECF0] rounded-full" alt="" />
+  <div class="border border-[#EAECF0] w-[428px] h-[126px] rounded-lg py-3">
+    <div class="flex flex-col mx-auto gap-4">
+      <div class="flex mx-auto">
+        <img src="assets/svg/upload.svg" alt="" class="w-full cursor-pointer" (click)="imageUpload.click()" />
+      </div>
+      <div class="flex justify-center flex-col">
+        <input
+          type="file"
+          #imageUpload
+          class="hidden"
+          (change)="uploadPhoto($event)"
+        />
+        <button (click)="imageUpload.click()" class="text-sm font-medium">
+          <span class="font-medium text-[#6941C6]">Click to upload</span> or drag
+          and drop
+        </button>
+        <p class="mt-4 text-center">SVG, PNG, JPG or GIF (max. 800x400px)</p>
+      </div>
+    </div>
+  </div>
+
+</div>

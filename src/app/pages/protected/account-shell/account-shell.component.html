@@ -1,0 +1,23 @@
+<div class="min-h-screen flex bg-[#F5F7FB]">
+  <aside class="w-64 bg-white border-r border-gray-200 p-4">
+    <div class="text-lg font-semibold mb-4 text-[#003A50]">
+      {{ title }}
+    </div>
+
+    <nav class="flex flex-col gap-2">
+      <a
+        *ngFor="let item of navItems"
+        [routerLink]="[item.path]"
+        [routerLinkActiveOptions]="{ exact: item.path === '' }"
+        routerLinkActive="bg-[#00ADEF] text-white"
+        class="px-3 py-2 rounded cursor-pointer hover:bg-[#E6F7FD] text-sm text-[#003A50]"
+      >
+        {{ item.label }}
+      </a>
+    </nav>
+  </aside>
+
+  <main class="flex-1 p-6">
+    <router-outlet></router-outlet>
+  </main>
+</div>

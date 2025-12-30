@@ -1,0 +1,69 @@
+<div mat-dialog-content class="items-center">
+  @switch (currentState) {
+    @case (states.OTP) {
+      <div class="atoka-form-header">
+        <h1>OTP verification</h1>
+        <p class="text-sm font-light text-gray-500">Please enter the code sent to your {{verificationOptionLabel | lowercase}}; {{identifer}}.</p>
+      </div>
+      <p class="text-sm text-center font-light text-red-500" ng-if="message">{{message}}</p>
+      <small class="text-sm mt-4 flex justify-center">OTP</small>
+      <div class="flex flex-col gap-4 justify-center items-center py-4">
+        <ng-otp-input 
+          [formCtrl]="otp"
+          [config]="{length:6, inputStyles: {'border-radius': '8px', border: '1px solid #EAEBED', 'font-size': '100%', 'font-weight': 'bold'},placeholder: '-', allowNumbersOnly: true }"
+          ></ng-otp-input>
+        <button (click)="verifyAccount()" type="button" mat-flat-button color="primary">
+          Verify {{verificationOptionLabel}}
+        </button>
+      </div>
+      <p class="text-sm font-light text-gray-500 text-center pt-1" *ngIf="!isCountingDown">
+        Didn't receive a code?
+        <a class="text-gray-500 cursor-pointer" (click)="resendOTP()" href="javascript:void(0)">
+          Click to Resend
+        </a>.
+      </p>
+
+      <p class="text-sm font-light text-gray-500 text-center pt-1" *ngIf="isCountingDown">
+        You can resend a code in
+        <span class="font-semibold text-accent">
+          {{ countdownDisplay }}
+        </span>
+      </p>
+      <span class="flex justify-center gap-2 select-none cursor-pointer text-sm font-light text-gray-500 text-center py-4" (click)="backToSelection()">
+        <mat-icon>&#xe5c4;</mat-icon>
+        <span>Back</span>
+      </span>
+  }
+  @case (states.Success) {
+    <div class="flex flex-col gap-4 justify-center items-center pt-4">
+      <img class="w-auto h-20" src="assets/images/success.png" alt="" sizes="" srcset="">
+      <div class="atoka-form-header">
+        <h1>{{verificationOptionLabel}} Verification Successful</h1>
+        <small class="mb-3">Congratulations we have successfully verified your identity.</small>
+      </div>
+      <button (click)="verifySuccess()" type="button" mat-flat-button color="primary">
+        Continue
+      </button>
+    </div>
+  }
+  @default {
+    <div class="atoka-form-header">
+      <h1>Verify your account</h1>
+      <small>Thank you for registering on ATOKA. Please select the method you want to use to very identity.</small>
+    </div>
+    <p class="text-sm text-center font-light text-red-500" ng-if="message" >{{message}}</p>
+    <div class="flex gap-4 justify-center items-center pt-8">
+      <button (click)="optionSelected(options.Email)" class="modal-button" type="button" mat-stroked-button
+        color="primary">
+        Email verification
+      </button>
+      <button (click)="optionSelected(options.Phone)" class="modal-button" type="button" mat-flat-button color="primary">
+        Phone verification
+      </button>
+    </div>
+    <span class="flex justify-center gap-2 select-none cursor-pointer text-sm font-light text-gray-500 text-center pt-6" (click)="back()">
+      <mat-icon>&#xe5c4;</mat-icon>
+      <span>Back</span>
+    </span>
+  } }
+</div>

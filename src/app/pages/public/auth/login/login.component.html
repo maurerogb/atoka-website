@@ -1,0 +1,111 @@
+<div class="grid grid-cols-12 h-screen">
+  <div class="bg-onboarding col-span-6 h-full w-full text-white">
+    <div class="flex justify-center h-full">
+      <div class="pt-[130px]">
+        <img
+          class="h-[100px] w-full mt-[25px]"
+          src="assets/svg/logo.svg"
+          alt="logo"
+        />
+        <div class="flex flex-col justify-center py-3 mt-3 gap-4">
+          <p class="font-bold text-3xl lg:text-[48px] text-white text-center">Welcome</p>
+          <small class="text-center">Please enter details to continue</small>
+        </div>
+        <div id="steps" class="atoka-form-steps pl-50 w-[400px] pt-8">
+          <form class="" [formGroup]="loginfrom">
+            <mat-error *ngIf="message">{{ message }}</mat-error>
+
+            <div class="grid gap-x-4">
+              <div class="control">
+                <mat-label class="text-sm">Username</mat-label>
+                <mat-form-field
+                  class="w-full rounded-xl"
+                  appearance="fill"
+                  floatLabel="always"
+                >
+                  <input
+                    matInput
+                    placeholder="Username"
+                    type="text"
+                    formControlName="username"
+                    name="username"
+                    id="username"
+                  />
+                  <mat-error>Please enter your username</mat-error>
+                </mat-form-field>
+              </div>
+
+              <div class="control">
+                <mat-label class="text-sm">Password</mat-label>
+                <mat-form-field
+                  class="w-full rounded-xl"
+                  appearance="fill"
+                  floatLabel="always"
+                >
+                  <input
+                    matInput
+                    formControlName="password"
+                    placeholder="Password"
+                    type="password"
+                    name="password"
+                    id="password"
+                  />
+                  <mat-error>Please enter your password</mat-error>
+                </mat-form-field>
+                <div class="flex flex-row justify-between text-white">
+                  <mat-checkbox class="" formControlName="rememberMe">Remember me</mat-checkbox>
+                  <div class="flex flex-col justify-center">
+                    <a
+                      class="text-white cursor-pointer"
+                      href="javascript:void(0)"
+                      rel=""
+                      (click)="openForgotPasswordDialog()"
+                    >
+                      Forgot Password?
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="flex flex-col items-center mt-8 gap-y-4">
+              <button
+                class="w-full"
+                type="button"
+                mat-flat-button
+                color="primary"
+                (click)="signIn()"
+                [disabled]="!loginfrom.valid"
+              >
+                Sign in
+              </button>
+              <div>
+                I don't have an account?
+                <a
+                  href="javascript:void(0)"
+                  (click)="signup()"
+                  class="text-[#DA7B07] font-bold"
+                  >Signup</a
+                >
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-span-6">
+    <div class="flex flex-col space-y-5 mx-20 md:mx-42 lg:mx-56 my-56 justify-center">
+      <img class="w-full" src="assets/svg/login.svg" />
+      <div class="w-[300px] h-[100px] gap-4 ml-12 text-center">
+        <p class="font-bold leading-8 text-[#005677] text-[24px]">
+          Easy Direction
+        </p>
+        <p class="text-[#005677] font-normal text-center text-[16px]">
+          Get direction and safety to any location in Nigeria
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-loader *ngIf="loadingService.isLoading$ | async"></app-loader>

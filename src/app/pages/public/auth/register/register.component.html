@@ -1,0 +1,61 @@
+<div class="grid grid-cols-12 h-screen">
+  <div class="col-span-4">
+    <div class="bg-onboarding h-full text-white py-14">
+      <div class="flex justify-center">
+        <img src="assets/svg/logo.svg" alt="logo" />
+      </div>
+      <div id="steps" class="atoka-form-steps">
+        <div
+          routerLink="./personal-information"
+          routerLinkActive="active"
+          class="atoka-form-steps-item"
+          [ngClass]="{ completed: registrationStep >= registrationStepEnum.PersonalInformationCompleted }"
+        >
+          <div class="atoka-form-steps-item-tracker">
+            <span>1</span>
+            <mat-icon class="aowe-form-nav-item-icon">&#xe876;</mat-icon>
+          </div>
+          <span class="atoka-form-steps-item-label-wrapper">
+            <span class="atoka-form-steps-item-label">Your personal Information</span>
+            <span class="atoka-form-steps-item-description">Please provide your name and email address</span>
+          </span>
+        </div>
+        <div
+          routerLink="./create-password"
+          routerLinkActive="active"
+          class="atoka-form-steps-item"
+          [ngClass]="{ completed: registrationStep >= registrationStepEnum.CreatePasswordCompleted }"
+        >
+          <div class="atoka-form-steps-item-tracker">
+            <span>2</span>
+            <mat-icon class="aowe-form-nav-item-icon">&#xe876;</mat-icon>
+          </div>
+          <span class="atoka-form-steps-item-label-wrapper">
+            <span class="atoka-form-steps-item-label">Create Password</span>
+            <span class="atoka-form-steps-item-description">Create a secure password</span>
+          </span>
+        </div>
+        <div
+          routerLink="./profile-picture"
+          routerLinkActive="active"
+          class="atoka-form-steps-item"
+          [ngClass]="{ completed: registrationStep >= registrationStepEnum.ProfilePictureCompleted }"
+        >
+          <div class="atoka-form-steps-item-tracker">
+            <span>3</span>
+            <mat-icon class="aowe-form-nav-item-icon">&#xe876;</mat-icon>
+          </div>
+          <span class="atoka-form-steps-item-label-wrapper">
+            <span class="atoka-form-steps-item-label">Profile upload (optional)</span>
+            <span class="atoka-form-steps-item-description">Add your profile picture</span>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-span-8">
+    <div class="registration-form-section">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>
