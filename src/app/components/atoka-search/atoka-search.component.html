@@ -1,0 +1,17 @@
+<div class="control">
+  <mat-label class="flex items-start text-sm" >{{ labelName }}</mat-label>
+  <mat-form-field class="w-full">
+    <input
+      type="text"
+      placeholder="Enter ATOKA or type address"
+      matInput
+      [formControl]="atokaSearch"
+      [matAutocomplete]="auto"
+    />
+    <mat-autocomplete #auto="matAutocomplete" (optionSelected)="setAddressCode($event)">
+      @for (option of filteredOptions; track option) {
+      <mat-option [value]="option.atoka">{{ option.atoka }}</mat-option>
+      }
+    </mat-autocomplete>
+  </mat-form-field>
+</div>

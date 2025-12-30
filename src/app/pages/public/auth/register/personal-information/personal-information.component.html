@@ -1,0 +1,124 @@
+
+<div class="atoka-form-header">
+  <div class="atoka-form-header-icon">
+    <mat-icon svgIcon="user" aria-hidden="false" aria-label="Example thumbs up SVG icon"></mat-icon>
+  </div>
+  <h1>Personal Information</h1>
+  <small>Please provide your personal details.</small>
+</div>
+
+<form class="pt-10" [formGroup]="personalDetailsform">
+  <div class="grid lg:grid-cols-2 gap-x-6">
+    <div class="control">
+      <mat-label class="text-sm">First Name</mat-label>
+      <mat-form-field class="w-full rounded-2xl" appearance="fill" floatLabel="always">
+        <input matInput placeholder="First name" formControlName="firstName" type="text" name="firstname" id="firstname" required>
+        <mat-error *ngIf="personalDetailsform.get('firstName')?.hasError('required') && (personalDetailsform.get('firstName')?.dirty || personalDetailsform.get('firstName')?.touched)">
+          Please enter your first name
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="control">
+      <mat-label class="text-sm">Last Name</mat-label>
+      <mat-form-field class="w-full rounded-xl" appearance="fill" floatLabel="always">
+        <input matInput placeholder="Last name" formControlName="lastName" type="text" name="lastname" id="lastname" required>
+        <mat-error *ngIf="personalDetailsform.get('lastName')?.hasError('required') && (personalDetailsform.get('lastName')?.dirty || personalDetailsform.get('lastName')?.touched)">
+          Please enter your last name
+        </mat-error>
+      </mat-form-field>
+    </div>
+  </div>
+
+  <div class="grid lg:grid-cols-2 gap-x-6">
+    <div class="control">
+      <mat-label class="text-sm">Middle Name</mat-label>
+      <mat-form-field class="w-full rounded-xl" appearance="fill" floatLabel="always">
+        <input matInput placeholder="Middle name" formControlName="middleName" type="text" name="middleName" id="middleName">
+        <mat-error>Please enter your middle name</mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="control">
+      <mat-label class="text-sm">Email Address</mat-label>
+      <mat-form-field class="w-full rounded-xl" appearance="fill" floatLabel="always">
+        <input matInput placeholder="Email address" formControlName="emailAddress" type="email" name="firstname" id="firstname" required>
+        <mat-error *ngIf="personalDetailsform.get('emailAddress')?.hasError('required') && (personalDetailsform.get('emailAddress')?.dirty || personalDetailsform.get('emailAddress')?.touched)">
+          Please enter your email address
+        </mat-error>
+        <mat-error *ngIf="personalDetailsform.get('emailAddress')?.hasError('email') && (personalDetailsform.get('emailAddress')?.dirty || personalDetailsform.get('emailAddress')?.touched)">
+          Please enter a valid email address
+        </mat-error>
+      </mat-form-field>
+    </div>
+  </div>
+
+  <div class="grid md:grid-cols-2 gap-x-6">
+    <div class="control">
+      <mat-label class="text-sm">Phone Number</mat-label>
+      <mat-form-field class="w-full rounded-xl" appearance="fill" floatLabel="always">
+        <input matInput placeholder="Phone number" formControlName="phoneNumber" type="tel" name="firstname" id="firstname" required>
+        <mat-error *ngIf="personalDetailsform.get('phoneNumber')?.hasError('required') && (personalDetailsform.get('phoneNumber')?.dirty || personalDetailsform.get('phoneNumber')?.touched)">
+          Please enter your phone number
+        </mat-error>
+        <mat-error *ngIf="personalDetailsform.get('phoneNumber')?.hasError('pattern') && (personalDetailsform.get('phoneNumber')?.dirty || personalDetailsform.get('phoneNumber')?.touched)">
+          Please enter a valid phone number
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="control">
+      <mat-label class="text-sm">Date of birth</mat-label>
+      <mat-form-field class="w-full rounded-xl" appearance="fill" floatLabel="always">
+        <input (click)="dob.open()" (focus)="dob.open()" placeholder="MM/DD/YYYY" matInput [matDatepicker]="dob" formControlName="dob" required>
+        <mat-datepicker-toggle matIconSuffix [for]="dob"></mat-datepicker-toggle>
+        <mat-datepicker #dob></mat-datepicker>
+        <mat-error *ngIf="personalDetailsform.get('dob')?.hasError('required') && (personalDetailsform.get('dob')?.dirty || personalDetailsform.get('dob')?.touched)">
+          Please select your date of birth
+        </mat-error>
+        <mat-error *ngIf="personalDetailsform.get('dob')?.hasError('invalidDate') && (personalDetailsform.get('dob')?.dirty || personalDetailsform.get('dob')?.touched)">
+          Please enter a valid date of birth
+        </mat-error>
+      </mat-form-field>
+    </div>
+  </div>
+
+  <div class="grid lg:grid-cols-2 lg:gap-x-6">
+    <div class="control">
+      <mat-label class="text-sm">Gender</mat-label>
+      <mat-form-field class="w-full rounded-xl" appearance="fill" floatLabel="always">
+        <mat-select [placeholder]="'Select gender'" formControlName="gender" required>
+          <mat-option [value]="1">Male</mat-option>
+          <mat-option [value]="2">Female</mat-option>
+        </mat-select>
+        <mat-error *ngIf="personalDetailsform.get('gender')?.hasError('required') && (personalDetailsform.get('gender')?.dirty || personalDetailsform.get('gender')?.touched)">
+          Please select your gender
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="control">
+      <mat-label class="text-sm">Select Account Type</mat-label>
+      <mat-form-field class="w-full rounded-xl" appearance="fill" floatLabel="always">
+        <mat-select [placeholder]="'Select Account'" formControlName="accountType" required>
+          @for (item of accountTypes; track item.id) {
+            <mat-option [value]="item.id">{{item.name}} </mat-option>
+          }
+        </mat-select>
+        <mat-error *ngIf="personalDetailsform.get('accountType')?.hasError('required') && (personalDetailsform.get('accountType')?.dirty || personalDetailsform.get('accountType')?.touched)">
+          Please select your account type
+        </mat-error>
+      </mat-form-field>
+    </div>
+  </div>
+
+  <mat-checkbox formControlName="acceptTM" class="text-sm -mt-2 -ml-2" required>
+    By signing up you agree to our <span class="text-accent font-semibold">Terms & Conditions</span> and <span class="text-accent font-semibold">Privacy Policy</span>.
+  </mat-checkbox>
+  <div class="flex flex-col items-center mt-8 gap-y-4">
+    <button type="button" mat-flat-button color="primary" (click)="register()" [disabled]="personalDetailsform.invalid">Register</button>
+    <p class="text-sm">Already have an account? <a href="javascript:void(0)" (click)="login()" class="text-primary font-bold">Login</a></p>
+  </div>
+</form>
+
+<app-loader *ngIf="loadingService.isLoading$ | async"></app-loader>

@@ -1,0 +1,15 @@
+<div class="border border-dashed border-[#BBBBBB] rounded-lg p-5 flex justify-center">
+  <input
+    [type]="fileType"
+    #fileUpload
+    class="hidden"
+    (change)="uploadFile($event)"
+  />
+  <button (click)="fileUpload.click()" type="button"  class=" flex gap-2 text-sm font-medium">
+    <img src="assets/svg/upload.svg" alt=""/>
+    <span *ngIf="newfile?.name">{{
+      newfile?.name
+    }}</span>
+    <span *ngIf="!newfile?.name" class="">Drag file here to upload document or <span class="font-bold text-[#6941C6]">choose file</span></span>
+  </button>
+</div>

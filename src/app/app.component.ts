@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
+import { IconRegistryService } from './services/icon-registry.service';
 
 @Component({
   selector: 'app-root',
@@ -11,4 +12,10 @@ import { RouterOutlet } from '@angular/router';
 })
 export class AppComponent {
   title = 'atoka-web';
+  
+  constructor(
+    private iconService: IconRegistryService,
+  ) {
+    this.iconService.setIcons();
+  }
 }

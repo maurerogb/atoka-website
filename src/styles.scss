@@ -1,9 +1,49 @@
+// Custom Theming for Angular Material
+// For more information: https://material.angular.io/guide/theming
+@use "@angular/material" as mat;
+
+// Include the common styles for Angular Material. We include this here so that you only
+// have to load a single css file for Angular Material in your app.
+// Be sure that you only ever include this mixin once!
+@include mat.core();
+
+@import "./custom-palettes";
+// @import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap");
+
 /* You can add global styles to this file, and also import other style files */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 // @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700;800&family=Poppins:wght@300;400;500;600;700;800&display=swap");
+
+// Define the palettes for your theme using the Material Design palettes available in palette.scss
+// (imported above). For each palette, you can optionally specify a default, lighter, and darker
+// hue. Available color palettes: https://material.io/design/color/
+$atokang-primary: mat.define-palette($md-atoka-primary, 500, A100, 900);
+$atokang-accent: mat.define-palette($md-atoka-accent, 500, A100, 900);
+
+// The warn palette is optional (defaults to red).
+$atokang-warn: mat.define-palette(mat.$red-palette);
+
+// Create the theme object. A theme consists of configurations for individual
+// theming systems such as "color" or "typography".
+$atokang-theme: mat.define-light-theme(
+  (
+    color: (
+      primary: $atokang-primary,
+      accent: $atokang-accent,
+      warn: $atokang-warn
+    )
+  )
+);
+
+// Include theme styles for core and each component used in your app.
+// Alternatively, you can import and @include the theme mixins for each component
+// that you are using.
+@include mat.all-component-themes($atokang-theme);
+
+/* You can add global styles to this file, and also import other style files */
 
 html,
 body {
@@ -113,4 +153,117 @@ body {
   background-image: url("/assets/images/bro.svg");
   background-repeat: no-repeat;
   background-size: 90%;
+}
+
+
+
+/*
+* Backend Styles
+*/
+body {
+  margin: 0;
+  // font-family: "c", sans-serif;
+  a {
+    @apply text-accent font-medium cursor-pointer;
+  }
+
+  .atoka-form-header {
+    @apply flex flex-col items-center;
+    .atoka-form-header-icon {
+      @apply flex items-center mb-3 justify-center rounded-full text-center w-12 h-12 text-sm bg-accent-light text-accent transition-all duration-150;
+      mat-icon {
+        @apply text-3xl;
+        line-height: 24px;
+        width: 30px;
+      }
+    }
+    @apply text-center;
+    h1 {
+      // @apply text-3xl font-bold mb-3 text-primary-dark;
+      @apply text-5xl font-bold mb-3 text-primary-dark leading-[56px];
+    }
+    small {
+      @apply text-sm;
+    }
+  }
+
+  // Material overrides
+  .backdrop {
+    @apply bg-gray-500 bg-opacity-80;
+  }
+  .mat-mdc-dialog-container {
+    .mdc-dialog__surface {
+      // @apply p-8 px-20 rounded-2xl text-center;
+      @apply rounded-2xl p-8 px-20 rounded-2xl;
+
+      .otp-input {
+        @apply bg-primary-light border border-primary rounded-lg font-bold text-base text-gray-500;
+      }
+    }
+
+    .mdc-dialog__title {
+      @apply text-primary-dark text-center text-3xl font-semibold;
+      // font-family: "Roboto", sans-serif;
+      letter-spacing: normal;
+    }
+
+    .mdc-dialog__actions {
+      @apply gap-4;
+    }
+  }
+
+  .mat-datepicker-content .mat-calendar {
+    height: auto;
+    font-size: 14px;
+  }
+
+  .mdc-button, .mat-mdc-unelevated-button {
+    &:not(.mat-calendar-period-button):not(.modal-button) {
+      @apply h-14 rounded-lg;
+      min-width: 300px;
+    }
+
+    &.modal-button {
+      @apply py-5 rounded-lg font-medium ring-2 transition-opacity duration-300 ring-primary-lighter bg-primary-lighter opacity-80 hover:opacity-100;
+
+      &.mat-mdc-outlined-button {
+        @apply ring-primary-lighter ring-2 bg-transparent;
+      }
+    }
+  }
+
+  .mat-mdc-unelevated-button.mat-primary.mdc-button--disabled,
+  .mat-mdc-unelevated-button.mat-primary:disabled {
+    @apply bg-primary opacity-60; 
+  }
+}
+
+.page-wrapper {
+  .mat-mdc-form-field {
+    @apply mt-2 -mb-1;
+
+    .mdc-text-field--filled {
+      @apply rounded-lg;
+
+      &:not(.mdc-text-field--disabled) {
+        @apply bg-primary-light;
+      }
+
+      .mdc-line-ripple {
+        @apply hidden;
+      }
+    }
+  }
+
+  .mdc-checkbox .mdc-checkbox__native-control:enabled~.mdc-checkbox__background .mdc-checkbox__checkmark {
+    @apply text-white;
+  }
+}
+
+::ng-deep .mat-tab-label-active {
+  background-color: blue !important;
+}
+
+.table-holder {
+  overflow-x: auto !important;
 }

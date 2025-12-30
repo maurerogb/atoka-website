@@ -1,0 +1,148 @@
+@if (hideForm) {
+<div [formGroup]="countryForm">
+  <form class="mb-6">
+    <div class="grid grid-cols-2 gap-x-4 ">
+      <div class="control">
+        <mat-label class="text-sm">Select Country</mat-label>
+        <mat-form-field class="w-full rounded-xl">
+          <input type="text" placeholder="Select Country" matInput formControlName="countryName" [matAutocomplete]="auto" />
+          <mat-autocomplete #auto="matAutocomplete" (optionSelected)="getState($event)">
+            @for (option of countryOptions; track option) {
+            <mat-option [value]="option.name">{{ option.name }}</mat-option>
+            }
+          </mat-autocomplete>
+          <mat-error
+            *ngIf="countryForm.get('countryName')?.hasError('required') && (countryForm.get('countryName')?.dirty || countryForm.get('countryName')?.touched)">
+            Country is required.
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="control">
+        <mat-label class="text-sm">State</mat-label>
+        <mat-form-field class="w-full rounded-xl">
+          <input type="text" placeholder="Select State" matInput formControlName="stateName" [matAutocomplete]="autow" />
+          <mat-autocomplete #autow="matAutocomplete" (optionSelected)="getLga($event)">
+            @for (option of stateSearchOptions; track option) {
+            <mat-option [value]="option.name">{{ option.name }}</mat-option>
+            }
+          </mat-autocomplete>
+          <mat-error
+            *ngIf="countryForm.get('stateName')?.hasError('required') && (countryForm.get('stateName')?.dirty || countryForm.get('stateName')?.touched)">
+            State is required.
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="grid grid-cols gap-x-4">
+      <div class="control">
+        <mat-label class="text-sm">Local Government Area</mat-label>
+        <mat-form-field class="w-full rounded-xl">
+          <input #lgaInput type="text" placeholder="Select LGA" matInput formControlName="lgaName" [matAutocomplete]="auto1" />
+          <mat-autocomplete #auto1="matAutocomplete" (optionSelected)="getCity($event)">
+            @for (option of lgaOptions; track option) {
+            <mat-option [value]="option.name">{{ option.name }}</mat-option>
+            }
+          </mat-autocomplete>
+          <mat-error
+            *ngIf="countryForm.get('lgaName')?.hasError('required') && (countryForm.get('lgaName')?.dirty || countryForm.get('lgaName')?.touched)">
+            Local Government Area is required.
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="grid grid-cols-2 gap-x-4">
+      <div class="control">
+        <mat-label class="text-sm">City</mat-label>
+        <mat-form-field class="w-full rounded-xl">
+          <input type="text" placeholder="Select City" matInput formControlName="cityName" [matAutocomplete]="auto2" />
+          <mat-autocomplete #auto2="matAutocomplete" (optionSelected)="setCityId($event)">
+            @for (option of cityOptions; track option) {
+            <mat-option [value]="option.name">{{ option.name }}</mat-option>
+            }
+          </mat-autocomplete>
+          <mat-error
+            *ngIf="countryForm.get('cityName')?.hasError('required') && (countryForm.get('cityName')?.dirty || countryForm.get('cityName')?.touched)">
+            City is required.
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="control">
+        <mat-label class="text-sm">District</mat-label>
+        <mat-form-field class="w-full rounded-xl">
+          <input type="text" placeholder="District" matInput formControlName="districtName" [matAutocomplete]="auto3" />
+          <mat-autocomplete #auto3="matAutocomplete">
+            @for (option of districtOptions; track option) {
+            <mat-option [value]="option.name">{{ option.name }}</mat-option>
+            }
+          </mat-autocomplete>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-2 gap-x-4">
+      <div class="control">
+        <mat-label class="text-sm">Street Name</mat-label>
+        <mat-form-field class="w-full rounded-xl">
+          <input type="text" placeholder="Street" matInput formControlName="streetName" [matAutocomplete]="auto4" />
+          <mat-autocomplete #auto4="matAutocomplete" (optionSelected)="setStreetId($event)">
+            @for (option of streetOptions; track option) {
+            <mat-option [value]="option.streetName">{{
+              option.streetName
+              }}</mat-option>
+            }
+          </mat-autocomplete>
+          <mat-error
+            *ngIf="countryForm.get('streetName')?.hasError('required') && (countryForm.get('streetName')?.dirty || countryForm.get('streetName')?.touched)">
+            Street name is required.
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="control">
+        <mat-label class="text-sm">House Number</mat-label>
+        <mat-form-field class="w-full rounded-xl" appearance="fill" floatLabel="always">
+          <input matInput formControlName="houseNumber" placeholder="House Number" type="text" name="firstname" id="firstname" />
+          <mat-error>Please enter your house number</mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="control">
+      <mat-label class="text-sm">House Name</mat-label>
+      <mat-form-field class="w-full rounded-xl" appearance="fill" floatLabel="always">
+        <input matInput formControlName="houseName" placeholder="House Name" type="text" name="houseName" id="houseName" />
+        <mat-error>Please enter your house name</mat-error>
+      </mat-form-field>
+    </div>
+
+    @if (includeVerify) {
+    <div class="flex gap-4 items-start">
+      <mat-checkbox color="primary"></mat-checkbox>
+      <div>
+        <p>Verify Ownership</p>
+        <p>we will notify you if any other attempt is made to claim your property.</p>
+      </div>
+    </div>
+    }
+    <div class="flex mx-auto items-center">
+      <!-- @switch (buttonType) {
+      @case ('squared') {
+      <app-button buttonText="Add" (click)="save()" buttonStyles="w-[368px]"></app-button>
+      }
+      @case ('rounded') {
+      <button mat-fab color="primary" type="button" (click)="save()" aria-label="Example icon button with a home icon">
+        Save
+      </button>
+      } -->
+
+      <!-- @default {
+    <app-button buttonText="Add Branch"  (click)="save()"  buttonStyles="w-[368px]"></app-button>
+  } -->
+      <!-- } -->
+    </div>
+    <!-- <div class="flex flex-col items-center mt-8 gap-y-4">
+    </div> -->
+  </form>
+</div>
+}

@@ -1,0 +1,192 @@
+<div class="grid gap-4">
+  <div class="border border-[#7568C8] p-5 flex flex-col gap-4 rounded-lg">
+    <!-- This div is hidden when a location is selected -->
+    <div class="flex gap-4">
+      <div>
+        <img src="assets/images/avatar-img.png" alt="" />
+      </div>
+      <p>
+        Select property to know the number of tenant leaving in that location.
+      </p>
+    </div>
+
+    <div class="flex justify-between">
+      <div class="w-1/2">
+        <div class="border border-[#7AD3F0D9] rounded-lg p-4 w-full">
+          <mat-select [placeholder]="'Select Property'" class="w-full">
+            <mat-option> Urgent</mat-option>
+            <mat-option> Not Urgent</mat-option>
+          </mat-select>
+        </div>
+      </div>
+      <div class="flex gap-4">
+        <app-button
+          buttonText="Claim Property"
+          buttonStyles="w-full px-8"
+          (click)="claimProperty()"
+        ></app-button>
+        <app-button
+          buttonText="Send Tenant Request"
+          (click)="tenantRequest()"
+          buttonStyles="bg-white border border-[#7AD3F0D9] !text-[#7AD3F0D9] w-full px-8"
+        ></app-button>
+      </div>
+    </div>
+    <!-- Show this div when a location is selected -->
+    <div class="hidden">
+      <div class="bg-[#00ADEF] rounded-lg p-5 text-white w-[342px] mt-5">
+        <p class="font-semibold">LE2345678909</p>
+        <p>Etiebets place, 21 shomolu Avenue, ikoyi, Lagos Nigeria</p>
+      </div>
+
+      <div class="flex gap-4 items-center mt-5">
+        <div>
+          <img src="assets/images/avatar-img.png" alt="" />
+        </div>
+        <p>You currently have 20 employees at this business location.</p>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <div class="mt-4">
+      <p class="text-[#003A50] font-bold text-base">Pending request</p>
+
+      <div class="border border-[#FF645D] p-5 rounded-lg w-1/2 flex flex-col">
+        <div class="flex justify-between items-center">
+          <p class="text-base font-semibold">Abiodun olalekan</p>
+          <button
+            mat-icon-button
+            [matMenuTriggerFor]="menu"
+            aria-label="Example icon-button with a menu"
+            class="hover:text-[00ADEF]"
+          >
+            <img src="assets/svg/more.svg" alt="" />
+          </button>
+          <mat-menu #menu="matMenu">
+            <button mat-menu-item>View</button>
+            <button mat-menu-item>Approve request</button>
+            <button mat-menu-item>Reject request</button>
+          </mat-menu>
+        </div>
+        <p class="text-sm font-normal">
+          Has been confirmed they work at this address
+        </p>
+        <p class="">12/07/2023</p>
+      </div>
+    </div>
+
+    <div class="mt-4">
+      <div class="flex justify-between">
+        <p class="text-[#003A50] font-bold text-base">Tenant List</p>
+        <p class="text-[#00ADEF] font-bold cursor-pointer">See more</p>
+      </div>
+
+      <div class="grid grid-cols-2 gap-4 mt-4">
+        <div class="border border-[#7568C8] p-5 rounded-lg flex flex-col">
+          <div class="flex justify-between items-center">
+            <p class="text-base font-semibold">Abiodun olalekan</p>
+            <button
+              mat-icon-button
+              [matMenuTriggerFor]="menu2"
+              aria-label="Example icon-button with a menu"
+              class="hover:text-[00ADEF]"
+            >
+              <img src="assets/svg/more.svg" alt="" />
+            </button>
+            <mat-menu #menu2="matMenu">
+              <button mat-menu-item >View</button>
+              <button mat-menu-item >
+                Remove Employee
+              </button>
+              <button mat-menu-item>Reject Employee</button>
+            </mat-menu>
+          </div>
+          <p class="text-sm font-normal">
+            Has been confirmed they work at this address
+          </p>
+          <p class="">12/07/2023</p>
+        </div>
+        <div class="border border-[#7568C8] p-5 rounded-lg flex flex-col">
+          <div class="flex justify-between items-center">
+            <p class="text-base font-semibold">Abiodun olalekan</p>
+            <button
+              mat-icon-button
+              [matMenuTriggerFor]="menu2"
+              aria-label="Example icon-button with a menu"
+              class="hover:text-[00ADEF]"
+            >
+              <img src="assets/svg/more.svg" alt="" />
+            </button>
+            <mat-menu #menu2="matMenu">
+              <button mat-menu-item>View</button>
+              <button mat-menu-item>Remove Employee</button>
+              <button mat-menu-item>Reject Employee</button>
+            </mat-menu>
+          </div>
+          <p class="text-sm font-normal">
+            Has been confirmed they work at this address
+          </p>
+          <p class="">12/07/2023</p>
+        </div>
+        <div class="border border-[#7568C8] p-5 rounded-lg flex flex-col">
+          <div class="flex justify-between items-center">
+            <p class="text-base font-semibold">Abiodun olalekan</p>
+            <button
+              mat-icon-button
+              [matMenuTriggerFor]="menu2"
+              aria-label="Example icon-button with a menu"
+              class="hover:text-[00ADEF]"
+            >
+              <img src="assets/svg/more.svg" alt="" />
+            </button>
+            <mat-menu #menu2="matMenu">
+              <button mat-menu-item>View</button>
+              <button mat-menu-item>Remove Employee</button>
+              <button mat-menu-item>Reject Employee</button>
+            </mat-menu>
+          </div>
+          <p class="text-sm font-normal">
+            Has been confirmed they work at this address
+          </p>
+          <p class="">12/07/2023</p>
+        </div>
+        <div class="border border-[#7568C8] p-5 rounded-lg flex flex-col">
+          <div class="flex justify-between items-center">
+            <p class="text-base font-semibold">Abiodun olalekan</p>
+            <button
+              mat-icon-button
+              [matMenuTriggerFor]="menu2"
+              aria-label="Example icon-button with a menu"
+              class="hover:text-[00ADEF]"
+            >
+              <img src="assets/svg/more.svg" alt="" />
+            </button>
+            <mat-menu #menu2="matMenu">
+              <button mat-menu-item>View</button>
+              <button mat-menu-item>Remove Employee</button>
+              <button mat-menu-item>Reject Employee</button>
+            </mat-menu>
+          </div>
+          <p class="text-sm font-normal">
+            Has been confirmed they work at this address
+          </p>
+          <p class="">12/07/2023</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Empty State -->
+
+  <div class="flex mx-auto hidden">
+    <div class="flex flex-col">
+      <div>
+        <img src="assets/images/add-employee.png" alt="">
+      </div>
+      <app-button
+        buttonText="Add Employee"
+        buttonStyles="w-[311px]"
+      ></app-button>
+    </div>
+  </div>
+</div>

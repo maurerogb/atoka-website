@@ -1,0 +1,65 @@
+
+<div class="atoka-form-header space-y-2">
+  <div class="atoka-form-header-icon">
+    <mat-icon svgIcon="picture" aria-hidden="false" aria-label="Image"></mat-icon>
+  </div>
+  <div class=" text-[#003A50] font-[700] text-[42px] ">Upload profile picture</div>
+  <div class="text-[18px] font-[400] text-[#003A50] ">Please upload a profile picture for easy identification.</div>
+</div>
+
+<form class="pt-10 max-w-md mx-auto">
+  <div class="flex justify-center items-center">
+    <div class=" w-[428px] rounded-lg py-3">
+      <div class="flex flex-col mx-auto gap-4">
+       @if (uploadedImage) {
+        <div class="flex mx-auto">
+          <img [src]="imageURL" [alt]="uploadedImage.name" class="w-full rounded-[50%] cursor-pointer h-[200px]" (click)="imageUpload.click()" />
+        </div>
+       } @else {
+        <div class="flex mx-auto">
+          <img src="assets/svg/image-upload.svg" alt="" class="w-full cursor-pointer h-[200px]" (click)="imageUpload.click()" />
+        </div>
+       }
+        <div class="flex justify-center flex-col">
+          <input
+            type="file"
+            #imageUpload
+            class="hidden"
+            (change)="uploadPhoto($event)"
+          />
+
+          <a href="javascript:void(0)" (click)="imageUpload.click()"  class=" w-full justify-center text-center text-[16px] text-[#9CA3AF]">
+            <mat-icon class="relative top-1" svgIcon="upload" aria-hidden="false" aria-label="Image"></mat-icon> Drag file here to upload document <strong class="font-bold ">or choose file </strong>
+          </a>
+          
+          @if (uploadedImage) {
+          <div class="flex flex-col items-center mt-8 gap-y-4">
+            <div class="flex flex-col w-full items-center mt-8 gap-y-4">
+              <a href="javascript:void(0)"
+                class="  bg-primary p-3 w-[50%] text-center text-[#fff] font-bold rounded-[10px]"
+                color="primary "
+                (click)="saveProfilePicture()"
+              >
+                Save
+              </a>
+            </div>
+          </div>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+
+</form>
+
+<div class="flex justify-center items-center">
+  <a href="javascript:void(0)"
+    class="p-3 w-[50%] text-center font-bold rounded-[10px]"
+    color="primary "
+    (click)="skip()"
+  >
+    Skip
+  </a>
+</div>
+
+<app-loader *ngIf="loadingService.isLoading$ | async"></app-loader>
