@@ -18,6 +18,28 @@ const Icons = {
     </svg>`,
   upload: `<svg width="15" height="16" viewBox="0 0 15 16" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path d="M3.63594 10.635C2.08954 10.635 0.835938 9.38136 0.835938 7.83496C0.835938 6.50003 1.77013 5.38328 3.02043 5.10283C2.96512 4.85572 2.93594 4.59875 2.93594 4.33496C2.93594 2.40196 4.50294 0.834961 6.43594 0.834961C8.12945 0.834961 9.54204 2.03774 9.86606 3.63565C9.8893 3.63519 9.91259 3.63496 9.93594 3.63496C11.8689 3.63496 13.4359 5.20196 13.4359 7.13496C13.4359 8.82823 12.2335 10.2407 10.6359 10.5649M9.23594 8.53496L7.13594 6.43496M7.13594 6.43496L5.03594 8.53496M7.13594 6.43496L7.13594 14.835" stroke="#9CA3AF" stroke-width="1.67" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>`,
+  graphDecline: `<svg width="130" height="66" viewBox="0 0 130 66" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M1 1C21.7959 2.73299 23.0837 44.2218 43.6667 49C60.6398 52.9402 69.2345 30.5738 86.3333 33C104.88 35.6316 110.815 58.9382 129 65H1V1Z" fill="#FEF3F2"/>
+    <path d="M1 1C21.7959 2.73299 23.0837 44.2218 43.6667 49C60.6398 52.9402 69.2345 30.5738 86.3333 33C104.88 35.6316 110.815 58.9382 129 65H1V1Z" fill="url(#paint0_linear_50_263017)"/>
+    <path d="M129 65C110.815 58.9382 104.88 35.6316 86.3333 33C69.2345 30.5738 60.6398 52.9402 43.6667 49C23.0837 44.2218 21.7959 2.73299 0.999996 1" stroke="#F04438" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <defs>
+    <linearGradient id="paint0_linear_50_263017" x1="65" y1="1" x2="65" y2="65" gradientUnits="userSpaceOnUse">
+    <stop offset="0.641167" stop-color="white" stop-opacity="0"/>
+    <stop offset="1" stop-color="white"/>
+    </linearGradient>
+    </defs>
+    </svg>`,
+  graphGrowth: `<svg width="101" height="66" viewBox="0 0 101 66" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M100 1C83.9157 2.73299 82.9196 44.2218 67 49C53.8724 52.9402 47.2249 30.5738 34 33C19.6556 35.6316 15.0653 58.9382 1 65H100V1Z" fill="#ECFDF3"/>
+    <path d="M100 1C83.9157 2.73299 82.9196 44.2218 67 49C53.8724 52.9402 47.2249 30.5738 34 33C19.6556 35.6316 15.0653 58.9382 1 65H100V1Z" fill="url(#paint0_linear_50_263027)"/>
+    <path d="M1 65C15.0653 58.9382 19.6556 35.6316 34 33C47.2249 30.5738 53.8724 52.9402 67 49C82.9196 44.2218 83.9157 2.73299 100 1" stroke="#12B76A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <defs>
+    <linearGradient id="paint0_linear_50_263027" x1="50.5" y1="1" x2="50.5" y2="65" gradientUnits="userSpaceOnUse">
+    <stop offset="0.641167" stop-color="white" stop-opacity="0"/>
+    <stop offset="1" stop-color="white"/>
+    </linearGradient>
+    </defs>
     </svg>`
 }
 
@@ -37,5 +59,7 @@ export class IconRegistryService {
     this.iconRegistry.addSvgIconLiteral('password', this.sanitizer.bypassSecurityTrustHtml(Icons.password));
     this.iconRegistry.addSvgIconLiteral('picture', this.sanitizer.bypassSecurityTrustHtml(Icons.picture));
     this.iconRegistry.addSvgIconLiteral('upload', this.sanitizer.bypassSecurityTrustHtml(Icons.upload));
+    this.iconRegistry.addSvgIconLiteral('graph-decline', this.sanitizer.bypassSecurityTrustHtml(Icons.graphDecline));
+    this.iconRegistry.addSvgIconLiteral('graph-growth', this.sanitizer.bypassSecurityTrustHtml(Icons.graphGrowth));
  }
 }

@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
 import { AccountShellComponent } from '../account-shell/account-shell.component';
-import { UserComponent } from './user.component';
+import { UserDashboardComponent } from './user-dashboard/user-dashboard.component';
 
 export const USER_ROUTES: Routes = [
   {
@@ -14,7 +14,7 @@ export const USER_ROUTES: Routes = [
       {
         path: '',
         pathMatch: 'full',
-        component: UserComponent,
+        component: UserDashboardComponent,
       },
     ],
   },

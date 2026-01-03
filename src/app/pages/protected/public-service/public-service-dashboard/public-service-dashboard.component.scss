@@ -1,0 +1,8 @@
+@tailwind utilities;
+
+@layer utilities {
+  .donut-stroke-rounded ::ng-deep .mat-mdc-progress-spinner circle,
+  .donut-stroke-rounded ::ng-deep .mat-mdc-progress-spinner .mdc-circular-progress__determinate-circle {
+    stroke-linecap: round;
+  }
+}

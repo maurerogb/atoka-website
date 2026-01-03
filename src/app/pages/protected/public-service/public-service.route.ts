@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
 import { AccountShellComponent } from '../account-shell/account-shell.component';
-import { PublicServiceComponent } from './public-service.component';
+import { PublicServiceDashboardComponent } from './public-service-dashboard/public-service-dashboard.component';
 
 export const PUBLIC_SERVICE_ROUTES: Routes = [
   {
@@ -14,7 +14,7 @@ export const PUBLIC_SERVICE_ROUTES: Routes = [
       {
         path: '',
         pathMatch: 'full',
-        component: PublicServiceComponent,
+        component: PublicServiceDashboardComponent,
       },
     ],
   },

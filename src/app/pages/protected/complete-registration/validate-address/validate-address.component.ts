@@ -43,7 +43,7 @@ export class ValidateAddressComponent implements OnInit {
 
   ngOnInit(): void {
     const userData = this.authService.getLoginInfo();
-    if (!userData || userData.hasBusinessInfo || userData.validatedAddress || userData.accountTypeId > 2) {
+    if (!userData || userData.validatedAddress || userData.accountTypeId > 2) {
       this.router.navigate(['/login']);
     }
 

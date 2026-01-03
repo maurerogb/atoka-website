@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
 import { AccountShellComponent } from '../account-shell/account-shell.component';
-import { TenantComponent } from './tenant.component';
+import { TenantDashboardComponent } from './tenant-dashboard/tenant-dashboard.component';
 
 export const TENANT_ROUTES: Routes = [
   {
@@ -14,7 +14,7 @@ export const TENANT_ROUTES: Routes = [
       {
         path: '',
         pathMatch: 'full',
-        component: TenantComponent,
+        component: TenantDashboardComponent,
       },
     ],
   },

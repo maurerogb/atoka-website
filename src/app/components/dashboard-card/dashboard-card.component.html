@@ -1,0 +1,31 @@
+<div class="card bg-white rounded-lg p-6 justify-between w-full">
+  <h2 class="text-lg mb-4">{{ title }}</h2>
+  <div class="flex justify-between">
+    <div class="grid gap-4">
+      <h1 class="font-bold text-4xl">
+        {{ value }}
+      </h1>
+      <span class="text-sm flex align-center">
+        <span
+          class="flex align-center me-1"
+          [ngClass]="{
+            'text-red-500': direction === 'down',
+            'text-green-500': direction === 'up'
+          }"
+        >
+          <mat-icon>
+            {{ direction === 'down' ? 'arrow_downward' : 'arrow_upward' }}
+          </mat-icon>
+          <span>{{ percentage }}%</span>
+        </span>
+        <span class="text-gray-500">
+          vs last month
+        </span>
+      </span>
+    </div>
+    <div class="flex items-center">
+      <mat-icon *ngIf="direction === 'down'" svgIcon="graph-decline" [className]="'h-16'"></mat-icon>
+      <mat-icon *ngIf="direction === 'up'" svgIcon="graph-growth" [className]="'h-16'"></mat-icon>
+    </div>
+  </div>
+</div>

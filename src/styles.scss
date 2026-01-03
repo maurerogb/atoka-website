@@ -267,3 +267,53 @@ body {
 .table-holder {
   overflow-x: auto !important;
 }
+
+/* Dashboard */
+.dashboard {
+  table {
+    width: 100%;
+  }
+  .table-holder thead > tr > th {
+    @apply font-semibold py-3 px-3 text-primary-dark whitespace-nowrap text-start;
+  }
+
+  .table-holder tbody > tr > td {
+    @apply pb-5 pt-8 font-medium text-sm;
+  }
+
+  .table-holder table > thead > tr:first-child th:first-child {
+    border-top-left-radius: 9px;
+    border-bottom-left-radius: 9px;
+  }
+  .table-holder table > thead > tr:first-child th:last-child {
+    border-top-right-radius: 9px;
+    border-bottom-right-radius: 9px;
+  }
+  .table-holder tbody > tr > td:first-child  {
+    padding-left: 4px;
+  }
+  .status{
+    border-radius: 24px;
+    display: flex;
+    padding: 6px 10px;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    color: white;
+    width: fit-content;
+    font-size: 12px;
+
+    &.successful{
+      background: #1F932D;
+    }
+    &.draft {
+      background: #CA8828;
+    }
+    &.failed {
+      background: #D83A3A;
+    }
+    &.pending {
+      background: #0090C7;
+    }
+  }
+}

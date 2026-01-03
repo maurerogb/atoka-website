@@ -1,44 +1,31 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
 import { ActivatedRoute } from '@angular/router';
 import { RouterModule } from '@angular/router';
-
-interface AccountNavItem {
-  label: string;
-  path: string;
-}
-
-const ACCOUNT_NAV_CONFIG: Record<string, AccountNavItem[]> = {
-  tenant: [
-    { label: 'Dashboard', path: '' },
-  ],
-  user: [
-    { label: 'Dashboard', path: '' },
-  ],
-  'business-account': [
-    { label: 'Dashboard', path: '' },
-  ],
-  'public-service': [
-    { label: 'Dashboard', path: '' },
-  ],
-};
+import { ACCOUNT_NAV_CONFIG } from './account-nav.config';
+import { INavContent } from '../../../model/nav';
 
 @Component({
   selector: 'app-account-shell',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, MatIconModule, MatButtonModule],
   templateUrl: './account-shell.component.html',
   styleUrl: './account-shell.component.scss',
 })
 export class AccountShellComponent {
-  navItems: AccountNavItem[] = [];
+  navItems: INavContent = { topNav: [], bottomNav: [], hasProfileDisplay: false, description: '' };
   title = '';
+  description = '';
+  showNav = false;
 
   constructor(private route: ActivatedRoute) {
     this.route.data.subscribe((data) => {
       const accountType = (data['accountType'] as string) ?? '';
       this.title = (data['title'] as string) ?? this.formatAccountType(accountType);
       this.navItems = ACCOUNT_NAV_CONFIG[accountType] ?? [];
+      this.description = this.navItems.description ?? '';
     });
   }
 
@@ -52,5 +39,12 @@ export class AccountShellComponent {
       .map((segment) => segment.charAt(0).toUpperCase() + segment.slice(1))
       .join(' ');
   }
-}
 
+  openNav() {
+    this.showNav = !this.showNav
+  }
+  
+  toggle() {
+    document.getElementById('sidebar')?.classList.toggle("showSidebar")
+  }
+}
