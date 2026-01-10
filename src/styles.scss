@@ -317,3 +317,42 @@ body {
     }
   }
 }
+
+/* Account */
+.account {
+  table {
+    width: 100%;
+  }
+  .table-holder thead > tr > th {
+    @apply font-semibold p-6 text-primary-dark whitespace-nowrap text-start bg-[#F8F9FC] border border-[#F1F3F9] rounded-none;
+  }
+
+  .table-holder tbody > tr > td {
+    @apply px-6 pb-5 pt-8 font-medium text-sm border-b border-solid border-b-[#BAE5F44F];
+  }
+
+  .status {
+    border-radius: 24px;
+    display: flex;
+    padding: 6px 10px;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    color: white;
+    width: fit-content;
+    font-size: 12px;
+
+    &.successful{
+      background: #1F932D;
+    }
+    &.draft {
+      background: #CA8828;
+    }
+    &.failed {
+      background: #D83A3A;
+    }
+    &.pending {
+      background: #0090C7;
+    }
+  }
+}

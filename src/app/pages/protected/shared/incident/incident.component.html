@@ -1,0 +1,202 @@
+<div class="account mb-10 mt-5 lg:mt-0">
+  @if (!incidents.length) {
+  <div class="flex justify-center items-center mx-auto">
+    <div class="mt-4 flex flex-col justify-center items-center min-w-[535px] py-5 px-10 gap-4">
+      <div>
+        <img src="assets/images/incident-empty-image.png" alt="" class="w-full">
+      </div>
+      <p class="text-[#00394F] font-bold text-xl">You have not reported any incident yet</p>
+      <p class="max-w-[290px]">Meet friends and strangers with peace of mind Plan your next journey here</p>
+      <app-button buttonText="Report Incident" (click)="openReportIncident()" [buttonStyles]="'px-10'"></app-button>
+    </div>
+  </div>
+  } @else {
+  <div class="flex flex-col md:flex-row gap-4 md:items-center md:justify-between">
+    <div class="flex flex-wrap gap-3 w-full md:max-w-sm">
+      <mat-form-field subscriptSizing="dynamic" class="w-full rounded-xl table-search" appearance="fill">
+        <mat-icon matPrefix>search</mat-icon>
+        <input
+          matInput
+          type="text"
+          [(ngModel)]="searchTerm"
+          (ngModelChange)="onSearchChange()"
+          placeholder="Search by recent reported incident"
+        />
+      </mat-form-field>
+    </div>
+
+    <div class="flex flex-wrap gap-3 justify-end" [formGroup]="filterForm">
+      <mat-form-field subscriptSizing="dynamic" appearance="fill" class="date-filter">
+        <mat-label>Sort by date</mat-label>
+        <mat-date-range-input [rangePicker]="picker">
+          <input matStartDate formControlName="startDate" />
+          <input matEndDate formControlName="endDate" (dateChange)="onDateRangeInput()" />
+        </mat-date-range-input>
+        <button
+          type="button"
+          mat-icon-button
+          matSuffix
+          aria-label="Clear date range"
+          (click)="resetDateFilter()"
+          [disabled]="!filterForm.value?.startDate && !filterForm.value?.endDate"
+        >
+          <mat-icon>close</mat-icon>
+        </button>
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-date-range-picker #picker></mat-date-range-picker>
+      </mat-form-field>
+
+      <!-- <app-button buttonText="Report Incident" [buttonStyles]="'px-8'" (click)="openReportIncident()"></app-button>
+      <button
+        type="button"
+        mat-stroked-button
+        color="primary"
+        class="!min-w-24"
+        (click)="toggleFiltersPanel()"
+      >
+        Filters
+      </button> -->
+      <button
+        type="button"
+        mat-flat-button
+        color="primary"
+        class="!min-w-32"
+        (click)="openReportIncident()"
+      >
+        Report Incident
+      </button>
+    </div>
+  </div>
+
+  <div class="card bg-white mt-5 lg:mt-10">
+    <ng-container *ngIf="filteredIncidents.length; else emptyState">
+      <div class="table-holder">
+        <table class="table-auto">
+          <thead>
+            <tr class="">
+              <th *ngIf="visibleColumns.location">Location</th>
+              <!-- <th *ngIf="visibleColumns.priority">Priority</th> -->
+              <th *ngIf="visibleColumns.entryDate">Entry Date</th>
+              <th *ngIf="visibleColumns.incidentType">Incident Type</th>
+              <th *ngIf="visibleColumns.status">Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              *ngFor="let incident of paginatedIncidents"
+              (click)="openViewIncident(incident)"
+              class="cursor-pointer hover:bg-gray-50"
+            >
+              <td *ngIf="visibleColumns.location">
+                <div class="flex gap-4 items-center">
+                  <!-- <div
+                    class="p-3 rounded-full w-[39px] h-[39px]"
+                    [ngClass]="{
+                      'bg-[#F2FCF2]': incident.status === 'Successful',
+                      'bg-[#FFECE8]': incident.status !== 'Successful'
+                    }"
+                  >
+                    <img
+                      [src]="
+                        incident.status === 'Successful'
+                          ? 'assets/svg/info_green.svg'
+                          : 'assets/svg/info_red.svg'
+                      "
+                      alt=""
+                      class="w-full"
+                    />
+                  </div> -->
+                  <div class="p-3 rounded-full w-[39px] h-[39px] bg-[#F2FCF2]">
+                    <img
+                      [src]="'assets/svg/info_green.svg'"
+                      alt=""
+                      class="w-full"
+                    />
+                  </div>
+                  <div class="flex flex-col gap-2">
+                    <p class="font-semibold text-base text-[#003A50]">
+                      {{ incident.atokaCode }}
+                    </p>
+                    <p class="text-gray-500 text-[12px]">
+                      {{ incident.incidentLocation || 'N/A'}}
+                    </p>
+                  </div>
+                </div>
+              </td>
+              <!-- <td *ngIf="visibleColumns.priority">
+                <p class="font-semibold text-[#666666] text-sm">
+                  {{ incident.priority }}
+                </p>
+              </td> -->
+              <td *ngIf="visibleColumns.entryDate">
+                <p class="font-semibold text-[#666666] text-sm">
+                  {{ incident.incidentDate | date }}
+                </p>
+              </td>
+              <td *ngIf="visibleColumns.incidentType">
+                <p class="font-semibold text-[#666666] text-sm">
+                   {{ incident.incidentType || 'N/A' }}
+                </p>
+              </td>
+              <!-- <td *ngIf="visibleColumns.status">
+                <p
+                  class="status text-xs"
+                  [ngClass]="{
+                    successful: incident.status === 'Successful',
+                    draft: incident.status === 'Draft',
+                    failed: incident.status === 'Failed',
+                    pending: incident.status === 'Pending'
+                  }"
+                >
+                  <span>{{ incident.status }}</span>
+                  <span>
+                    <img src="assets/svg/badge.svg" alt="" />
+                  </span>
+                </p>
+              </td> -->
+              <td *ngIf="visibleColumns.status">
+                <p
+                  class="status text-xs"
+                  [ngClass]="'successful'"
+                >
+                  <span>Successful</span>
+                  <span>
+                    <img src="assets/svg/badge.svg" alt="" />
+                  </span>
+                </p>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+3      <app-pagination
+        *ngIf="filteredIncidents.length"
+        [length]="filteredIncidents.length"
+        [pageIndex]="pageIndex"
+        [pageSize]="pageSize"
+        [pageSizeOptions]="pageSizeOptions"
+        (page)="onPageChange($event)"
+        [showFirstLastButtons]="true"
+      ></app-pagination>
+    </ng-container>
+
+    <ng-template #emptyState>
+      <div
+        class="flex flex-col items-center justify-center py-10 gap-4 text-center"
+      >
+        <img
+          src="assets/images/incident-empty-image.png"
+          alt="No incidents"
+          class="w-32 h-32 object-contain"
+        />
+        <p class="text-sm text-gray-500 max-w-sm">
+          No incidents found yet. Use the
+          <span class="font-semibold">Report Incident</span>
+          button to file a new incident.
+        </p>
+      </div>
+    </ng-template>
+  </div>
+  }
+
+</div>

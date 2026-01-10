@@ -1,0 +1,53 @@
+.date-holder {
+  @apply flex items-center relative
+}
+
+.custom-date-input {
+  @apply absolute left-[50%] top-[50%];
+  position: absolute !important;
+  width: 0 !important;
+  color: black;
+}
+
+.sort-button {
+  @apply px-4 py-3 border whitespace-nowrap border-[#D6F5FFD9] border-solid rounded-lg bg-[#F3FCFF] flex gap-2 items-center text-[#000000] text-sm font-medium
+}
+
+:host ::ng-deep .table-search {
+  .mdc-text-field {
+    border-radius: 8px;
+    background: #FFF;
+    border: 1px solid #D0D5DD;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .mdc-text-field__input {
+    padding: 0;
+    color: #01171f;
+  }
+
+//   .mdc-line-ripple,
+//   .mdc-text-field__ripple {
+//     display: none;
+//   }
+}
+
+:host ::ng-deep .date-filter {
+  .mdc-text-field {
+    border-radius: 8px;
+    background: #FFF;
+    border: 1px solid #D0D5DD;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .mdc-text-field__input {
+    padding: 0;
+    color: #01171f;
+  }
+}
+
+:host ::ng-deep .no-subscript .mat-mdc-form-field-subscript-wrapper {
+  display: none;
+}

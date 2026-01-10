@@ -1,0 +1,60 @@
+<div class="w-[450px]">
+  <div class="flex justify-between">
+    <div class="flex flex-col justify-center items-center mx-auto">
+      <div class="flex justify-center mb-5">
+        <img src="assets/svg/info-bg-red.svg" alt="">
+      </div>
+      <div class="flex flex-col gap-2 justify-center items-center">
+        <p class="font-bold text-xl">Incident</p>
+        <p class="text-primary-800 text-sm font-semibold">Incident 1234509WE</p>
+      </div>
+    </div>
+
+    <div class="flex justify-end cursor-pointer" (click)="close()">
+      <img src="assets/svg/cancel.svg" alt="">
+    </div>
+  </div>
+
+  <div class="flex flex-col gap-4 mt-5">
+    <div class="flex justify-between gap-2">
+      <p class="font-bold text-base text-primary-800">Location</p>
+      <p class="flex flex-col items-end justify-end text-sm w-full">
+        <span>{{ data.atokaCode }}</span>
+        <span class="max-w-[250px] text-sm text-gray-500 justify-end">
+          {{data.incidentLocation || 'N/A'}}
+        </span>
+      </p>
+    </div>
+    <div class="flex justify-between gap-2">
+      <p class="font-bold text-base text-primary-800">Incident type</p>
+      <p class="text-sm text-gray-500">
+        {{data.incidentType || 'N/A'}}
+      </p>
+    </div>
+    <div class="flex justify-between gap-2">
+      <p class="font-bold text-base text-primary-800">Incident Details</p>
+      <p class="max-w-[250px] text-sm text-gray-500">
+       {{data.incidentDetails}}
+      </p>
+    </div>
+    <div class="flex justify-between gap-2">
+      <p class="font-bold text-base text-primary-800">Date</p>
+      <p class="text-sm text-gray-500">
+       {{data.incidentDate | date}}
+      </p>
+    </div>
+    <div class="flex justify-between gap-2">
+      <p class="font-bold text-base text-primary-800">Resolution</p>
+      <p class="text-sm text-gray-500">
+        Federal Government
+      </p>
+    </div>
+    <div class="flex justify-between gap-2">
+      <p class="font-bold text-base text-primary-800">Status</p>
+      <p class="status successful">
+        <span class="text-sm text-gray-500">Successful</span>
+        <span><img src="assets/svg/badge.svg" alt=""></span>
+      </p>
+    </div>
+  </div>
+</div>
