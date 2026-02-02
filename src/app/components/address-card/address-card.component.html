@@ -1,0 +1,31 @@
+@if (address!=null ) {
+<div>
+  <div class="bg-[#00ADEF] rounded-lg p-5 text-white  ">
+    <p class="font-semibold">{{ address.atoka }}</p>
+    <p>
+      {{
+        address.oldNumber +
+          " " +
+          address.stateName +
+          ", " +
+          address.cityName +
+          ", " +
+          address.lga +
+          ", " +
+          address.stateName +
+          " " +
+          address.countries
+      }}
+    </p>
+  </div>
+
+  @if(showResidenceCount == true){
+  <div class="flex gap-4 items-center mt-5">
+    <div>
+      <img src="assets/images/avatar-img.png" alt="" />
+    </div>
+    <p>{{ "You currently have 20 employees at this business location." }}</p>
+  </div>
+  }
+</div>
+}

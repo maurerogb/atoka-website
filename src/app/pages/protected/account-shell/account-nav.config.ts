@@ -10,6 +10,7 @@ export const ACCOUNT_NAV_CONFIG: Record<string, INavContent> = {
         exact: true,
         activeIcon: 'assets/svg/dashboard.svg',
         inactiveIcon: 'assets/svg/dashboard-inactive.svg',
+        showAddressVerificationButton: true,
       },
       {
         name: 'Location',
@@ -31,7 +32,7 @@ export const ACCOUNT_NAV_CONFIG: Record<string, INavContent> = {
       },
       {
         name: 'Address Verification',
-        routerLink: '/app/public-service/address-verification',
+        routerLink: '/app/tenant/address-verification',
         activeIcon: 'assets/svg/address-verification.svg',
         inactiveIcon: 'assets/svg/address-verification.svg',
       },
@@ -61,6 +62,7 @@ export const ACCOUNT_NAV_CONFIG: Record<string, INavContent> = {
         exact: true,
         activeIcon: 'assets/svg/dashboard.svg',
         inactiveIcon: 'assets/svg/dashboard-inactive.svg',
+        showAddressVerificationButton: true,
       },
       {
         name: 'Location',
@@ -106,6 +108,8 @@ export const ACCOUNT_NAV_CONFIG: Record<string, INavContent> = {
         exact: true,
         activeIcon: 'assets/svg/dashboard.svg',
         inactiveIcon: 'assets/svg/dashboard-inactive.svg',
+        showAddressVerificationButton: true,
+        description: 'Keep track of tenants and other address rating.'
       },
       {
         name: 'Location',
@@ -118,12 +122,14 @@ export const ACCOUNT_NAV_CONFIG: Record<string, INavContent> = {
         routerLink: '/app/business-account/incident',
         activeIcon: 'assets/svg/incident.svg',
         inactiveIcon: 'assets/svg/incident.svg',
+        description: 'You can now report incident any time and day'
       },
       {
         name: 'Confirm Request',
         routerLink: '/app/business-account/employees',
         activeIcon: 'assets/svg/employee.svg',
         inactiveIcon: 'assets/svg/employee.svg',
+        title: 'Employment Status',
       },
       {
         name: 'Branch',
@@ -154,7 +160,7 @@ export const ACCOUNT_NAV_CONFIG: Record<string, INavContent> = {
       },
       {
         name: 'Logout',
-        routerLink: '/signin',
+        routerLink: '/logout',
         activeIcon: 'assets/svg/Logout.svg',
         inactiveIcon: 'assets/svg/Logout.svg',
       }
@@ -170,6 +176,7 @@ export const ACCOUNT_NAV_CONFIG: Record<string, INavContent> = {
         exact: true,
         activeIcon: 'assets/svg/dashboard.svg',
         inactiveIcon: 'assets/svg/dashboard-inactive.svg',
+        showAddressVerificationButton: true,
       },
       {
         name: 'Location',

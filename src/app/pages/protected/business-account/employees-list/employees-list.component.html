@@ -1,0 +1,101 @@
+<div class="account flex flex-col gap-6">
+  <div class="flex items-center gap-4">
+    <button type="button" mat-button class="text-sm !min-w-24 !h-10" (click)="goBack()">
+      <mat-icon>arrow_back</mat-icon>
+      Back
+    </button>
+  </div>
+
+  <div class="flex flex-col md:flex-row gap-4 md:items-center md:justify-between">
+    <div class="flex flex-wrap gap-3 w-full md:max-w-sm">
+      <mat-form-field subscriptSizing="dynamic" class="w-full rounded-xl table-search no-subscript" appearance="fill">
+        <mat-icon matPrefix>search</mat-icon>
+        <input
+          matInput
+          type="text"
+          [(ngModel)]="searchTerm"
+          (ngModelChange)="onSearchChange()"
+          placeholder="Search employees"
+        />
+      </mat-form-field>
+    </div>
+
+    <div class="flex flex-wrap gap-3 justify-end">
+      <button
+        type="button"
+        mat-stroked-button
+        class="!min-w-24 !bg-white shadow-sm border-input"
+      >
+        <mat-icon class="mr-2">filter_list</mat-icon>
+        Filter
+      </button>
+    </div>
+  </div>
+
+  <div class="card bg-white rounded-lg">
+    <div class="table-holder">
+      <table class="table-auto">
+        <thead>
+          <tr>
+            <th>Employee name</th>
+            <th>Employee's Address</th>
+            <th>Entry Date</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (employee of paginatedEmployees; track employee.id) {
+          <tr>
+            <td>
+              <div class="flex gap-4 items-center">
+                <mat-icon svgIcon="feature-file" [className]="'h-6'"></mat-icon>
+                <p class="font-semibold text-[#003A50] text-sm">{{ employee.fullName }}</p>
+              </div>
+            </td>
+            <td>
+              <p class="text-gray-500 text-sm">{{ employee.workAddress }}</p>
+            </td>
+            <td>
+              <p class="text-gray-500 text-sm">{{ employee.requestDate | date }}</p>
+            </td>
+            <td>
+              <p class="status text-xs" [ngClass]="getStatusClass(employee.status)">
+                <span>{{ employee.status }}</span>
+                <span>
+                  <img src="assets/svg/badge.svg" alt="" />
+                </span>
+              </p>
+            </td>
+            <td>
+              <div class="flex items-center gap-2">
+                <button type="button" mat-icon-button (click)="requestRemoval(employee)">
+                  <mat-icon>delete_outline</mat-icon>
+                </button>
+                <button
+                  type="button"
+                  mat-button
+                  class="!min-w-20 !h-9"
+                  (click)="openProfile(employee)"
+                >
+                  View
+                </button>
+              </div>
+            </td>
+          </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+    <app-pagination
+      *ngIf="filteredEmployees.length"
+      [length]="filteredEmployees.length"
+      [pageIndex]="pageIndex"
+      [pageSize]="pageSize"
+      [pageSizeOptions]="pageSizeOptions"
+      (page)="onPageChange($event)"
+      [showFirstLastButtons]="true"
+    ></app-pagination>
+  </div>
+</div>

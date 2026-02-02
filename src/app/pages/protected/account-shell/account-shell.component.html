@@ -154,8 +154,8 @@
               </button>
             </div>
           </div>
-          <div class="">
-            <a class="!min-w-24 !h-10 text-nowrap" [routerLink]="['/']" mat-flat-button color="primary">Address Verification</a>
+          <div class="" *ngIf="showAddressVerificationButton">
+            <a class="!min-w-24 !h-10 text-nowrap" [routerLink]="addressVerificationLink" mat-flat-button color="primary">Address Verification</a>
           </div>
         </div>
       </div>

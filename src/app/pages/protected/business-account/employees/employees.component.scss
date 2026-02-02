@@ -1,0 +1,22 @@
+a {
+    color: inherit;
+}
+
+:host ::ng-deep {
+    .search {
+        .mdc-text-field {
+            border-radius: 8px;
+            background: #F7FCFF;
+            max-width: 450px;
+        }
+
+        .mdc-line-ripple,
+        .mdc-text-field__ripple {
+            display: none;
+        }
+    }
+
+    .no-subscript .mat-mdc-form-field-subscript-wrapper {
+        display: none;
+    }
+}

@@ -23,6 +23,7 @@ export interface Address {
   longitude:             string;
   latitude:              string;
   residentDetailId?:     number;
+  branchName?:          string;
 }
 
 export interface ListItem{

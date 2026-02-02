@@ -1,0 +1,31 @@
+<div class="border p-5 rounded-lg  flex flex-col" [ngClass]="{'border-[#FF645D]':confirmStatus== 'PENDING', 'border-[#7568C8]':confirmStatus=='APROVED'}">
+  <div class="flex justify-between items-center">
+    <p class="text-base font-semibold">{{details?.firstName +' '+ details?.middleName +' '+ details?.surname}}</p>
+    <button
+      mat-icon-button
+      [matMenuTriggerFor]="menu"
+      aria-label="Example icon-button with a menu"
+      class="hover:text-[00ADEF]"
+    >
+      <img class="" src="assets/svg/more.svg" alt="" />
+    </button>
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item (click)="employeeDetails()">View</button>
+      <button mat-menu-item>Approve request</button>
+      <button mat-menu-item>Reject request</button>
+    </mat-menu>
+  </div>
+  <p class="text-sm font-normal">
+    @if (details?.confirmationStatus == 'PENDING') {
+    Wants you to confirmed they work at this address.
+    }@else if (details?.confirmationStatus == 'APROVED'){
+      Has been confirmed they work at this address.
+    }
+
+  </p>
+  <p class="">{{details?.employmentStartDate | date}}</p>
+</div>
+
+
+
+

@@ -40,6 +40,10 @@ const Icons = {
     <stop offset="1" stop-color="white"/>
     </linearGradient>
     </defs>
+    </svg>`,
+  featureFile: `<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect width="20" height="20" rx="10" fill="#F2F4F7"/>
+    <path d="M10.418 5.83301H7.5013C7.28029 5.83301 7.06833 5.92081 6.91205 6.07709C6.75577 6.23337 6.66797 6.44533 6.66797 6.66634V13.333C6.66797 13.554 6.75577 13.766 6.91205 13.9223C7.06833 14.0785 7.28029 14.1663 7.5013 14.1663H12.5013C12.7223 14.1663 12.9343 14.0785 13.0906 13.9223C13.2468 13.766 13.3346 13.554 13.3346 13.333V8.74967M10.418 5.83301L13.3346 8.74967M10.418 5.83301V8.74967H13.3346" stroke="#475467" stroke-width="0.833333" stroke-linecap="round" stroke-linejoin="round"/>
     </svg>`
 }
 
@@ -61,5 +65,6 @@ export class IconRegistryService {
     this.iconRegistry.addSvgIconLiteral('upload', this.sanitizer.bypassSecurityTrustHtml(Icons.upload));
     this.iconRegistry.addSvgIconLiteral('graph-decline', this.sanitizer.bypassSecurityTrustHtml(Icons.graphDecline));
     this.iconRegistry.addSvgIconLiteral('graph-growth', this.sanitizer.bypassSecurityTrustHtml(Icons.graphGrowth));
+    this.iconRegistry.addSvgIconLiteral('feature-file', this.sanitizer.bypassSecurityTrustHtml(Icons.featureFile));
  }
 }

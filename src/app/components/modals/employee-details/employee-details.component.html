@@ -1,0 +1,49 @@
+<div class="bg-white font-display min-w-[550px]" >
+  <div class="flex justify-between items-center mb-5">
+   <div class="flex mx-auto">
+    <p class=" text-[#003A50] font-bold text-xl !mb-0"> Employee's Details</p>
+   </div>
+
+    <div class="cursor-pointer flex justify-end" (click)="close()">
+      <img src="assets/svg/cancel.svg" alt="">
+    </div>
+  </div>
+  <div class="flex flex-col justify-center items-center gap-4">
+    <div class="w-[147px] h-[147px] rounded-full bg-pink-300">
+      @if (data.imageUrl !== null) {<img [src]="data.imageUrl" alt="">}
+    </div>
+    <p class="text-[#003A50 font-semibold]">Employee Profile</p>
+  </div>
+
+  <div class="grid gap-4">
+    <div class="">
+      <p class="text-left  font-semibold">Title</p>
+      <app-read-only [customClass]="'w-full'" [value]="data.title" ></app-read-only>
+    </div>
+    <div class="">
+      <p class="text-left  font-semibold">First Name</p>
+      <app-read-only [customClass]="'w-full'" [value]="data.firstName" ></app-read-only>
+    </div>
+    <div class="">
+      <p class="text-left  font-semibold">Last Name</p>
+      <app-read-only [customClass]="'w-full'" [value]="data.surname" ></app-read-only>
+    </div>
+    <div class="">
+      <p class="text-left  font-semibold">Gender</p>
+      <app-read-only [customClass]="'w-full'" [value]="data.gender" ></app-read-only>
+    </div>
+    <div class="">
+      <p class="text-left  font-semibold">Phone Number</p>
+      <app-read-only [customClass]="'w-full'" [value]="data.phoneNumber" ></app-read-only>
+    </div>
+    <div class="">
+      <p class="text-left  font-semibold">Time at Employment</p>
+      <app-read-only [type]="'date'" [customClass]="'w-full'" [value]="data.employmentStartDate" ></app-read-only>
+    </div>
+    <div class="">
+      <p class="text-left  font-semibold">Status</p>
+
+      <app-read-only [customClass]="'w-full'" [value]="data.confirmationStatus" ></app-read-only>
+    </div>
+  </div>
+</div>

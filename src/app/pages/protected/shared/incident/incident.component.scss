@@ -27,10 +27,10 @@
     color: #01171f;
   }
 
-//   .mdc-line-ripple,
-//   .mdc-text-field__ripple {
-//     display: none;
-//   }
+  .mdc-line-ripple,
+  .mdc-text-field__ripple {
+    display: none;
+  }
 }
 
 :host ::ng-deep .date-filter {
