@@ -1,6 +1,8 @@
 import { Routes } from '@angular/router';
 import { AccountShellComponent } from '../account-shell/account-shell.component';
-import { PublicServiceComponent } from './public-service.component';
+import { PublicServiceDashboardComponent } from './public-service-dashboard/public-service-dashboard.component';
+import { IncidentComponent } from '../shared/incident/incident.component';
+import { AddressVerificationComponent } from '../shared/address-verification/address-verification.component';
 
 export const PUBLIC_SERVICE_ROUTES: Routes = [
   {
@@ -14,7 +16,15 @@ export const PUBLIC_SERVICE_ROUTES: Routes = [
       {
         path: '',
         pathMatch: 'full',
-        component: PublicServiceComponent,
+        component: PublicServiceDashboardComponent,
+      },
+      {
+        path: 'incident',
+        component: IncidentComponent,
+      },
+      {
+        path: 'address-verification',
+        component: AddressVerificationComponent,
       },
     ],
   },

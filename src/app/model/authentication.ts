@@ -31,7 +31,7 @@ export interface loginInfo {
   firstName: string,
   surname: string,
   hasBusinessInfo: boolean,
-  BusinessId: number,
+  businessId: number,
   exp: number,
   validatedAddress: boolean,
 }

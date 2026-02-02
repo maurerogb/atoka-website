@@ -61,7 +61,7 @@ export class AuthenticationService extends HttpService<BaseResponse<any>> {
           firstName: claims.FirstName,
           surname: claims.Surname,
           hasBusinessInfo: claims.hasBusinessInfo === '1' ? true : false,
-          BusinessId: claims.BusinessId,
+          businessId: claims.BusinessId,
           validatedAddress: false,
           exp: claims.exp,
         };

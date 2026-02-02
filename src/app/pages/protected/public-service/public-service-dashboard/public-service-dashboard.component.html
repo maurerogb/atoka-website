@@ -1,0 +1,180 @@
+<div class="dashboard grid gap-6">
+
+  <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
+    <app-dashboard-card
+      class="flex"
+      title="Total Number of Properties"
+      [value]="'0'"
+      [percentage]="12"
+      direction="up"
+    ></app-dashboard-card>
+
+    <app-dashboard-card
+      class="flex"
+      title="Pending Applications of C of O"
+      [value]="'0'"
+      [percentage]="2"
+      direction="down"
+    ></app-dashboard-card>
+
+    <app-dashboard-card
+      class="flex"
+      title="Approved C of O"
+      [value]="'0'"
+      [percentage]="12"
+      direction="up"
+    ></app-dashboard-card>
+    
+    <app-dashboard-card
+      class="flex"
+      title="Unapplied C of O"
+      [value]="'0'"
+      [percentage]="2"
+      direction="down"
+    ></app-dashboard-card>
+  </div>
+
+  <div class="grid">
+    <div class="card bg-white p-6 rounded-none">
+      <div class="">
+      <div class="grid md:grid-cols-[2fr_1fr] gap-10">
+        <div>
+          <div class="flex justify-between border-b">
+            <h2 class="text-lg mb-4 text-nowrap">Population Statistics</h2>
+          </div>
+        </div>
+        <div class="grid gap-6">
+          <div class="flex border-b">
+            <h2 class="text-lg mb-4">Total Population</h2>
+          </div>
+          <div class="flex justify-center">
+            <div class="relative inline-flex items-center justify-center donut-stroke-rounded">
+              <mat-progress-spinner
+                class="!absolute inset-0 opacity-10"
+                mode="determinate"
+                [value]="100"
+                diameter="200"
+                strokeWidth="20"
+                color="primary"
+              ></mat-progress-spinner>
+
+              <mat-progress-spinner
+                mode="determinate"
+                [value]="70"
+                diameter="200"
+                strokeWidth="20"
+                color="primary"
+              ></mat-progress-spinner>
+
+              <span class="absolute text-xl font-semibold">
+                240
+              </span>
+            </div>
+
+          </div>
+          <div class="flex justify-between">
+            <div>
+              <span class="flex items-center gap-1 rounded-full bg-green-100 text-green-700 px-2 py-0.5 text-xs">
+                <mat-icon class="text-base justify-center flex">arrow_upward</mat-icon>
+                <span class="">Male</span>
+                <span class="font-semibold">80%</span>
+              </span>
+            </div>
+            <div>
+              <span class="flex items-center gap-1 rounded-full bg-red-100 text-red-700 px-2 py-0.5 text-xs">
+                <mat-icon class="text-base justify-center flex">arrow_downward</mat-icon>
+                <span class="">Female</span>
+                <span class="font-semibold">20%</span>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-12 gap-6">
+    <div class="col-span-12 md:col-span-6 xl:col-span-3 flex">
+      <app-dashboard-card-mini
+        class="flex w-full"
+        title="Total number of road"
+        [value]="'202'"
+        [percentage]="40"
+        direction="up"
+      ></app-dashboard-card-mini>
+    </div>
+
+    <div class="col-span-12 md:col-span-6 xl:col-span-3 flex">
+      <app-dashboard-card-mini
+        class="flex w-full"
+        title="Total number of unnamed road"
+        [value]="'10'"
+        [percentage]="2"
+        direction="down"
+      ></app-dashboard-card-mini>
+    </div>
+    
+    <div class="col-span-12 md:col-span-6 xl:col-span-3 flex">
+      <app-dashboard-card-mini
+        class="flex w-full"
+        title="Total number of named road"
+        [value]="'100'"
+        [percentage]="40"
+        direction="up"
+      ></app-dashboard-card-mini>
+    </div>
+    
+    <div class="col-span-12 md:col-span-6 xl:col-span-3 flex">
+      <app-dashboard-card-mini
+        class="flex w-full"
+        title="Total number of tarred roads"
+        [value]="'101'"
+        [percentage]="40"
+        direction="up"
+      ></app-dashboard-card-mini>
+    </div>    
+
+    <div class="col-span-12 md:col-span-6 xl:col-span-3 flex">
+      <app-dashboard-card-mini
+        class="flex w-full"
+        title="Total number of dirt road"
+        [value]="'10'"
+        [percentage]="2"
+        direction="down"
+      ></app-dashboard-card-mini>
+    </div>
+
+    <div class="col-span-12 md:col-span-6 xl:col-span-3 flex">
+      <app-dashboard-card-mini
+        class="flex w-full"
+        title="Total number of streets"
+        [value]="'202'"
+        [percentage]="40"
+        direction="up"
+      ></app-dashboard-card-mini>
+    </div>
+    
+    <div class="col-span-12 md:col-span-6 xl:col-span-3 flex">
+      <app-dashboard-card-mini
+        class="flex w-full"
+        title="Total number of roads without drainage"
+        [value]="'10'"
+        [percentage]="2"
+        direction="down"
+      ></app-dashboard-card-mini>
+    </div>
+
+    <div class="col-span-12 md:col-span-6 xl:col-span-3 flex">
+      <app-dashboard-card-mini
+        class="flex w-full"
+        title="Total number of named streets"
+        [value]="'50'"
+        [percentage]="40"
+        direction="up"
+      ></app-dashboard-card-mini>
+    </div>
+    
+  </div>
+  
+</div>

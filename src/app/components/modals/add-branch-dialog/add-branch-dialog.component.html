@@ -1,0 +1,120 @@
+<div class="items-center">
+  <div class="w-[620px] h-full justify-center text-center">
+    <div class="cursor-pointer flex justify-end" (click)="close()">
+      <img src="assets/svg/cancel.svg" alt="" />
+    </div>
+    <div class="flex flex-col text-[#005677] gap-2 mb-4 w-full items-center">
+      <p class="font-bold text-center text-xl text-[#003A50]">Add Branch</p>
+      <p class="text-sm text-center max-w-[380px] text-[#002330]">
+        Add a new business branch and verify ownership.
+      </p>
+    </div>
+
+    <div class="text-left" [formGroup]="branchForm">
+      <form class="" [formGroup]="branchForm">
+        <p class="text-sm text-center font-light text-red-500 mb-2" *ngIf="message">
+          {{ message }}
+        </p>
+
+        <div class="grid gap-x-4">
+          <div class="control">
+            <mat-label class="text-sm">Branch name*</mat-label>
+            <mat-form-field class="w-full rounded-xl" appearance="fill" floatLabel="always">
+              <input matInput formControlName="branchName" placeholder="Enter branch name" type="text" />
+              <mat-error
+                *ngIf="
+                  branchForm.get('branchName')?.hasError('required') &&
+                  (branchForm.get('branchName')?.dirty ||
+                    branchForm.get('branchName')?.touched)
+                "
+              >
+                Branch name is required
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="mt-2">
+          <app-atoka-search
+            [labelName]="'Address'"
+            [addressCode]="addressCode"
+            (returnCode)="setAddressCode($event)"
+          ></app-atoka-search>
+          <div class="mt-3 mb-3 text-center">
+            <a href="javascript:void(0)" class="primary" (click)="showForm()">
+              Don't have ATOKA ? <b> Enter address manually</b>
+            </a>
+          </div>
+          <app-address-form
+            [hideForm]="hideForm"
+            (showFormState)="setHideForm($event)"
+            (formMessage)="message = $event"
+          ></app-address-form>
+        </div>
+
+
+        <!-- <div class=" flex-row mx-auto gap-4 items-center">
+      @if(addressResult){
+      <app-address-card [address]="addressResult"> </app-address-card>
+      }
+
+      <div class="mt-0 ">
+        <div [formGroup]="brachForm">
+          <div class="p-2 ">
+            <p class="text-left  font-semibold">Branch Name</p>
+            <input  class="w-full p-4 mt-3 rounded-lg bg-[#FCFCFC] focus:bg-[white] outline-0 border-[#E6E6E6] border-solid border focus:border-[#979797] font-poppins text-[15px]"  formControlName="branchName"  placeholder="'Enter Branch Name'"/>
+          </div>
+          <div class="p-2 text-left mb-10">
+            <mat-checkbox class="" formControlName="isHQ">If this is buliding your Head Office identify by checking the box</mat-checkbox>
+            <mat-checkbox  formControlName="confirmOwnership" >
+              <div class="font-[400] text-[14px] pt-2">Claim Ownership </div>
+              <div class="font-[400] text-[13px] mt-1"> we will notify you if any other attempt is made to claim your
+                property.</div>
+            </mat-checkbox>
+
+          </div>
+        </div>
+        <div class="">
+          <button
+          (click)="save()"
+
+          class="py-0 block font-medium text-base w-full bg-[#0090C7] text-white rounded-lg lg:py-4"
+
+        >
+          <span class="relative block w-fit mx-auto">
+            <span>
+              Submit
+            </span>
+          </span>
+        </button>
+        </div>
+
+      </div>
+    </div> -->
+
+
+        <div class="flex gap-1 items-start mt-4">
+          <mat-checkbox color="primary" formControlName="confirmOwnership"></mat-checkbox>
+          <div class="text-left">
+            <p class="font-medium">Verify Ownership</p>
+            <p class="text-sm text-gray-500">
+              we will notify you if any other attempt is made to claim your property.
+            </p>
+          </div>
+        </div>
+
+        <div class="flex gap-4 items-start mt-4">
+          <mat-checkbox class="" formControlName="isHQ">If this is buliding your Head Office identify by checking the box</mat-checkbox>
+        </div>
+
+        <div class="flex justify-center mt-8">
+          <button type="button" mat-flat-button color="primary" class="w-full" (click)="submit()">
+            Add Branch
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <app-loader *ngIf="loadingService.isLoading$ | async"></app-loader>
+</div>

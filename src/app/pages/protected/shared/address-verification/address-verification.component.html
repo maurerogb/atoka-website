@@ -1,0 +1,250 @@
+<div class="account flex flex-col gap-6">
+  <div class="flex flex-col lg:flex-row gap-4 lg:items-center lg:justify-between">
+    <div class="flex flex-wrap gap-3 max-w-lg md:max-w-full md:w-full md:grid md:grid-cols-12">
+      <mat-form-field subscriptSizing="dynamic" class="w-full flex-1 phone-search no-subscript md:col-span-9" appearance="fill">
+        <mat-icon matPrefix>search</mat-icon>
+        <input
+          matInput
+          type="tel"
+          [(ngModel)]="searchPhone"
+          (keyup.enter)="onSearch()"
+          placeholder="Enter phone number"
+        />
+      </mat-form-field>
+      <button
+        type="button"
+        mat-flat-button
+        color="primary"
+        class="!min-w-32 md:col-span-3"
+        (click)="onSearch()"
+      >
+        Search
+      </button>
+    </div>
+  </div>
+
+  @if (!searchPerformed) {
+    <div class="card bg-white border border-[#F1F3F9] rounded-xl px-10 py-16">
+      <div class="flex items-center gap-6">
+        <div class="rounded-full overflow-hidden">
+          <img src="assets/images/address-verification-icon.png" class="w-full h-full object-cover" />
+        </div>
+        <div class="flex flex-col gap-1">
+          <p class="text-lg text-[#00739F]">Address Verification</p>
+          <p class="text-base text-[#7C8493]">All found addresses registered on the platform will be displayed here with all the necessary information</p>
+        </div>
+      </div>
+    </div>
+  } @else {
+    <div class="">
+      @if (searchResult; as result) {
+        @if (!showDetails) {
+          <p class="text-[#068146] font-semibold text-base py-2">Address and user found</p>
+          <div class="grid gap-4">
+            <div class="card bg-white border border-[#F1F3F9] rounded-xl p-6">
+              <button
+                type="button"
+                class="w-full text-left flex flex-col gap-2 rounded-lg border border-transparent hover:border-[#EEF2F6] hover:bg-[#F9FAFB] p-3 transition"
+                (click)="showDetails = true"
+              >
+                <span class="text-[#003A50] font-bold text-lg">{{ result.fullName }}</span>
+                <span class="text-xs text-gray-500">Click to view full details</span>
+              </button>
+            </div>
+          </div>
+        } @else {
+          <p class="py-2">&nbsp;</p>
+          <div class="flex flex-col gap-4">
+            <div class="grid xl:grid-cols-9 bg-[#f6f5f5] rounded-xl overflow-hidden shadow-sm">
+              <div class="xl:col-span-4 bg-white p-5 flex flex-col gap-5">
+                <div class="grid gap-2">
+                  <div class="flex items-center gap-4">
+                    <div class="w-16 h-16 rounded-full overflow-hidden bg-[#F2F4F7]">
+                      <img [src]="result.avatarUrl" [alt]="result.fullName" class="w-full h-full object-cover" />
+                    </div>
+                    <div class="flex flex-col gap-1">
+                      <p class="font-semibold text-[#003A50]">{{ result.email }}</p>
+                      <p class="text-sm text-gray-500">{{ result.fullName }}</p>
+                    </div>
+                    <p class="ml-auto status text-xs" [ngClass]="'successful'">
+                      <span>Verified</span>
+                      <span>
+                        <img src="assets/svg/badge.svg" alt="" />
+                      </span>
+                    </p>
+                  </div>
+                  
+                  <hr>
+                </div>
+
+                <div class="grid gap-4 text-sm">
+                  <div class="grid gap-2">
+                    <p class="text-sm text-[#003A50]">Phone Number</p>
+                    <p class="text-sm bg-gray-50 p-3 rounded-lg text-[#003A50] flex">
+                      <span>{{ result.phoneNumber }}</span>
+                      <span class="ml-auto text-[#02934D]" [ngClass]="'successful'">
+                        <mat-icon class="text-sm !h-auto !w-auto">task_alt</mat-icon>
+                      </span>
+                    </p>
+                  </div>
+                  <div class="grid gap-2">
+                    <p class="text-sm text-[#003A50]">Address</p>
+                    <p class="text-sm bg-gray-50 p-3 rounded-lg text-[#003A50]">{{ result.address }}</p>
+                  </div>
+                  <div class="grid grid-cols-2 gap-4">
+                    <div class="grid gap-2">
+                      <p class="text-sm text-[#003A50]">Gender</p>
+                      <p class="text-sm bg-gray-50 p-3 rounded-lg text-[#003A50]">{{ result.gender }}</p>
+                    </div>
+                    <div class="grid gap-2">
+                      <p class="text-sm text-[#003A50]">Status</p>
+                      
+                      <span class="text-sm bg-gray-50 p-3 rounded-lg text-[#003A50]">
+                        <p class="status text-xs py-1 px-2" [ngClass]="'successful'">
+                          <span>{{ result.accountStatus }}</span>
+                          <span>
+                            <img src="assets/svg/badge.svg" alt="" />
+                          </span>
+                        </p>
+                      </span>
+                    </div>
+                  </div>                  
+                  <div class="grid grid-cols-2 gap-4">
+                    <div class="grid gap-2">
+                      <p class="text-sm text-[#003A50]">Date at address</p>
+                      <p class="text-sm bg-gray-50 p-3 rounded-lg text-[#003A50]">{{ result.dateAtAddress | date: 'mediumDate' }}</p>
+                    </div>
+                    <div class="grid gap-2">
+                      <p class="text-sm text-[#003A50]">Time at address</p>
+                      <p class="text-sm bg-gray-50 p-3 rounded-lg text-[#003A50]">{{ result.timeAtAddress }}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="xl:col-span-5 overflow-hidden">
+                @if (mapUrl; as safeMapUrl) {
+                  <iframe
+                    class="map-frame"
+                    [src]="safeMapUrl"
+                    loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade"
+                  ></iframe>
+                } @else {
+                  <div class="p-6 text-sm text-gray-500">Map unavailable.</div>
+                }
+              </div>
+            </div>
+          </div>
+        }
+      } @else {
+        <p class="text-[#D83A3A] font-semibold py-2">Address and user not available on this system</p>
+      }
+    </div>
+  }
+
+  <div class="flex flex-col gap-4">
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+      <p class="font-semibold text-base">Recent Search Addresses</p>
+      <div class="flex flex-row gap-3 w-full md:max-w-md md:justify-end">
+        <mat-form-field subscriptSizing="dynamic" class="w-full table-search no-subscript shadow-sm border-input" appearance="fill">
+          <mat-icon matPrefix>search</mat-icon>
+          <input
+            matInput
+            type="tel"
+            [(ngModel)]="tableFilterPhone"
+            (keyup.enter)="applyTableFilter()"
+            placeholder="Search by user phone number"
+          />
+        </mat-form-field>
+        <button
+          type="button"
+          mat-stroked-button
+          class="!min-w-24 !bg-white shadow-sm border-input"
+          (click)="applyTableFilter()"
+        >
+          <mat-icon class="mr-2">filter_list</mat-icon>
+          Filter
+        </button>
+      </div>
+    </div>
+
+    
+  @if (!filteredRecentSearches.length) {
+    <div class="flex justify-center items-center mx-auto">
+      <div class="mt-4 flex flex-col justify-center items-center min-w-[535px] p-10 gap-6">
+        <div>
+          <img src="assets/images/asking-question.png" alt="" class="w-full">
+        </div>
+        <p class="font-bold text-base ">No recent search address</p>
+      </div>
+    </div>
+  } @else {
+    <div class="card bg-white rounded-lg">
+      <div class="table-holder">
+        <table class="table-auto">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Address</th>
+              <th>Phone Number</th>
+              <th>Date</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (record of filteredRecentSearches; track record.id) {
+              <tr>
+                <td>
+                  <div class="flex gap-4 items-center">
+                    <mat-icon svgIcon="feature-file" [className]="'h-6'"></mat-icon>
+                    <p class="font-semibold text-[#003A50] text-sm">{{ record.fullName }}</p>
+                  </div>
+                </td>
+                <td>
+                  <p class="text-gray-500 text-sm max-w-[260px]">{{ record.address }}</p>
+                </td>
+                <td>
+                  <p class="text-gray-500 text-sm">{{ record.phoneNumber }}</p>
+                </td>
+                <td>
+                  <p class="text-gray-500 text-sm">{{ record.searchedAt | date }}</p>
+                </td>
+                <td>
+                  <p class="status text-xs" [ngClass]="getStatusClass(record.status)">
+                    <span>{{ record.status }}</span>
+                    <span>
+                      <img src="assets/svg/badge.svg" alt="" />
+                    </span>
+                  </p>
+                </td>
+                <td>
+                  <div class="flex items-center gap-2">
+                    <button type="button" mat-icon-button>
+                      <mat-icon>delete_outline</mat-icon>
+                    </button>
+                    <button
+                      type="button"
+                      mat-button
+                      class="!min-w-20 !h-9"
+                      (click)="viewSearch(record)"
+                    >
+                      {{ record.status === 'Not found' ? 'Retry' : 'View' }}
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+
+      @if (!filteredRecentSearches.length) {
+        <div class="flex flex-col items-center justify-center py-10 gap-2 text-center">
+          <p class="text-sm text-gray-500">No recent search addresses match your filter.</p>
+        </div>
+      }
+    </div>
+  }
+  </div>
+</div>

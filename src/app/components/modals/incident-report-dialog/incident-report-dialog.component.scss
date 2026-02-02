@@ -1,0 +1,29 @@
+a {
+    color: inherit;
+}
+
+:host {
+  width: 100%;
+  
+  ::ng-deep .control {
+    .mat-mdc-form-field {
+      @apply pt-2;
+    }
+
+    .mdc-text-field {
+      @apply rounded-xl;
+    }
+
+    .mdc-text-field {
+      border-radius: 8px;
+      background: #FFF;
+      border: 1px solid #D0D5DD;
+      padding-left: 10px;
+      padding-right: 10px;
+    }
+
+    .mdc-text-field--filled:not(.mdc-text-field--disabled) .mdc-line-ripple::before {
+      border-bottom: 0;
+    }
+  }
+}

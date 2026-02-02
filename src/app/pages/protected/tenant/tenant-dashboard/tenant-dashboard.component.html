@@ -1,0 +1,180 @@
+<div class="dashboard grid grid-cols-1 gap-6">
+  
+  <div class="grid md:grid-cols-3 gap-6">
+    <app-dashboard-card
+      class="flex"
+      title="Total number of tenants"
+      [value]="'10.00k'"
+      [percentage]="12"
+      direction="up"
+    ></app-dashboard-card>
+
+    <app-dashboard-card
+      class="flex"
+      title="Total number of saved locations"
+      [value]="'00'"
+      [percentage]="2"
+      direction="down"
+    ></app-dashboard-card>
+
+    <app-dashboard-card
+      class="flex"
+      title="Incidents Reported"
+      [value]="'21'"
+      [percentage]="2"
+      direction="up"
+    ></app-dashboard-card>
+  </div>
+  
+  <div class="grid xl:grid-cols-[3fr_2fr] gap-6">    
+    <div class="card bg-white rounded-lg p-6">
+      <div class="flex justify-between">
+        <h2 class="text-lg mb-4">All active</h2>
+        <div>
+          filters go here
+        </div>
+      </div>
+      <div>
+        Graph goes here
+      </div>
+    </div>
+    <div class="card bg-white rounded-lg p-6">
+      <div class="flex justify-between items-center gap-2">
+        <div class="flex flex-col gap-1">
+          <p class="font-bold text-base">Recent Request</p>
+          <p class="text-[#71717A] text-[12px]">Shows all request received in the past week</p>
+        </div>
+        <p class="text-[#DA7B07] font-semibold cursor-pointer text-xs flex justify-end">SEE ALL EMPLOYEES</p>
+      </div>
+      <div class="grid flex flex-col mt-6 mb-2 gap-6">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-4">
+            <img src="assets/images/avatar-1.png" alt="" class="w-fit">
+            <div class="flex flex-col gap-1">
+              <p class="text-[#18181B] font-bold text-[13px]">Jenny Wilson</p>
+              <p class="text-[#71717A] text-[13px]">w.lawson&#64;example.com</p>
+            </div>
+          </div>
+          <div class="flex flex-col cursor-pointer gap-1">
+            <p class="text-[#0090C7] font-medium text-[13px]">Add Tenant</p>
+            <p class="text-[#71717A] text-[12px]">View details</p>
+          </div>
+        </div>
+
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-4">
+            <img src="assets/images/avatar-1.png" alt="" class="w-fit">
+            <div class="flex flex-col gap-1">
+              <p class="text-[#18181B] font-bold text-[13px]">Jenny Wilson</p>
+              <p class="text-[#71717A] text-[13px]">w.lawson&#64;example.com</p>
+            </div>
+          </div>
+          <div class="flex flex-col cursor-pointer gap-1">
+            <p class="text-[#0090C7] font-medium text-[13px]">Add Tenant</p>
+            <p class="text-[#71717A] text-[12px]">View details</p>
+          </div>
+        </div>
+
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-4">
+            <img src="assets/images/avatar-1.png" alt="" class="w-fit">
+            <div class="flex flex-col gap-1">
+              <p class="text-[#18181B] font-bold text-[13px]">Jenny Wilson</p>
+              <p class="text-[#71717A] text-[13px]">w.lawson&#64;example.com</p>
+            </div>
+          </div>
+          <div class="flex flex-col cursor-pointer gap-1">
+            <p class="text-[#0090C7] font-medium text-[13px]">Add Tenant</p>
+            <p class="text-[#71717A] text-[12px]">View details</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1">
+    <div class="flex justify-between">
+      <h2 class="text-base mb-4">Recent Reported Incidents</h2>
+      <a class="text-primary" href="#">View all</a>
+    </div>
+    <div class="grid grid-cols-1">
+      <div class="card bg-white rounded-lg p-6">
+        <div class="table-holder">
+          <table class="table-auto">
+            <thead>
+              <tr class="!rounded-lg">
+                <th>Location</th>
+                <th>Priority</th>
+                <th>Entry Date</th>
+                <th>Incident Type</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <div class="flex gap-4 items-center">
+                    <div class="bg-[#F2FCF2] p-3 rounded-full w-[39px] h-[39px]">
+                      <img src="assets/svg/info_green.svg" alt="" class="w-full">
+                    </div>
+                    <div class="flex flex-col gap-2">
+                      <p class="font-semibold text-base text-[#003A50]">LE2345678909</p>
+                      <p class="text-gray-500 text-[12px]">Etiebets place, 21 shomolu Avenue, ikoyi, Lagos Nigeria</p>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <p class="font-semibold text-[#666666] text-sm">Urgent</p>
+                </td>
+                <td>
+                  <p class="font-semibold text-[#666666] text-sm">May 29, 2:30pm</p>
+                </td>
+                <td>
+                  <p class="font-semibold text-[#666666] text-sm">
+                    Bad Road leading to accident
+                  </p>
+                </td>
+                <td>
+                  <p class="status successful text-xs">
+                    <span class="">Successful</span>
+                    <span><img src="assets/svg/badge.svg" alt=""></span>
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="flex gap-4 items-center">
+                    <div class="bg-[#FFECE8] p-3 rounded-full w-[39px] h-[39px]">
+                      <img src="assets/svg/info_red.svg" alt="" class="w-full">
+                    </div>
+                    <div class="flex flex-col gap-2">
+                      <p class="font-semibold text-base text-[#003A50]">LE2345678909</p>
+                      <p class="text-gray-500 text-[12px]">Etiebets place, 21 shomolu Avenue, ikoyi, Lagos Nigeria</p>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <p class="font-semibold text-[#666666] text-sm">Urgent</p>
+                </td>
+                <td>
+                  <p class="font-semibold text-[#666666] text-sm">May 29, 2:30pm</p>
+                </td>
+                <td>
+                  <p class="font-semibold text-[#666666] text-sm">
+                    Bad Road leading to accident
+                  </p>
+                </td>
+                <td>
+                  <p class="status draft text-xs">
+                    <span class="">Draft</span>
+                    <span><img src="assets/svg/badge.svg" alt=""></span>
+                  </p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

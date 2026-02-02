@@ -1,0 +1,143 @@
+<div class="account flex flex-col gap-6">
+  <div class="card bg-white rounded-lg p-6">
+    <div class="flex flex-col gap-4">
+      <p class="text-[#01171F] text-sm">
+        Select address to know the number of people working in that location
+      </p>
+      <div class="flex flex-col md:flex-row gap-4 md:items-end">
+        <!-- <div class="control"> -->
+        <mat-form-field class="md:flex-1 rounded-xl search no-subscript">
+          <input type="text" placeholder="Select Address" matInput [matAutocomplete]="auto" />
+          <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onLocationChange($event.option.value)">
+            @for (location of locations; track location.atoka) {
+            <mat-option [value]="location.atoka">{{ location.atoka }}</mat-option>
+            }
+          </mat-autocomplete>
+        </mat-form-field>
+        <!-- <app-atoka-search (addressInfo)="getAddress($event)"></app-atoka-search> -->
+
+        <!-- </div> -->
+        <button type="button" mat-flat-button color="primary" class="!min-w-40" (click)="openAddBranch()">
+          Add Branch
+        </button>
+      </div>
+
+      @if (selectedLocation) {
+      <div class="rounded-lg p-4 bg-[#F5F8FA] max-w-[449px]">
+        <p class="text-base font-bold text-[#002330] mb-1">{{ selectedLocation.atoka }}</p>
+        <p class="text-sm text-[#003A50]">{{ selectedLocationAddress }}</p>
+      </div>
+
+      <p class="text-sm text-[#003A50] font-medium">
+        You currently have {{ activeEmployees.length }} employees at this business location.
+      </p>
+      <!-- <app-address-card  
+        [showResidenceCount]="false"
+        [address]="addressInfo"
+      ></app-address-card> -->
+      <!-- <div class="flex gap-4 items-center mt-5">
+        <div>
+          <img src="assets/images/avatar-img.png" alt="" />
+        </div>
+        <p>You currently have 20 employees at this business location.</p>
+      </div> -->
+      }
+    </div>
+  </div>
+
+  <div class="grid gap-4">
+    <p class="font-semibold text-base text-[#003A50]">Pending Requests</p>
+
+    @if (pendingRequests.length) {
+    <div class="grid gap-4 md:grid-cols-2">
+      @for (request of pendingRequests; track request.emailAddress) {
+      <div class="flex items-start justify-between gap-4 rounded-lg bg-[#EAE8F3] border border-[#584AB1] p-4">
+        <div class="flex flex-col gap-2">
+          <p class="font-semibold text-[#003A50] mb-2">{{ fullname(request) }}</p>
+          <p class="text-sm text-[##003A50]">Wants you to confirm they work at this address</p>
+          <p class="text-xs text-[#72747D]">{{ request.employmentStartDate | date }}</p>
+        </div>
+        <button
+          type="button"
+          class="!w-8 !h-8 !p-0 self-start"
+          mat-icon-button
+          [matMenuTriggerFor]="pendingMenu"
+          (click)="setActiveEmployee(request)"
+        >
+          <mat-icon>more_horiz</mat-icon>
+        </button>
+      </div>
+      }
+    </div>
+
+    <!-- <app-request-card
+      [details]="request"
+      [confirmStatus]="request.confirmationStatus"
+    ></app-request-card> -->
+    }
+  </div>
+
+  <div class="card bg-white p-4 grid gap-4">
+    <div class="flex justify-between items-center">
+      <p class="font-semibold text-base text-[#003A50]">Employees</p>
+      <button type="button" class="text-[#003A50] font-semibold text-sm" (click)="goToEmployeesList()">
+        See more
+      </button>
+    </div>
+
+    @if (approvedEmployee.length) {
+    <div class="grid gap-4 md:grid-cols-2">
+      @for (employee of displayedEmployees; track employee.id) {
+      <div class="flex items-start justify-between gap-4 rounded-lg border border-[#E6E6E6] p-4">
+        <div class="flex flex-col gap-2">
+          <p class="font-semibold text-[#003A50]">{{ fullname(employee) }}</p>
+          <p class="text-sm text-[##003A50]">Has been confirmed they work at this address</p>
+        </div>
+        <div class="flex flex-col justify-between h-full">
+          <button
+            class="!w-8 !h-8 !p-0 self-end"
+            type="button"
+            mat-icon-button
+            [matMenuTriggerFor]="employeeMenu"
+            (click)="setActiveEmployee(employee)"
+          >
+            <mat-icon class="">more_horiz</mat-icon>
+          </button>
+          <p class="text-xs text-[#72747D] pe-3">{{ employee.employmentStartDate | date }}</p>
+        </div>
+      </div>
+      }
+    </div>
+    } @else {
+    <p class="text-sm text-gray-500">No employees found for this location yet.</p>
+    }
+  </div>  
+
+</div>
+
+<mat-menu #employeeMenu="matMenu">
+  <button mat-menu-item (click)="activeEmployee && openEmployeeProfile(activeEmployee)">View</button>
+  <button mat-menu-item (click)="activeEmployee && openRemoveEmployee(activeEmployee)">Remove employee</button>
+</mat-menu>
+
+<mat-menu #pendingMenu="matMenu">
+  <button mat-menu-item (click)="activeEmployee && openEmployeeProfile(activeEmployee)">View</button>
+  <button mat-menu-item (click)="activeEmployee && openApproveRequest(activeEmployee)">Approve request</button>
+  <button mat-menu-item (click)="activeEmployee && openRejectRequest(activeEmployee)">Reject request</button>
+</mat-menu>
+
+
+ 
+<div class="grid gap-4">
+  <div class="flex mx-auto hidden">
+    <div class="flex flex-col">
+      <div>
+        <img src="assets/images/add-employee.png" alt="" />
+      </div>
+      <app-button
+        buttonText="Add Employee"
+        buttonStyles="w-[311px]"
+      ></app-button>
+    </div>
+  </div>
+</div>

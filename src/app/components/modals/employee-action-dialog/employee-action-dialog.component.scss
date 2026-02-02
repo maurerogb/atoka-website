@@ -1,0 +1,12 @@
+.mdc-dialog__surface {
+  padding-left: 3rem !important;
+  padding-right: 3rem !important;
+}
+
+.mdc-text-field,
+.mdc-text-field--filled:not(.mdc-text-field--disabled) {
+    border-radius: 8px;
+        background: #FFF;
+        background-color: #FFF;
+        border: 1px solid #D1D5DB;
+}

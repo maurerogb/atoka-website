@@ -1,0 +1,9 @@
+<div [class]="customClass + ' relative'">
+  <div [class]="customInputClass + ' ' + ' w-full p-4 rounded-lg bg-[#FCFCFC] focus:bg-[white] outline-0 border-[#E6E6E6] border-solid border focus:border-[#979797] font-poppins text-left text-[15px]'">
+   @if (type=='date') {
+   {{ value | date:"MM/dd/yyyy" }}
+  }@else {
+    {{value}}
+  }
+  </div>
+</div>
