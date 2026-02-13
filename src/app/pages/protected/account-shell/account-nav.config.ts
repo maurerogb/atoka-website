@@ -43,6 +43,7 @@ export const ACCOUNT_NAV_CONFIG: Record<string, INavContent> = {
         routerLink: '/app/tenant/settings',
         activeIcon: 'assets/svg/Setting.svg',
         inactiveIcon: 'assets/svg/Setting.svg',
+        description: 'Manage your profile, notifications, and security preferences.',
       },
       {
         name: 'Logout',
@@ -89,6 +90,7 @@ export const ACCOUNT_NAV_CONFIG: Record<string, INavContent> = {
         routerLink: '/app/user/settings',
         activeIcon: 'assets/svg/Setting.svg',
         inactiveIcon: 'assets/svg/Setting.svg',
+        description: 'Manage your profile, notifications, and security preferences.',
       },
       {
         name: 'Logout',
@@ -157,6 +159,7 @@ export const ACCOUNT_NAV_CONFIG: Record<string, INavContent> = {
         routerLink: '/app/business-account/settings',
         activeIcon: 'assets/svg/Setting.svg',
         inactiveIcon: 'assets/svg/Setting.svg',
+        description: 'Manage your profile, notifications, and security preferences.',
       },
       {
         name: 'Logout',
@@ -221,6 +224,7 @@ export const ACCOUNT_NAV_CONFIG: Record<string, INavContent> = {
         routerLink: '/app/public-service/settings',
         activeIcon: 'assets/svg/Setting.svg',
         inactiveIcon: 'assets/svg/Setting.svg',
+        description: 'Manage your profile, notifications, and security preferences.',
       },
       {
         name: 'Logout',

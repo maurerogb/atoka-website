@@ -38,6 +38,11 @@ export class RegistrationService extends HttpService<PersonRequest> {
     return this.http.post<BaseResponse<PersonalData>>(url, person);
   }
 
+  updateProfile(person: PersonalData): Observable<BaseResponse<PersonalData>> {
+    const url = 'OccupantDetails';
+    return this.put<BaseResponse<PersonalData>>(url, person);
+  }
+
   uploadProfilePhoto(file: any): Observable<any> {
     const url = `OccupantDetails/Upload-Profile-Photo`
     return this.filePost(url, file);

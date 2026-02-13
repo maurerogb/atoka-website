@@ -6,6 +6,7 @@ import { AddressVerificationComponent } from '../shared/address-verification/add
 import { EmployeesComponent } from './employees/employees.component';
 import { EmployeesListComponent } from './employees-list/employees-list.component';
 import { BranchComponent } from './branch/branch.component';
+import { SettingsComponent } from '../shared/settings/settings.component';
 
 export const BUSINESS_ACCOUNT_ROUTES: Routes = [
   {
@@ -40,6 +41,10 @@ export const BUSINESS_ACCOUNT_ROUTES: Routes = [
       {
         path: 'branch',
         component: BranchComponent,
+      },
+      {
+        path: 'settings',
+        component: SettingsComponent,
       },
     ],
   },

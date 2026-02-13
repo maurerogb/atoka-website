@@ -1,0 +1,35 @@
+﻿a {
+    color: inherit;
+}
+
+.mdc-dialog__surface {
+    padding-left: 3rem !important;
+    padding-right: 3rem !important;
+}
+
+.mdc-text-field {
+    border-radius: 8px;
+    background: #fff;
+    border: 1px solid #d0d5dd;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+// .mdc-text-field__input {
+//     padding: 0;
+//     color: #01171f;
+// }
+
+.mdc-text-field,
+.mdc-text-field--filled:not(.mdc-text-field--disabled) {
+    border-radius: 8px;
+    background: #FFF;
+    background-color: #FFF !important;
+    border: 1px solid #D1D5DB;
+}
+
+.mat-mdc-form-field {
+    @apply pt-2;
+}
+
+

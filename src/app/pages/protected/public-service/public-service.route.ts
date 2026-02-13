@@ -3,6 +3,7 @@ import { AccountShellComponent } from '../account-shell/account-shell.component'
 import { PublicServiceDashboardComponent } from './public-service-dashboard/public-service-dashboard.component';
 import { IncidentComponent } from '../shared/incident/incident.component';
 import { AddressVerificationComponent } from '../shared/address-verification/address-verification.component';
+import { SettingsComponent } from '../shared/settings/settings.component';
 
 export const PUBLIC_SERVICE_ROUTES: Routes = [
   {
@@ -25,6 +26,10 @@ export const PUBLIC_SERVICE_ROUTES: Routes = [
       {
         path: 'address-verification',
         component: AddressVerificationComponent,
+      },
+      {
+        path: 'settings',
+        component: SettingsComponent,
       },
     ],
   },

@@ -3,6 +3,7 @@ import { AccountShellComponent } from '../account-shell/account-shell.component'
 import { UserDashboardComponent } from './user-dashboard/user-dashboard.component';
 import { IncidentComponent } from '../shared/incident/incident.component';
 import { AddressVerificationComponent } from '../shared/address-verification/address-verification.component';
+import { SettingsComponent } from '../shared/settings/settings.component';
 
 export const USER_ROUTES: Routes = [
   {
@@ -25,6 +26,10 @@ export const USER_ROUTES: Routes = [
       {
         path: 'address-verification',
         component: AddressVerificationComponent,
+      },
+      {
+        path: 'settings',
+        component: SettingsComponent,
       },
     ],
   },
