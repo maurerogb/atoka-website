@@ -105,7 +105,7 @@ const SETTINGS_NAV_BY_ACCOUNT: Record<string, SettingsSectionId[]> = {
 export class SettingsComponent implements OnInit, OnDestroy {
   accountType = '';
   sections: SettingsSection[] = [];
-  activeSectionId: SettingsSectionId = 'security'; //'my-details';
+  activeSectionId: SettingsSectionId = 'my-details'; //'security'; //'my-details';
   profileImageControl = new FormControl('assets/images/avatar-2.png');
   personalForm: FormGroup;
   personalDetails?: PersonalData;

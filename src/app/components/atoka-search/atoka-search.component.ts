@@ -30,7 +30,9 @@ export class AtokaSearchComponent implements OnInit {
   withRefresh = false;
 
   @Input() labelName: string | undefined;
+  @Input() placeholder: string | undefined;
   @Input() addressCode: string | undefined;
+  @Input() showAddress = false;
   @Output() returnCode: EventEmitter<string> = new EventEmitter<string>();
   @Output() addressInfo: EventEmitter<Address> = new EventEmitter<Address>();
   constructor(private atokaService: AtokaSearchService) { }
@@ -62,5 +64,23 @@ export class AtokaSearchComponent implements OnInit {
 
     this.addressCode = e.option.value
     this.returnCode.emit(this.addressCode)
+  }
+
+  formatAddress(address: Address | undefined): string {
+    if (!address) {
+      return '';
+    }
+    const streetLine = [
+      address.houseName,
+      address.oldNumber,
+      address.streetName,
+    ]
+      .filter(Boolean)
+      .join(' ')
+      .trim();
+    const parts = [streetLine, address.cityName, address.stateName, address.countries].filter(
+      Boolean,
+    );
+    return parts.join(', ');
   }
 }

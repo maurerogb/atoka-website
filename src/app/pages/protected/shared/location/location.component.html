@@ -1,0 +1,480 @@
+<div class="account location-page mb-10 mt-5 lg:mt-0">
+  <div class="flex flex-col gap-8">
+    <div class="relative flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between pt-[100px] xl:pt-[0px] px-10">
+      <div class="absolute w-[calc(100%-20px)] left-0 px-5 xl:max-w-md z-10">
+        <div class="relative flex flex-col gap-3 h-16">
+          @if (actionPanel === 'direction' && isEditingDirections) {
+            <div class="w-full rounded-xl border border-[#E6EEF3] bg-white p-5 shadow-sm absolute z-20 top-0">
+              <div class="flex flex-col mb-3">
+                <div class="flex items-center justify-between">
+                  <h3 class="text-sm font-semibold text-[#003A50]">Directions</h3>
+                  <button
+                    type="button"
+                    mat-icon-button
+                    class="text-gray-500"
+                    (click)="closeDirectionPicker()"
+                  >
+                    <mat-icon>close</mat-icon>
+                  </button>
+                </div>
+                <div class="flex flex-col gap-2">
+                  <div class="flex flex-1 items-center">
+                    <div class="w-full">
+                        <div class="">
+                          <div class="mt-2 flex flex-wrap gap-2">
+                            <button
+                              type="button"
+                              mat-icon-button
+                              [disabled]="isLocating"
+                              [matTooltip]="isLocating ? 'Locating...' : 'Use current location'"
+                              (click)="useCurrentLocation()"
+                            >
+                              <mat-icon>my_location</mat-icon>
+                            </button>
+                            <app-atoka-search
+                              [placeholder]="'Starting location'"
+                              [className]="'flex-1 table-search no-subscript'"
+                              [addressCode]="originCode"
+                              [showAddress]="true"
+                              (returnCode)="originCode = $event"
+                              (addressInfo)="onOriginSelected($event)"
+                            ></app-atoka-search>
+                          </div>
+                          <div class="mt-2 flex flex-wrap items-end gap-2 hidden">
+                            <mat-form-field class="flex-1 table-search no-subscript" appearance="fill">
+                              <mat-label>Starting location</mat-label>
+                              <input
+                                matInput
+                                type="text"
+                                placeholder="Enter address"
+                                [(ngModel)]="originTyped"
+                                (keydown.enter)="applyTypedOrigin()"
+                              />
+                            </mat-form-field>
+                            <!-- <button
+                              type="button"
+                              mat-stroked-button
+                              class="!min-w-40"
+                              [disabled]="!originTyped || isGeocodingOrigin"
+                              (click)="applyTypedOrigin()"
+                            >
+                              {{ isGeocodingOrigin ? 'Searching...' : 'Use' }}
+                            </button> -->
+                            <button
+                              type="button"
+                              mat-icon-button
+                              [disabled]="isLocating"
+                              [matTooltip]="isLocating ? 'Locating...' : 'Use current location'"
+                              (click)="useCurrentLocation()"
+                            >
+                              <mat-icon>my_location</mat-icon>
+                            </button>
+                          </div>
+                        </div>
+                      
+                        <div class="">
+                          <div class="mt-2 flex flex-wrap gap-2">
+                            <button
+                              type="button"
+                              mat-icon-button
+                              [disabled]="isLocating"
+                              [matTooltip]="isLocating ? 'Locating...' : 'Use current location'"
+                              (click)="useCurrentLocation()"
+                            >
+                              <mat-icon>my_location</mat-icon>
+                            </button>
+                            <app-atoka-search
+                              [placeholder]="'Destination'"
+                              [className]="'flex-1 table-search no-subscript'"
+                              [addressCode]="addressCode"
+                              [showAddress]="true"
+                              (returnCode)="addressCode = $event"
+                              (addressInfo)="onDestinationSelected($event)"
+                            ></app-atoka-search>
+                          </div>
+                          <div class="mt-2 flex flex-wrap items-end gap-2 hidden">
+                            <mat-form-field class="flex-1 table-search no-subscript" appearance="fill">
+                              <mat-label>Destination</mat-label>
+                              <input
+                                matInput
+                                type="text"
+                                placeholder="Enter address"
+                                [(ngModel)]="destinationTyped"
+                                (keydown.enter)="applyTypedDestination()"
+                              />
+                            </mat-form-field>
+                            <!-- <button
+                              type="button"
+                              mat-stroked-button
+                              class="!min-w-40"
+                              [disabled]="!destinationTyped || isGeocodingDestination"
+                              (click)="applyTypedDestination()"
+                            >
+                              {{ isGeocodingDestination ? 'Searching...' : 'Use' }}
+                            </button> -->
+                            <button
+                              type="button"
+                              mat-icon-button
+                              [disabled]="isLocating"
+                              [matTooltip]="isLocating ? 'Locating...' : 'Use current location'"
+                              (click)="useCurrentLocationAsDestination()"
+                            >
+                              <mat-icon>my_location</mat-icon>
+                            </button>
+                          </div>
+                        </div>
+                    </div>
+                    <button
+                      type="button"
+                      mat-icon-button
+                      class="text-primary"
+                      [disabled]="!selectedOrigin || !selectedDestination"
+                      (click)="swapDirections()"
+                    >
+                      <mat-icon>swap_vert</mat-icon>
+                    </button>
+                  </div>
+                  
+                </div>
+              </div>
+
+              <div class="pt-2">
+                  @if (recentSearches.length) {
+                    <p class="text-sm">Recent search</p>
+                    <div class="mt-2 flex flex-wrap gap-2">                      
+                      @for (item of recentSearches; track item.atoka) {
+                        <button
+                          type="button"
+                          class="gap-2 w-full rounded-lg border border-[#F5F8FA] bg-[#F9FBFF] p-3 transition hover:bg-primary-light"                          
+                          (click)="setDestination(item)"
+                        >
+                          <div class="text-start">
+                            <p class="text-sm font-bold text-[#002330] mb-1">{{ item.atoka }}</p>
+                            <p class="text-sm text-[#003A50]">{{ formatAddress(item) }}</p>
+                          </div>
+                        </button>
+                      }
+                    </div>
+                  }
+                </div>
+
+            </div>
+          } @else {
+            <div class="relative">
+            <!-- <div class="hidden"> -->
+              <app-atoka-search
+                [placeholder]="'Search address or ATOKA'"
+                [labelName]="''"
+                [addressCode]="addressCode"
+                [showAddress]="true"
+                (returnCode)="addressCode = $event"
+                (addressInfo)="resetDirectionsState(); onAddressSelected($event)"
+              ></app-atoka-search>
+
+              @if (!actionPanel && selectedLocation) {
+                <div
+                  class="flex flex-wrap items-center gap-3 rounded-b-2xl border border-[#E6EEF3] bg-white px-3 py-2 shadow-sm w-full absolute z-20"
+                >
+                  <button
+                    type="button"
+                    class="action-button"
+                    [ngClass]="{ active: actionPanel === 'direction' }"
+                    (click)="toggleAction('direction')"
+                  >
+                    <mat-icon svgIcon="direction"></mat-icon>
+                    <span>Get direction</span>
+                  </button>
+                </div>
+              }
+            <!-- </div> -->
+            </div>
+            <div class="relative gap-2 hidden">
+              <div class="relative">
+              <div class="flex flex-wrap items-end">
+                <mat-form-field class="flex-1 table-search no-subscript" appearance="fill">
+                  <mat-label>Search location</mat-label>
+                  <mat-icon matPrefix>search</mat-icon>
+                  <input
+                    class="!min-w-[unset] w-full"
+                    matInput
+                    type="text"
+                    placeholder="Enter address"
+                    [(ngModel)]="destinationTyped"
+                    (input)="resetDirectionsState()"
+                    (keydown.enter)="resetDirectionsState(); applyTypedDestination()"
+                  />
+                </mat-form-field>
+                <!-- <button
+                  type="button"
+                  mat-stroked-button
+                  class="!min-w-40"
+                  [disabled]="!destinationTyped || isGeocodingDestination"
+                  (click)="applyTypedDestination()"
+                >
+                  {{ isGeocodingDestination ? 'Searching...' : 'Search' }}
+                </button> -->
+              </div>
+
+              @if (!actionPanel && selectedLocation) {
+                <div
+                  class="flex flex-wrap items-center gap-3 rounded-b-2xl border border-[#E6EEF3] bg-white px-3 py-2 shadow-sm w-full absolute z-20"
+                >
+                  <button
+                    type="button"
+                    class="action-button"
+                    [ngClass]="{ active: actionPanel === 'direction' }"
+                    (click)="toggleAction('direction')"
+                  >
+                    <mat-icon svgIcon="direction"></mat-icon>
+                    <span>Get direction</span>
+                  </button>
+                </div>
+              }
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+
+      <div class="relative w-full flex flex-wrap gap-2 justify-end xl:top-[0px] top-[-100px]">
+        @for (provider of mapProviders; track provider.id) {
+          <button
+            type="button"
+            class="flex flex-col items-center justify-center gap-3 rounded-2xl px-3 py-2 text-sm font-medium transition"
+            (click)="setProvider(provider.id)"
+            [matTooltip]="provider.label"
+          >
+            <img [src]="provider.logo" [alt]="provider.label" class="h-auto w-auto object-contain" />
+            <span class="text-sm text-[#003A50] leading-none whitespace-nowrap">{{ provider.label }}</span>
+          </button>
+        }
+      </div>
+    </div>
+
+    <div class="bg-white shadow-sm">
+      <div class="flex items-center justify-between border-b border-[#EEF4F7] px-5 py-4">
+        <div class="flex flex-col gap-1">
+          @if (selectedOrigin) {
+            <a (click)="startEditingDirections()">           
+            <span class="text-base font-bold text-[#003A50] items-center flex gap-3">
+              <img src="assets/images/current-location.png" alt="Location" class="h-auto w-auto object-contain" />
+              <span>{{ formatAddress(selectedOrigin) || selectedOrigin.atoka }}</span>
+              @if (selectedOrigin && selectedDestination) {
+                <mat-icon class="text-base">arrow_forward</mat-icon>
+                <span>{{ formatAddress(selectedDestination) || selectedDestination.atoka }}</span>
+              }
+            </span>
+            </a>
+          } @else {
+            <span class="text-base font-bold text-[#003A50] flex gap-3">
+              <img src="assets/images/current-location.png" alt="Location" class="h-auto w-auto object-contain" />
+              {{ selectedLocation?.atoka || 'No location selected' }}
+            </span>
+          }
+        </div>
+        <div class="flex items-center gap-2 text-sm text-gray-500">
+          <mat-icon class="text-primary">public</mat-icon>
+          <span>{{ getProviderLabel(activeProvider) }}</span>
+        </div>
+      </div>
+
+      <div #mapViewport class="relative w-full" [style.height]="mapHeight">
+      <!-- <div class="relative h-[420px] w-full"> -->
+        @if (mapFocusLocation) {
+          @if (activeProvider === 'google') {
+            <app-google-provider-map
+              [height]="mapHeight"
+              [center]="center"
+              [zoom]="zoom"
+              [options]="mapOptions"
+              [hasMapId]="hasMapId"
+              [originPosition]="originPosition"
+              [destinationPosition]="destinationPosition"
+              [originIsCurrentLocation]="originIsCurrentLocation"
+              [destinationIsCurrentLocation]="destinationIsCurrentLocation"
+              [currentLocationAccuracyMeters]="currentLocationAccuracyMeters"
+              [destinationAccuracyMeters]="destinationAccuracyMeters"
+              [renderedDirectionsResult]="renderedDirectionsResult"
+              [directionsOptions]="directionsOptions"
+              [alternateRoutePaths]="alternateRoutePaths"
+              [showTraffic]="!!directionsSummary?.durationTrafficText && selectedTravelMode === 'DRIVING'"
+              [providerLabel]="getProviderLabel(activeProvider)"
+              [atoka]="mapFocusLocation.atoka ?? ''"
+              [address]="formatAddress(mapFocusLocation)"
+              [directionsSummary]="mapSummaryForView"
+              (routeIndexSelected)="setRouteIndex($event)"
+            ></app-google-provider-map>
+          } @else if (activeProvider === 'tomtom') {
+            <app-tomtom-provider-map
+              [center]="center"
+              [zoom]="zoom"
+              [providerLabel]="getProviderLabel(activeProvider)"
+              [atoka]="mapFocusLocation.atoka ?? ''"
+              [address]="formatAddress(mapFocusLocation)"
+              [directionsSummary]="mapSummaryForView"
+              [selectedRoutePath]="selectedRoutePath"
+              [alternateRoutePaths]="alternateRoutePaths"
+            ></app-tomtom-provider-map>
+          } @else {
+            <app-here-provider-map
+              [center]="center"
+              [zoom]="zoom"
+              [providerLabel]="getProviderLabel(activeProvider)"
+              [atoka]="mapFocusLocation.atoka ?? ''"
+              [address]="formatAddress(mapFocusLocation)"
+              [directionsSummary]="mapSummaryForView"
+              [selectedRoutePath]="selectedRoutePath"
+              [alternateRoutePaths]="alternateRoutePaths"
+            ></app-here-provider-map>
+          }
+        } @else {
+          <div class="flex h-full flex-col items-center justify-center gap-3 text-center">
+            <img src="assets/images/map.svg" alt="" class="h-20 w-20 opacity-60" />
+            <p class="text-sm text-gray-500">
+              Select a location to render the map.
+            </p>
+          </div>
+        }
+      </div>
+
+      <!-- <div class="items-center justify-between border-t border-[#EEF4F7]">
+        @if (selectedOrigin && selectedDestination) {
+          <div class="flex flex-col gap-1 px-5 py-4">
+            <div class="bg-white/95 backdrop-blur">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                  <h3 class="text-sm font-semibold text-[#003A50]">Get direction</h3>
+                  <button
+                    type="button"
+                    mat-icon-button
+                    class="text-primary"
+                    (click)="startEditingDirections()"
+                  >
+                    <mat-icon>edit_location_alt</mat-icon>
+                  </button>
+                </div>
+                <span class="text-xs text-gray-400">
+                  From {{ selectedOrigin.atoka || 'Select a start location' }}
+                </span>
+              </div>
+              <div class="mt-4 grid gap-4">
+                <div>
+                  <p class="text-xs uppercase text-gray-400">Travel modes</p>
+                  <div class="mt-2 flex flex-wrap gap-2">
+                    @for (mode of travelModes; track mode.id) {
+                      <button
+                        type="button"
+                        class="flex items-center gap-2 rounded-full border px-3 py-2 text-xs transition"
+                        [ngClass]="
+                          mode.id === selectedTravelMode
+                            ? 'bg-primary text-white border-primary'
+                            : 'bg-white text-[#003A50] border-[#E6EEF3] hover:bg-primary-light'
+                        "
+                        (click)="setTravelMode(mode.id)"
+                      >
+                        <mat-icon class="text-base">{{ mode.icon }}</mat-icon>
+                        <span class="font-semibold">{{ mode.label }}</span>
+                        @if (modeSummaries[mode.id]) {
+                          <span class="text-[11px] opacity-80">
+                            {{ modeSummaries[mode.id]?.durationText }}
+                          </span>
+                        }
+                      </button>
+                    }
+                  </div>
+                </div>
+
+                @if (routeOptions.length > 1) {
+                  <div>
+                    <p class="text-xs uppercase text-gray-400">Routes</p>
+                    <div class="mt-2 flex flex-col gap-2">
+                      @for (route of routeOptions; track route.index) {
+                        <button
+                          type="button"
+                          class="flex items-center justify-between gap-3 rounded-xl border px-3 py-2 text-left text-xs transition"
+                          [ngClass]="
+                            route.index === selectedRouteIndex
+                              ? 'border-primary bg-primary-light'
+                              : 'border-[#E6EEF3] bg-white hover:bg-primary-light/40'
+                          "
+                          (click)="setRouteIndex(route.index)"
+                        >
+                          <div class="flex flex-col">
+                            <span class="text-sm font-semibold text-[#003A50]">
+                              {{ route.label }}
+                            </span>
+                            @if (route.summary) {
+                              <span class="text-[11px] text-gray-500">
+                                {{ route.summary.distanceText }} · {{ route.summary.durationText }}
+                              </span>
+                            }
+                          </div>
+                          @if (route.summary?.trafficDeltaText) {
+                            <span class="text-[11px] text-gray-500">
+                              +{{ route.summary?.trafficDeltaText }}
+                            </span>
+                          }
+                        </button>
+                      }
+                    </div>
+                  </div>
+                }
+
+                <div>
+                  <p class="text-xs uppercase text-gray-400">Recent searches</p>
+                  @if (!recentSearches.length) {
+                    <p class="text-sm text-gray-400">No recent searches yet.</p>
+                  } @else {
+                    <div class="mt-2 flex flex-wrap gap-2">
+                      @for (item of recentSearches; track item.atoka) {
+                        <button
+                          type="button"
+                          class="flex items-center gap-2 rounded-full border border-[#E6EEF3] bg-white px-3 py-1 text-xs text-[#003A50] transition hover:bg-primary-light"
+                          (click)="setDestination(item)"
+                        >
+                          <span class="font-semibold">{{ item.atoka }}</span>
+                          <span class="text-gray-500">
+                            {{ formatAddress(item) }}
+                          </span>
+                        </button>
+                      }
+                    </div>
+                  }
+                </div>
+
+                @if (selectedOrigin || selectedDestination) {
+                  <div class="rounded-lg border border-[#E6EEF3] bg-primary-light p-3">
+                    @if (selectedOrigin) {
+                      <div class="mb-2">
+                        <p class="text-xs text-gray-400">Start</p>
+                        <p class="text-sm font-semibold text-[#003A50]">
+                          {{ selectedOrigin.atoka }}
+                        </p>
+                        <p class="text-xs text-gray-500">
+                          {{ formatAddress(selectedOrigin) }}
+                        </p>
+                      </div>
+                    }
+                    @if (selectedDestination) {
+                      <div>
+                        <p class="text-xs text-gray-400">Destination</p>
+                        <p class="text-sm font-semibold text-[#003A50]">
+                          {{ selectedDestination.atoka }}
+                        </p>
+                        <p class="text-xs text-gray-500">
+                          {{ formatAddress(selectedDestination) }}
+                        </p>
+                      </div>
+                    }
+                  </div>
+                }
+              </div>
+            </div>
+          </div>
+        }
+      </div> -->
+
+    </div>
+  </div>
+
+</div>

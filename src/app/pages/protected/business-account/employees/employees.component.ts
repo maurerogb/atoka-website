@@ -436,7 +436,6 @@ export class EmployeesComponent {
     const streetLine = [
       this.addressInfo.houseName,
       this.addressInfo.oldNumber,
-      this.addressInfo.atokaNumber,
       this.addressInfo.streetName,
     ]
       .filter(Boolean)

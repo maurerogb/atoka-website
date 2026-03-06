@@ -1,0 +1,40 @@
+:host {
+  display: block;
+  height: 100%;
+}
+
+:host ::ng-deep .current-location-dot {
+  animation: location-pulse 1.8s ease-out infinite;
+  transform-origin: center;
+}
+
+:host ::ng-deep .current-location-dot > div:first-child {
+  animation: location-ring 1.8s ease-out infinite;
+}
+
+@keyframes location-pulse {
+  0% {
+    transform: scale(0.95);
+  }
+  60% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(0.95);
+  }
+}
+
+@keyframes location-ring {
+  0% {
+    transform: translate(-50%, -50%) scale(0.9);
+    opacity: 0.6;
+  }
+  70% {
+    transform: translate(-50%, -50%) scale(1.15);
+    opacity: 0.2;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(0.9);
+    opacity: 0.6;
+  }
+}

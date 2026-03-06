@@ -3,14 +3,25 @@
   <mat-form-field class="w-full">
     <input
       type="text"
-      placeholder="Enter ATOKA or type address"
+      [placeholder]="placeholder || 'Enter ATOKA or type address'"
       matInput
       [formControl]="atokaSearch"
       [matAutocomplete]="auto"
     />
     <mat-autocomplete #auto="matAutocomplete" (optionSelected)="setAddressCode($event)">
       @for (option of filteredOptions; track option) {
-      <mat-option [value]="option.atoka">{{ option.atoka }}</mat-option>
+      <mat-option [value]="option.atoka">
+          <div class="flex flex-col gap-1 py-2">
+          <span class="font-semibold text-[#003A50]">
+            {{ option.atoka || 'Unknown code' }}
+          </span>
+          @if (showAddress) {
+          <span class="text-xs text-gray-500">
+            {{ formatAddress(option) || 'No address available' }}
+          </span>
+          }
+        </div>
+      </mat-option>
       }
     </mat-autocomplete>
   </mat-form-field>

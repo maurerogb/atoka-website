@@ -44,7 +44,27 @@ const Icons = {
   featureFile: `<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
     <rect width="20" height="20" rx="10" fill="#F2F4F7"/>
     <path d="M10.418 5.83301H7.5013C7.28029 5.83301 7.06833 5.92081 6.91205 6.07709C6.75577 6.23337 6.66797 6.44533 6.66797 6.66634V13.333C6.66797 13.554 6.75577 13.766 6.91205 13.9223C7.06833 14.0785 7.28029 14.1663 7.5013 14.1663H12.5013C12.7223 14.1663 12.9343 14.0785 13.0906 13.9223C13.2468 13.766 13.3346 13.554 13.3346 13.333V8.74967M10.418 5.83301L13.3346 8.74967M10.418 5.83301V8.74967H13.3346" stroke="#475467" stroke-width="0.833333" stroke-linecap="round" stroke-linejoin="round"/>
-    </svg>`
+    </svg>`,
+  share: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M18 22C19.6569 22 21 20.6569 21 19C21 17.3431 19.6569 16 18 16C16.3431 16 15 17.3431 15 19C15 20.6569 16.3431 22 18 22Z" stroke="#005677" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M6 15C7.65685 15 9 13.6569 9 12C9 10.3431 7.65685 9 6 9C4.34315 9 3 10.3431 3 12C3 13.6569 4.34315 15 6 15Z" stroke="#005677" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M8.58984 13.5098L15.4198 17.4898" stroke="#005677" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M18 8C19.6569 8 21 6.65685 21 5C21 3.34315 19.6569 2 18 2C16.3431 2 15 3.34315 15 5C15 6.65685 16.3431 8 18 8Z" stroke="#005677" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M15.4098 6.50977L8.58984 10.4898" stroke="#005677" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    `,
+  save: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M19 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V5C3 4.46957 3.21071 3.96086 3.58579 3.58579C3.96086 3.21071 4.46957 3 5 3H16L21 8V19C21 19.5304 20.7893 20.0391 20.4142 20.4142C20.0391 20.7893 19.5304 21 19 21Z" stroke="#005677" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M17 21V13H7V21" stroke="#005677" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M7 3V8H15" stroke="#005677" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    `,
+  direction: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M19 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V5C3 4.46957 3.21071 3.96086 3.58579 3.58579C3.96086 3.21071 4.46957 3 5 3H16L21 8V19C21 19.5304 20.7893 20.0391 20.4142 20.4142C20.0391 20.7893 19.5304 21 19 21Z" stroke="#005677" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M17 21V13H7V21" stroke="#005677" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M7 3V8H15" stroke="#005677" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    `
 }
 
 @Injectable({
@@ -66,5 +86,8 @@ export class IconRegistryService {
     this.iconRegistry.addSvgIconLiteral('graph-decline', this.sanitizer.bypassSecurityTrustHtml(Icons.graphDecline));
     this.iconRegistry.addSvgIconLiteral('graph-growth', this.sanitizer.bypassSecurityTrustHtml(Icons.graphGrowth));
     this.iconRegistry.addSvgIconLiteral('feature-file', this.sanitizer.bypassSecurityTrustHtml(Icons.featureFile));
+    this.iconRegistry.addSvgIconLiteral('share', this.sanitizer.bypassSecurityTrustHtml(Icons.share));
+    this.iconRegistry.addSvgIconLiteral('save', this.sanitizer.bypassSecurityTrustHtml(Icons.save));
+    this.iconRegistry.addSvgIconLiteral('direction', this.sanitizer.bypassSecurityTrustHtml(Icons.direction));
  }
 }

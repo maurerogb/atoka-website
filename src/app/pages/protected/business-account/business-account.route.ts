@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { AccountShellComponent } from '../account-shell/account-shell.component';
 import { BusinessDashboardComponent } from './business-dashboard/business-dashboard.component';
 import { IncidentComponent } from '../shared/incident/incident.component';
+import { LocationComponent } from '../shared/location/location.component';
 import { AddressVerificationComponent } from '../shared/address-verification/address-verification.component';
 import { EmployeesComponent } from './employees/employees.component';
 import { EmployeesListComponent } from './employees-list/employees-list.component';
@@ -21,6 +22,10 @@ export const BUSINESS_ACCOUNT_ROUTES: Routes = [
         path: '',
         pathMatch: 'full',
         component: BusinessDashboardComponent,
+      },
+      {
+        path: 'location',
+        component: LocationComponent,
       },
       {
         path: 'incident',

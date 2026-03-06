@@ -41,7 +41,7 @@
 
 .sidebar{
   position: fixed;
-  z-index: 3;
+  z-index: 999;
   height: 100vh;
   box-shadow: unset;
   top: 0;
@@ -84,4 +84,12 @@
     margin-left: 0;
     width: 100%;
   }
+}
+
+.router-container {
+  @apply px-10 py-5;
+}
+
+.router-container.no-padding { 
+  @apply p-0;
 }
