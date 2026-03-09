@@ -8,6 +8,7 @@ import { EmployeesComponent } from './employees/employees.component';
 import { EmployeesListComponent } from './employees-list/employees-list.component';
 import { BranchComponent } from './branch/branch.component';
 import { SettingsComponent } from '../shared/settings/settings.component';
+import { NotificationsComponent } from '../shared/notifications/notifications.component';
 
 export const BUSINESS_ACCOUNT_ROUTES: Routes = [
   {
@@ -50,6 +51,10 @@ export const BUSINESS_ACCOUNT_ROUTES: Routes = [
       {
         path: 'settings',
         component: SettingsComponent,
+      },
+      {
+        path: 'notifications',
+        component: NotificationsComponent,
       },
     ],
   },

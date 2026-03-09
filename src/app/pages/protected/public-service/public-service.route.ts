@@ -5,6 +5,7 @@ import { IncidentComponent } from '../shared/incident/incident.component';
 import { LocationComponent } from '../shared/location/location.component';
 import { AddressVerificationComponent } from '../shared/address-verification/address-verification.component';
 import { SettingsComponent } from '../shared/settings/settings.component';
+import { NotificationsComponent } from '../shared/notifications/notifications.component';
 
 export const PUBLIC_SERVICE_ROUTES: Routes = [
   {
@@ -35,6 +36,10 @@ export const PUBLIC_SERVICE_ROUTES: Routes = [
       {
         path: 'settings',
         component: SettingsComponent,
+      },
+      {
+        path: 'notifications',
+        component: NotificationsComponent,
       },
     ],
   },

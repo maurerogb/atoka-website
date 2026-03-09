@@ -140,9 +140,10 @@
         </div>
         <div class="flex flex-col items-end gap-4">
           <div class="flex gap-6 items-center">            
-            <div class="cursor-pointer">
-              <img src="assets/svg/bell.svg" alt="">
-            </div>
+            <a class="notification-bell cursor-pointer" [routerLink]="notificationRoute" aria-label="Open notifications">
+              <img src="assets/svg/bell.svg" alt="Notifications">
+              <span *ngIf="unreadCount > 0" class="notification-badge">{{ notificationBadgeLabel }}</span>
+            </a>
 
             <div class="bg-[#D4D6D9] rounded-full p-2 cursor-pointer">
               <img src="assets/svg/male-memojis.svg" alt="">
