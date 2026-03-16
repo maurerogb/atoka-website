@@ -1,7 +1,7 @@
 <div class="grid grid-cols-12 h-screen">
-  <div class="bg-onboarding col-span-6 h-full w-full text-white">
+  <div class="bg-onboarding col-span-12 md:col-span-6 lg:col-span-6 h-full w-full text-white">
     <div class="flex justify-center h-full">
-      <div class="pt-[130px]">
+      <div class="pt-[82px]">
         <img
           class="h-[100px] w-full mt-[25px]"
           src="assets/svg/logo.svg"
@@ -9,16 +9,17 @@
         />
         <div class="flex flex-col justify-center py-3 mt-3 gap-4">
           <p class="font-bold text-3xl lg:text-[48px] text-white text-center">Welcome</p>
-          <small class="text-center">Please enter details to continue</small>
+          <p class="text-center text-base text-white">Please enter details to continue</p>
         </div>
-        <div id="steps" class="atoka-form-steps pl-50 w-[400px] pt-8">
+        <div id="steps" class="atoka-form-steps pl-50 w-[396px] md:w-[auto] lg:w-[396px] pt-8">
           <form class="" [formGroup]="loginfrom">
             <mat-error *ngIf="message">{{ message }}</mat-error>
 
-            <div class="grid gap-x-4">
+            <div class="grid gap-4">
               <div class="control">
                 <mat-label class="text-sm">Username</mat-label>
                 <mat-form-field
+                  subscriptSizing="dynamic"
                   class="w-full rounded-xl"
                   appearance="fill"
                   floatLabel="always"
@@ -38,6 +39,7 @@
               <div class="control">
                 <mat-label class="text-sm">Password</mat-label>
                 <mat-form-field
+                  subscriptSizing="dynamic"
                   class="w-full rounded-xl"
                   appearance="fill"
                   floatLabel="always"
@@ -93,16 +95,20 @@
       </div>
     </div>
   </div>
-  <div class="col-span-6">
-    <div class="flex flex-col space-y-5 mx-20 md:mx-42 lg:mx-56 my-56 justify-center">
-      <img class="w-full" src="assets/svg/login.svg" />
-      <div class="w-[300px] h-[100px] gap-4 ml-12 text-center">
-        <p class="font-bold leading-8 text-[#005677] text-[24px]">
-          Easy Direction
-        </p>
-        <p class="text-[#005677] font-normal text-center text-[16px]">
-          Get direction and safety to any location in Nigeria
-        </p>
+  <div class="col-span-6 hidden md:block">
+    <div class="flex flex-col space-y-5 h-full justify-center items-center">
+      <div class="max-w-[500px]">
+        <img class="w-full" src="assets/svg/login.svg" />
+      </div>
+      <div class="px-2">
+        <div class="w-[301px] grid gap-4 text-center">
+          <p class="font-bold leading-8 text-[#005677] text-[24px]">
+            Easy Direction
+          </p>
+          <p class="text-[#01171F] font-normal text-center text-[16px]">
+            Get direction and safety to any location in Nigeria
+          </p>
+        </div>
       </div>
     </div>
   </div>
