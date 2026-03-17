@@ -235,7 +235,7 @@ body {
 
   .mat-mdc-unelevated-button.mat-primary.mdc-button--disabled,
   .mat-mdc-unelevated-button.mat-primary:disabled {
-    @apply bg-primary opacity-60; 
+    @apply bg-primary opacity-60 text-white; 
   }
 }
 

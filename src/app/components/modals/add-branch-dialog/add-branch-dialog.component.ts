@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+﻿import { CommonModule } from '@angular/common';
 import { Component, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -15,7 +15,7 @@ import { LoadingService } from '../../../services/loading.service';
 import { ResponseCode } from '../../../model/enums';
 import { LoaderComponent } from '../../loader/loader.component';
 import { BusinessService } from '../../../services/business.service';
-import { Address } from '../../../model/atoka-query';
+import { Address, AddressInfo } from '../../../model/atoka-query';
 import { AuthenticationService } from '../../../services/authentication.service';
 import { AtokaSearchService } from '../../../services/atoka-search.service';
 
@@ -48,6 +48,9 @@ export class AddBranchDialogComponent {
   isSavingAddress = false;
   hideForm = false;
   addressCode?: string;
+  addressSelection?: AddressInfo;
+  selectedAddressInfo?: Address;
+  isAddressFormReadOnly = false;
   manualAddressMode = false;
   addressResult: any;
   businessId?: number;
@@ -86,20 +89,53 @@ export class AddBranchDialogComponent {
 
   setAddressCode(value: string): void {
     this.addressCode = value;
+    if (this.addressSelection?.atokaCode !== value) {
+      this.addressSelection = undefined;
+      this.selectedAddressInfo = undefined;
+      this.isAddressFormReadOnly = false;
+      this.hideForm = false;
+    }
     this.manualAddressMode = false;
-    this.hideForm = false;
   }
 
-  setHideForm(value: string): void {
-    this.addressCode = value;
+  setAddressInfo(value: Address | undefined): void {
+    if (!value?.atoka || !value?.atokaAddressId) {
+      this.addressSelection = undefined;
+      this.selectedAddressInfo = undefined;
+      this.isAddressFormReadOnly = false;
+      this.hideForm = false;
+      return;
+    }
+
+    this.addressSelection = {
+      atokaCode: value.atoka,
+      atokaAddressId: value.atokaAddressId,
+    };
+    this.selectedAddressInfo = value;
+    this.addressCode = value.atoka;
+    this.manualAddressMode = false;
+    this.isAddressFormReadOnly = true;
+    this.hideForm = true;
+  }
+
+  setHideForm(value: AddressInfo): void {
+    this.addressCode = value.atokaCode;
+    this.addressSelection = value;
+    this.selectedAddressInfo = undefined;
+    this.manualAddressMode = false;
+    this.isAddressFormReadOnly = false;
     this.hideForm = false;
   }
 
   showForm(): void {
-    this.hideForm = !this.hideForm;
-    if (this.hideForm) {
-      this.manualAddressMode = true;
-    }
+    this.message = '';
+    this.manualAddressMode = true;
+    this.isAddressFormReadOnly = false;
+    this.hideForm = true;
+    this.addressCode = '';
+    this.addressSelection = undefined;
+    this.selectedAddressInfo = undefined;
+    this.addressFormComponent?.resetForm();
   }
 
   submit(): void {
@@ -115,12 +151,12 @@ export class AddBranchDialogComponent {
       return;
     }
 
-    if (this.addressCode && !this.hideForm) {
-      this.createBranch(this.addressCode);
+    if (this.addressCode && !this.manualAddressMode) {
+      this.createBranch(this.addressCode, this.addressSelection?.atokaAddressId);
       return;
     }
 
-    if (this.hideForm) {
+    if (this.manualAddressMode && this.hideForm) {
       if (!this.addressFormComponent) {
         this.message = 'Address form is unavailable. Please try again.';
         return;
@@ -130,9 +166,13 @@ export class AddBranchDialogComponent {
       this.addressFormComponent.showFormState
         .pipe(take(1))
         .subscribe({
-          next: (code: string) => {
+          next: (savedAddress: AddressInfo) => {
             this.isSavingAddress = false;
-            this.createBranch(code);
+            this.addressSelection = savedAddress;
+            this.addressCode = savedAddress.atokaCode;
+            this.manualAddressMode = false;
+            this.isAddressFormReadOnly = false;
+            this.createBranch(savedAddress.atokaCode, savedAddress.atokaAddressId);
           },
           error: () => {
             this.isSavingAddress = false;
@@ -144,15 +184,10 @@ export class AddBranchDialogComponent {
       return;
     }
 
-    if (this.addressCode) {
-      this.createBranch(this.addressCode);
-      return;
-    }
-
     this.message = 'Please select or enter an address before continuing.';
   }
 
-  private createBranch(atokaCode: string): void {
+  private createBranch(atokaCode: string, atokaAddressId?: number): void {
     if (this.isSubmitting) {
       return;
     }
@@ -168,12 +203,14 @@ export class AddBranchDialogComponent {
 
         const address = Array.isArray(res.data) ? res.data[0] : res.data;
         const residentDetailId = address?.residentDetailId;
+        const resolvedAtokaAddressId = atokaAddressId ?? address?.atokaAddressId;
         this.branchForm.get('residentDetailId')?.patchValue(residentDetailId);
 
         const payload = {
           ...this.branchForm.value,
           branchName: this.branchForm.value.branchName?.trim(),
           atokaCode,
+          atokaAddressId: resolvedAtokaAddressId,
           confirmOwnership: !!this.branchForm.value.confirmOwnership,
           businessInfoId: this.businessId,
           residentDetailId,
@@ -208,3 +245,4 @@ export class AddBranchDialogComponent {
     });
   }
 }
+

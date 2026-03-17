@@ -200,6 +200,7 @@
           [labelName]="labelName"
           [addressCode]="addressCode"
           (returnCode)="setAddressCode($event)"
+          (addressInfo)="setAddressInfo($event)"
         ></app-atoka-search>
         <div class="mt-5 mb-5 text-center">
           <a href="javascript:void(0)" class="primary" (click)="showForm()"
@@ -208,6 +209,8 @@
         </div>
         <app-address-form
           [hideForm]="hideForm"
+          [prefilledAddress]="selectedAddressInfo"
+          [readOnly]="isAddressFormReadOnly"
           (showFormState)="setHideForm($event)"
           (formMessage)="message = $event"
         >

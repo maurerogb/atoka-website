@@ -33,7 +33,7 @@ export class IncidentService extends HttpService<BaseResponse<any>> {
   }
 
   reportIncident(payload: any) {
-    const url = `IncidentReport`
-    return this.post<BaseResponse<any>>(url, payload);
+    const url = `IncidentReport/Web`
+    return this.filePost(url, payload);
   }
 }

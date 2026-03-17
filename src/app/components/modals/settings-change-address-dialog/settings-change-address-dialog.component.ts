@@ -6,6 +6,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { take } from 'rxjs';
 import { AddressFormComponent } from '../../address-form/address-form.component';
 import { AtokaSearchComponent } from '../../atoka-search/atoka-search.component';
+import { Address, AddressInfo } from '../../../model/atoka-query';
 
 @Component({
   selector: 'app-settings-change-address-dialog',
@@ -26,6 +27,10 @@ export class SettingsChangeAddressDialogComponent {
   @ViewChild(AddressFormComponent) addressFormComponent?: AddressFormComponent;
 
   addressCode?: string;
+  addressSelection?: AddressInfo;
+  selectedAddressInfo?: Address;
+  showAddressForm = false;
+  isAddressFormReadOnly = false;
   manualEntry = false;
   message = '';
   isSavingAddress = false;
@@ -39,11 +44,43 @@ export class SettingsChangeAddressDialogComponent {
 
   setAddressCode(value: string): void {
     this.addressCode = value;
+    if (this.addressSelection?.atokaCode !== value) {
+      this.addressSelection = undefined;
+      this.selectedAddressInfo = undefined;
+      this.showAddressForm = false;
+      this.isAddressFormReadOnly = false;
+    }
+    this.manualEntry = false;
+  }
+
+  setAddressInfo(value: Address | undefined): void {
+    if (!value?.atoka || !value?.atokaAddressId) {
+      this.addressSelection = undefined;
+      this.selectedAddressInfo = undefined;
+      this.showAddressForm = false;
+      this.isAddressFormReadOnly = false;
+      return;
+    }
+
+    this.addressSelection = {
+      atokaCode: value.atoka,
+      atokaAddressId: value.atokaAddressId,
+    };
+    this.selectedAddressInfo = value;
+    this.addressCode = value.atoka;
+    this.showAddressForm = true;
+    this.isAddressFormReadOnly = true;
     this.manualEntry = false;
   }
 
   toggleManualEntry(): void {
-    this.manualEntry = !this.manualEntry;
+    this.manualEntry = true;
+    this.showAddressForm = true;
+    this.isAddressFormReadOnly = false;
+    this.addressCode = '';
+    this.addressSelection = undefined;
+    this.selectedAddressInfo = undefined;
+    this.addressFormComponent?.resetForm();
   }
 
   handleFormMessage(message: string): void {
@@ -68,9 +105,14 @@ export class SettingsChangeAddressDialogComponent {
       this.addressFormComponent.showFormState
         .pipe(take(1))
         .subscribe({
-          next: (code: string) => {
+          next: (savedAddress: AddressInfo) => {
             this.isSavingAddress = false;
-            this.addressCode = code;
+            this.addressSelection = savedAddress;
+            this.addressCode = savedAddress.atokaCode;
+            this.selectedAddressInfo = undefined;
+            this.showAddressForm = false;
+            this.isAddressFormReadOnly = false;
+            this.manualEntry = false;
             this.isSuccess = true;
           },
           error: () => {
@@ -83,7 +125,7 @@ export class SettingsChangeAddressDialogComponent {
       return;
     }
 
-    if (!this.addressCode) {
+    if (!this.addressCode || !this.addressSelection?.atokaAddressId) {
       this.message = 'Please select an ATOKA address or enter one manually.';
       return;
     }
@@ -92,6 +134,13 @@ export class SettingsChangeAddressDialogComponent {
   }
 
   finish(): void {
-    this.dialogRef.close({ status: 'success', data: { addressCode: this.addressCode } });
+    this.dialogRef.close({
+      status: 'success',
+      data: {
+        addressCode: this.addressCode,
+        atokaAddressId: this.addressSelection?.atokaAddressId,
+      },
+    });
   }
 }
+

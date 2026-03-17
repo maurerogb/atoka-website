@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { ListItem } from '../model/atoka-query';
+import { ListItem, MoveInDate, ResidenceStartedWebResponse } from '../model/atoka-query';
 import { BaseResponse } from '../model/base-response';
 import { Observable } from 'rxjs';
 import { PersonalData, PersonRequest } from '../model/dto/personal-data-dto';
@@ -48,9 +48,9 @@ export class RegistrationService extends HttpService<PersonRequest> {
     return this.filePost(url, file);
   }
   
-  movedInOn(data: any): Observable<BaseResponse<any>> {
-    let url = 'ResidenceStartFrom/ResidenceStarted'
-    return this.post<BaseResponse<PersonRequest>>(url, data);
+  movedInOn(data: MoveInDate): Observable<BaseResponse<ResidenceStartedWebResponse>> {
+    const url = 'ResidenceStartFrom/ResidenceStartedWeb';
+    return this.post<BaseResponse<ResidenceStartedWebResponse>>(url, data);
   }
 
   setProfile(profile: PersonalData): void {

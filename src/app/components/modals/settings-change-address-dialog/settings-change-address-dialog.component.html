@@ -16,6 +16,7 @@
         [labelName]="'ATOKA address'"
         [addressCode]="addressCode"
         (returnCode)="setAddressCode($event)"
+        (addressInfo)="setAddressInfo($event)"
       ></app-atoka-search>
 
       <div class="text-center">
@@ -24,7 +25,12 @@
         </button>
       </div>
 
-      <app-address-form [hideForm]="manualEntry" (formMessage)="handleFormMessage($event)"></app-address-form>
+      <app-address-form
+        [hideForm]="showAddressForm"
+        [prefilledAddress]="selectedAddressInfo"
+        [readOnly]="isAddressFormReadOnly"
+        (formMessage)="handleFormMessage($event)"
+      ></app-address-form>
     </div>
 
     <div class="flex justify-center mt-6">
