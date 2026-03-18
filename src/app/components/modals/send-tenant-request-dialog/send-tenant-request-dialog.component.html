@@ -1,0 +1,96 @@
+<div mat-dialog-content class="account items-center no-scrollbar">
+  <div class="md:w-[534px] h-full justify-center text-center relative">
+    <div class="flex flex-col gap-2 text-start">
+      <p class="font-bold text-xl text-[#003A50]">Send Tenant Request</p>
+    </div>
+    <div class="cursor-pointer flex justify-end absolute right-0 top-0" (click)="close()">
+      <img src="assets/svg/cancel.svg" alt="" />
+    </div>
+
+    <form class="my-6 grid gap-4" [formGroup]="requestForm">
+      <div class="control">
+        <mat-label class="flex text-sm">Email address (optional)</mat-label>
+        <mat-form-field subscriptSizing="dynamic" class="w-full rounded-xl" appearance="fill" floatLabel="always">
+          <input matInput formControlName="emailAddress" placeholder="Enter email address" type="email" />
+          <!-- <mat-error
+            *ngIf="
+              requestForm.get('emailAddress')?.hasError('required') &&
+              (requestForm.get('emailAddress')?.dirty || requestForm.get('emailAddress')?.touched)
+            "
+          >
+            Email address is required
+          </mat-error> -->
+          <mat-error
+            *ngIf="
+              requestForm.get('emailAddress')?.hasError('email') &&
+              (requestForm.get('emailAddress')?.dirty || requestForm.get('emailAddress')?.touched)
+            "
+          >
+            Please enter a valid email address
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="control">
+        <mat-label class="flex text-sm">User name*</mat-label>
+        <mat-form-field subscriptSizing="dynamic" class="w-full rounded-xl" appearance="fill" floatLabel="always">
+          <input matInput formControlName="userName" placeholder="Enter user name" type="text" />
+          <mat-error
+            *ngIf="
+              requestForm.get('userName')?.hasError('required') &&
+              (requestForm.get('userName')?.dirty || requestForm.get('userName')?.touched)
+            "
+          >
+            User name is required
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="control">
+        <mat-label class="flex text-sm">Phone number*</mat-label>
+        <mat-form-field subscriptSizing="dynamic" class="w-full rounded-xl" appearance="fill" floatLabel="always">
+          <input matInput formControlName="phoneNumber" placeholder="Enter phone number" type="text" />
+          <mat-error
+            *ngIf="
+              requestForm.get('phoneNumber')?.hasError('required') &&
+              (requestForm.get('phoneNumber')?.dirty || requestForm.get('phoneNumber')?.touched)
+            "
+          >
+            Phone number is required
+          </mat-error>
+          <mat-error
+            *ngIf="
+              requestForm.get('phoneNumber')?.hasError('pattern') &&
+              (requestForm.get('phoneNumber')?.dirty || requestForm.get('phoneNumber')?.touched)
+            "
+          >
+            Please enter a valid phone number
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="control">
+        <mat-label class="flex text-sm">Request message*</mat-label>
+        <mat-form-field subscriptSizing="dynamic" class="w-full rounded-xl" appearance="fill" floatLabel="always">
+          <textarea matInput rows="1" formControlName="requestMessage" placeholder="Enter your request message"></textarea>
+          <mat-error
+            *ngIf="
+              requestForm.get('requestMessage')?.hasError('required') &&
+              (requestForm.get('requestMessage')?.dirty || requestForm.get('requestMessage')?.touched)
+            "
+          >
+            Request message is required
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </form>
+
+    <div class="flex justify-center mt-8">
+      <button
+          type="button" mat-flat-button color="primary" class="w-full" (click)="submit()" [disabled]="requestForm.invalid"
+        >
+          Send request
+        </button>
+    </div>
+  </div>
+</div>

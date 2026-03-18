@@ -29,6 +29,7 @@ export const ACCOUNT_NAV_CONFIG: Record<string, INavContent> = {
         routerLink: '/app/tenant/tenant',
         activeIcon: 'assets/svg/tenant.svg',
         inactiveIcon: 'assets/svg/tenant.svg',
+        description: 'Manage and track all tenant property.'
       },
       {
         name: 'Address Verification',
@@ -127,7 +128,7 @@ export const ACCOUNT_NAV_CONFIG: Record<string, INavContent> = {
         description: 'You can now report incident any time and day'
       },
       {
-        name: 'Confirm Request',
+        name: 'Employees List',
         routerLink: '/app/business-account/employees',
         activeIcon: 'assets/svg/employee.svg',
         inactiveIcon: 'assets/svg/employee.svg',

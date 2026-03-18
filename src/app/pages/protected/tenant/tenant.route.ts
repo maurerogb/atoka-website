@@ -6,6 +6,8 @@ import { LocationComponent } from '../shared/location/location.component';
 import { AddressVerificationComponent } from '../shared/address-verification/address-verification.component';
 import { SettingsComponent } from '../shared/settings/settings.component';
 import { NotificationsComponent } from '../shared/notifications/notifications.component';
+import { TenantComponent } from './tenant/tenant.component';
+import { TenantListComponent } from './tenant-list/tenant-list.component';
 
 export const TENANT_ROUTES: Routes = [
   {
@@ -28,6 +30,14 @@ export const TENANT_ROUTES: Routes = [
       {
         path: 'incident',
         component: IncidentComponent,
+      },
+      {
+        path: 'tenant',
+        component: TenantComponent,
+      },
+      {
+        path: 'tenant/list',
+        component: TenantListComponent,
       },
       {
         path: 'address-verification',
