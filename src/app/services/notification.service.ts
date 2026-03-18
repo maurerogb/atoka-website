@@ -21,6 +21,11 @@ export interface ServiceNotification {
 })
 export class NotificationService extends HttpService<BaseResponse<ServiceNotification[]>> {
   url: string = '';
+  private readonly skipLoaderOptions = {
+    headers: {
+      'X-Skip-Loader': 'true',
+    },
+  };
   private readonly pollIntervalMs = 30000;
   private readonly unreadCountSubject = new BehaviorSubject<number>(0);
   private readonly refreshTrigger$ = new Subject<void>();
@@ -81,7 +86,10 @@ export class NotificationService extends HttpService<BaseResponse<ServiceNotific
 
   getNotifications(): Observable<BaseResponse<ServiceNotification[]>> {
     this.url = 'notifications';
-    return this.get<BaseResponse<ServiceNotification[]>>(this.url);
+    return this.get<BaseResponse<ServiceNotification[]>>(
+      this.url,
+      this.skipLoaderOptions
+    );
   }
 
   flagAsRead(

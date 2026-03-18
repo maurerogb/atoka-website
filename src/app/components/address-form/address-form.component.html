@@ -3,7 +3,7 @@
   <form class="grid gap-4">
     <div class="grid grid-cols-2 gap-x-4">
       <div class="control">
-        <mat-label class="text-sm">Country</mat-label>
+        <mat-label class="flex text-sm">Country</mat-label>
         <mat-form-field subscriptSizing="dynamic" class="w-full rounded-xl">
           <input type="text" placeholder="Select Country" matInput formControlName="countryName" [matAutocomplete]="auto" />
           <mat-autocomplete #auto="matAutocomplete" (optionSelected)="getState($event)">
@@ -19,7 +19,7 @@
       </div>
 
       <div class="control">
-        <mat-label class="text-sm">State</mat-label>
+        <mat-label class="flex text-sm">State</mat-label>
         <mat-form-field subscriptSizing="dynamic" class="w-full rounded-xl">
           <input type="text" placeholder="Select State" matInput formControlName="stateName" [matAutocomplete]="autow" />
           <mat-autocomplete #autow="matAutocomplete" (optionSelected)="getLga($event)">
@@ -36,7 +36,7 @@
     </div>
     <div class="grid grid-cols gap-x-4">
       <div class="control">
-        <mat-label class="text-sm">Local Government Area</mat-label>
+        <mat-label class="flex text-sm">Local Government Area</mat-label>
         <mat-form-field subscriptSizing="dynamic" class="w-full rounded-xl">
           <input #lgaInput type="text" placeholder="Select LGA" matInput formControlName="lgaName" [matAutocomplete]="auto1" />
           <mat-autocomplete #auto1="matAutocomplete" (optionSelected)="getCity($event)">
@@ -53,7 +53,7 @@
     </div>
     <div class="grid grid-cols-2 gap-x-4">
       <div class="control">
-        <mat-label class="text-sm">City</mat-label>
+        <mat-label class="flex text-sm">City</mat-label>
         <mat-form-field subscriptSizing="dynamic" class="w-full rounded-xl">
           <input type="text" placeholder="Select City" matInput formControlName="cityName" [matAutocomplete]="auto2" />
           <mat-autocomplete #auto2="matAutocomplete" (optionSelected)="setCityId($event)">
@@ -69,7 +69,7 @@
       </div>
 
       <div class="control">
-        <mat-label class="text-sm">District</mat-label>
+        <mat-label class="flex text-sm">District</mat-label>
         <mat-form-field subscriptSizing="dynamic" class="w-full rounded-xl">
           <input type="text" placeholder="District" matInput formControlName="districtName" [matAutocomplete]="auto3" />
           <mat-autocomplete #auto3="matAutocomplete">
@@ -83,7 +83,7 @@
 
     <div class="grid grid-cols-2 gap-x-4">
       <div class="control">
-        <mat-label class="text-sm">Street Name</mat-label>
+        <mat-label class="flex text-sm">Street Name</mat-label>
         <mat-form-field subscriptSizing="dynamic" class="w-full rounded-xl">
           <input type="text" placeholder="Street" matInput formControlName="streetName" [matAutocomplete]="auto4" />
           <mat-autocomplete #auto4="matAutocomplete" (optionSelected)="setStreetId($event)">
@@ -101,7 +101,7 @@
       </div>
 
       <div class="control">
-        <mat-label class="text-sm">House Number</mat-label>
+        <mat-label class="flex text-sm">House Number</mat-label>
         <mat-form-field subscriptSizing="dynamic" class="w-full rounded-xl" appearance="fill" floatLabel="always">
           <input matInput formControlName="houseNumber" placeholder="House Number" type="text" name="firstname" id="firstname" />
           <mat-error>Please enter your house number</mat-error>
@@ -109,7 +109,7 @@
       </div>
     </div>
     <div class="control">
-      <mat-label class="text-sm">House Name</mat-label>
+      <mat-label class="flex text-sm">House Name</mat-label>
       <mat-form-field subscriptSizing="dynamic" class="w-full rounded-xl" appearance="fill" floatLabel="always">
         <input matInput formControlName="houseName" placeholder="House Name" type="text" name="houseName" id="houseName" />
         <mat-error>Please enter your house name</mat-error>

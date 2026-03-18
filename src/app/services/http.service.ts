@@ -10,19 +10,19 @@ export class HttpService<T> {
   constructor(public httpClient: HttpClient) { }
 
   protected get<T>(url: any, options?: any): Observable<T> {
-    return this.httpClient.get<T>(url).pipe(
+    return this.httpClient.get<T>(url, options).pipe(
       map((body: any) => body),
     );
   }
 
   protected post<T>(url: any, payload: any, options?: any): Observable<T> {
-    return this.httpClient.post<T>(url, payload).pipe(
+    return this.httpClient.post<T>(url, payload, options).pipe(
       map((body: any) => body),
     );
   }
 
   protected filePost(url: any, payload: any, options?: any): Observable<T> {
-    return this.httpClient.post<T>(url, payload).pipe(
+    return this.httpClient.post<T>(url, payload, options).pipe(
       map((body: any) => body),
     );
   }

@@ -1,5 +1,5 @@
 ﻿import { CommonModule } from '@angular/common';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -16,7 +16,8 @@ import { LoaderComponent } from '../../../components/loader/loader.component';
 import { LoadingService } from '../../../services/loading.service';
 import { IncidentService } from '../../../services/incident.service';
 import { ResponseCode } from '../../../model/enums';
-import { ButtonComponent } from "../../../shared/button/button.component";
+import { ToastService } from '../../../services/toast.service';
+import { IncidentPriority } from '../../../model/incident';
 import { Address, AddressInfo } from '../../../model/atoka-query';
 
 @Component({
@@ -35,46 +36,46 @@ import { Address, AddressInfo } from '../../../model/atoka-query';
     AtokaSearchComponent,
     AddressFormComponent,
     UploadFileComponent,
-    LoaderComponent,
-    ButtonComponent
+    LoaderComponent
 ],
   templateUrl: './incident-report-dialog.component.html',
   styleUrl: './incident-report-dialog.component.scss',
+  encapsulation: ViewEncapsulation.None
 })
 export class IncidentReportDialogComponent implements OnInit {
   @ViewChild(AddressFormComponent) addressFormComponent?: AddressFormComponent;
 
   incidentTypes: any = [];
+  incidentPriorities: IncidentPriority[] = [];
   hideForm = false;
   addressCode?: string;
   atokaAddressId?: number;
   selectedAddressInfo?: Address;
   isAddressFormReadOnly = false;
-  photoFile?: File;
+  photoFiles: File[] = [];
   message = '';
   manualAddressMode = false;
   isSubmitting = false;
   reportForm!: FormGroup;
 
   resolutionOptions: string[] = [ 'Federal Government' ];
-  priorityOptions: string[] = ['Low', 'Medium', 'High', 'Urgent'];
-
-
   constructor(
     private fb: FormBuilder,
     private dialogRef: MatDialogRef<IncidentReportDialogComponent>,
     private incidentService: IncidentService,
+    private toastService: ToastService,
     public loadingService: LoadingService,
   ) {}
 
   ngOnInit(): void {
     this.getIncidentTypes();
+    this.getIncidentPriorities();
 
     this.reportForm = this.fb.group({
       incidentTypeId: [null, Validators.required],
       incidentDetails: ['', [Validators.required]],
       resolution: ['', Validators.required],
-      priority: ['Urgent'],
+      priority: [null, Validators.required],
       locationCode: [''],
     });
   }
@@ -132,7 +133,7 @@ export class IncidentReportDialogComponent implements OnInit {
   }
 
   setPhoto(file: File): void {
-    this.photoFile = file;
+    this.photoFiles = file ? [file] : [];
   }
 
   close(): void {
@@ -145,6 +146,12 @@ export class IncidentReportDialogComponent implements OnInit {
         this.incidentTypes = res.data
       }
     })
+  }
+
+  getIncidentPriorities() {
+    this.incidentService.getIncidentPriorities().subscribe((data: IncidentPriority[]) => {
+      this.incidentPriorities = data;
+    });
   }
 
   get canSave(): boolean {
@@ -183,8 +190,10 @@ export class IncidentReportDialogComponent implements OnInit {
       payload.append('atokaAddressId', String(atokaAddressId));
     }
 
-    if (this.photoFile) {
-      payload.append('IncidentPhotos', this.photoFile, this.photoFile.name);
+    if (this.photoFiles.length) {
+      for (const file of this.photoFiles) {
+        payload.append('IncidentPhotos', file, file.name);
+      }
     }
 
     this.message = '';
@@ -196,6 +205,7 @@ export class IncidentReportDialogComponent implements OnInit {
         if (res.responseCode === ResponseCode.Success) {
           this.dialogRef.close({ status: 'success' });
         } else {
+          this.toastService.show(undefined, res.description || 'Unable to submit incident report.', 'error');
           this.message = res.description || 'Unable to submit incident report.';
         }
       },
@@ -208,6 +218,7 @@ export class IncidentReportDialogComponent implements OnInit {
         } else {
           this.message = 'An error occurred. Please try again later.';
         }
+        this.toastService.show(undefined, this.message, 'error');
       },
     });
   }

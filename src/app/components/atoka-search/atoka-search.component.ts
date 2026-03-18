@@ -46,17 +46,21 @@ export class AtokaSearchComponent implements OnInit {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    this.atokaSearch.patchValue(this.addressCode ?? '')
+    this.atokaSearch.patchValue(this.addressCode ?? '', { emitEvent: false })
   }
 
   search(value: any) {
-    if (value !== '') {
-      this.atokaService.searchAtoka(value).subscribe({
-        next: (data: any) => {
-          this.filteredOptions = data.data;
-        }
-      });
+    const term = String(value ?? '').trim();
+    if (!term) {
+      this.filteredOptions = [];
+      return;
     }
+
+    this.atokaService.searchAtoka(term).subscribe({
+      next: (data: any) => {
+        this.filteredOptions = data.data;
+      }
+    });
   }
 
   setAddressCode(e: MatAutocompleteSelectedEvent) {

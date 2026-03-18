@@ -101,9 +101,14 @@ export class BusinessAccountComponent implements OnInit {
     const proceedWithBusinessSave = () => {
       const data = this.businessForm.value;
       const businessAddress = data.businessAddress;
+      const atokaAddressId = this.addressSelection?.atokaAddressId;
 
       if (!businessAddress) {
         this.message = 'Please select or enter a business address before continuing.';
+        return;
+      }
+      if (!atokaAddressId) {
+        this.message = 'Please select a valid ATOKA address before continuing.';
         return;
       }
       
@@ -115,6 +120,7 @@ export class BusinessAccountComponent implements OnInit {
       formdata.append('cacDocFile', '');
       formdata.append('roleInBusinessId', data.roleInBusiness);
       formdata.append('atokaCode', businessAddress);
+      formdata.append('atokaAddressId', String(atokaAddressId));
       formdata.append('businessLogFile', '');
       formdata.append('businessName', data.businessName);
       formdata.append('businessTypeId', data.businessType);

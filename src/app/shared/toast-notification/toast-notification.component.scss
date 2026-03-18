@@ -1,1 +1,41 @@
+.toast-card {
+  &.success {
+    border-color: #6ce9a6;
+    background: #f6fef9;
+  }
 
+  &.error {
+    border-color: #fda29b;
+    background: #fffbfa;
+  }
+}
+
+.toast-title {
+  &.success {
+    color: #02934d;
+  }
+
+  &.error {
+    color: #b42318;
+  }
+}
+
+.toast-message {
+  &.success {
+    color: #027a48;
+  }
+
+  &.error {
+    color: #d92d20;
+  }
+}
+
+.toast-icon {
+  &.success {
+    color: #02934d;
+  }
+
+  &.error {
+    color: #b42318;
+  }
+}

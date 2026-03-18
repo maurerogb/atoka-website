@@ -1,9 +1,12 @@
 <div class="control">
+  @if (labelName) {
   <mat-label class="flex items-start text-sm" >{{ labelName }}</mat-label>
-  <mat-form-field class="w-full">
+  }
+  <mat-form-field class="w-full" subscriptSizing="dynamic">
     <input
       type="text"
       [placeholder]="placeholder || 'Enter ATOKA or type address'"
+      autocomplete="off"
       matInput
       [formControl]="atokaSearch"
       [matAutocomplete]="auto"
