@@ -1,0 +1,31 @@
+.status {
+  border-radius: 24px;
+  display: inline-flex;
+  padding: 6px 10px;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  color: white;
+  width: fit-content;
+  font-size: 12px;
+
+  &.successful {
+    background: #1f932d;
+  }
+
+  &.draft {
+    background: #ca8828;
+  }
+
+  &.failed {
+    background: #d83a3a;
+  }
+
+  &.pending {
+    background: #0090c7;
+  }
+}
+
+.mdc-dialog__surface {
+  padding: 2rem !important;
+}

@@ -2,10 +2,13 @@ import { Routes } from '@angular/router';
 import { AccountShellComponent } from '../account-shell/account-shell.component';
 import { BusinessDashboardComponent } from './business-dashboard/business-dashboard.component';
 import { IncidentComponent } from '../shared/incident/incident.component';
+import { LocationComponent } from '../shared/location/location.component';
 import { AddressVerificationComponent } from '../shared/address-verification/address-verification.component';
 import { EmployeesComponent } from './employees/employees.component';
 import { EmployeesListComponent } from './employees-list/employees-list.component';
 import { BranchComponent } from './branch/branch.component';
+import { SettingsComponent } from '../shared/settings/settings.component';
+import { NotificationsComponent } from '../shared/notifications/notifications.component';
 
 export const BUSINESS_ACCOUNT_ROUTES: Routes = [
   {
@@ -20,6 +23,10 @@ export const BUSINESS_ACCOUNT_ROUTES: Routes = [
         path: '',
         pathMatch: 'full',
         component: BusinessDashboardComponent,
+      },
+      {
+        path: 'location',
+        component: LocationComponent,
       },
       {
         path: 'incident',
@@ -40,6 +47,14 @@ export const BUSINESS_ACCOUNT_ROUTES: Routes = [
       {
         path: 'branch',
         component: BranchComponent,
+      },
+      {
+        path: 'settings',
+        component: SettingsComponent,
+      },
+      {
+        path: 'notifications',
+        component: NotificationsComponent,
       },
     ],
   },

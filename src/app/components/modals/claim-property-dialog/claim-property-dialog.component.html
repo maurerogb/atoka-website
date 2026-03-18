@@ -1,0 +1,129 @@
+<div mat-dialog-content class="account items-center no-scrollbar">
+  <div class="md:w-[579px] h-full justify-center text-center relative">
+    <div class="flex flex-col text-[#005677] gap-2 mb-6 w-full items-center">
+      <p class="font-bold text-center text-xl text-[#003A50]">Claim property</p>
+      <p class="text-sm text-center max-w-[427px] text-[#002330]">
+        Claim the ownership of your property now and prevent others from claiming or using it as theirs.
+      </p>
+    </div>
+    <div class="cursor-pointer flex justify-end absolute right-0 top-0" (click)="close()">
+      <img src="assets/svg/cancel.svg" alt="" />
+    </div>
+
+    <div class="text-left" [formGroup]="claimForm">
+      <form class="mb-6">
+        <p class="text-sm text-center font-light text-red-500 mb-2" *ngIf="message">
+          {{ message }}
+        </p>
+
+        <div class="grid gap-4">
+          <div class="control">
+            <mat-label class="flex text-sm">Property owner/Manager*</mat-label>
+            <mat-form-field subscriptSizing="dynamic" class="w-full rounded-xl" appearance="fill" floatLabel="always">
+              <mat-select formControlName="ownerManager" placeholder="Select Property Ownership">
+                @for (option of ownerManagerOptions; track option.value) {
+                <mat-option [value]="option.value">{{ option.label }}</mat-option>
+                }
+              </mat-select>
+              <mat-error
+                *ngIf="
+                  claimForm.get('ownerManager')?.hasError('required') &&
+                  (claimForm.get('ownerManager')?.dirty || claimForm.get('ownerManager')?.touched)
+                "
+              >
+                Property owner/manager is required
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="control">
+            <mat-label class="flex text-sm">Document type*</mat-label>
+            <mat-form-field subscriptSizing="dynamic" class="w-full rounded-xl" appearance="fill" floatLabel="always">
+              <mat-select formControlName="documentTypeId" placeholder="Select Document Type">
+                @if (documentTypeOptions.length) { @for (option of documentTypeOptions; track option.documentTypeId) {
+                <mat-option [value]="option.documentTypeId">{{ option.documentTypeName }}</mat-option>
+                } } @else {
+                <mat-option disabled>No document types available</mat-option>
+                }
+              </mat-select>
+              <mat-error
+                *ngIf="
+                  claimForm.get('documentTypeId')?.hasError('required') &&
+                  (claimForm.get('documentTypeId')?.dirty || claimForm.get('documentTypeId')?.touched)
+                "
+              >
+                Document type is required
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="control">
+            <mat-label class="flex text-sm">Document reference*</mat-label>
+            <mat-form-field subscriptSizing="dynamic" class="w-full rounded-xl" appearance="fill" floatLabel="always">
+              <input
+                matInput
+                formControlName="documentRefNo"
+                placeholder="Enter Document Reference"
+                type="text"
+              />
+              <mat-error
+                *ngIf="
+                  claimForm.get('documentRefNo')?.hasError('required') &&
+                  (claimForm.get('documentRefNo')?.dirty || claimForm.get('documentRefNo')?.touched)
+                "
+              >
+                Document reference is required
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="control">
+            <mat-label class="flex text-sm">Upload document*</mat-label>
+            <app-upload-file [fileType]="'file'" (uploadedFile)="setDocument($event)"></app-upload-file>
+            <p class="text-sm text-red-500 mt-1" *ngIf="showUploadError">Upload document is required.</p>
+          </div>
+
+          <div>
+            <app-atoka-search
+              [labelName]="'Property address'"
+              [showAddress]="true"
+              [addressCode]="addressCode"
+              (returnCode)="setAddressCode($event)"
+              (addressInfo)="setAddressInfo($event)"
+            ></app-atoka-search>
+            <div class="mt-3 mb-3 text-center">
+              <a class="text-sm" href="javascript:void(0)" class="primary" (click)="showForm()">
+                Don't have ATOKA? <b> Enter address manually</b>
+              </a>
+            </div>
+            <app-address-form
+              [hideForm]="hideForm"
+              [prefilledAddress]="selectedAddress"
+              [readOnly]="isAddressFormReadOnly"
+              (showFormState)="setHideForm($event)"
+              (formMessage)="message = $event"
+            ></app-address-form>
+          </div>
+        </div>
+
+        <div class="flex gap-1 items-start mt-4">
+          <mat-checkbox color="primary" formControlName="verifyOwnership"></mat-checkbox>
+          <div class="text-left">
+            <p class="font-medium">Verify ownership</p>
+            <p class="text-sm text-gray-500">
+              we will notify you if any other attempt is made to claim your property.
+            </p>
+          </div>
+        </div>
+
+        <div class="flex justify-center mt-8">
+          <button type="button" mat-flat-button color="primary" class="w-full" (click)="submit()" [disabled]="!canSubmit">
+            Claim property
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <app-loader *ngIf="loadingService.isLoading$ | async"></app-loader>
+</div>

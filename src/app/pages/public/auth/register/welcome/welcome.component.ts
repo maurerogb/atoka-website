@@ -41,7 +41,7 @@ export class WelcomeComponent implements OnInit {
     </div>
     <div class="flex flex-col justify-center items-center gap-8 pt-5 mt-3">
         <img src="assets/images/thumbs-up.svg"/>
-        <p class="text-sm font-light text-gray-500">Your account has been successfully created.</p>
+        <p class="text-base font-light text-[#354052] w-[280px] text-center">Your account has been successfully created.</p>
         <button type="button" mat-flat-button mat-dialog-close color="primary" (click)="login()">
             Get Started
         </button>

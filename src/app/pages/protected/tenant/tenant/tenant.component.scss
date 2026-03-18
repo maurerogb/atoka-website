@@ -1,0 +1,50 @@
+a {
+  color: inherit;
+}
+
+:host ::ng-deep {
+  .search {
+    .mdc-text-field {
+      background: #f7fcff;
+      max-width: 450px;
+    }
+  }
+  
+  // app-atoka-search {
+  //   .control > mat-label {
+  //     display: none;
+  //   }
+
+  //   .mat-mdc-form-field-subscript-wrapper {
+  //     display: none;
+  //   }
+
+  //   .mdc-text-field {
+  //     border-radius: 8px;
+  //     background: #f7fcff;
+  //     max-width: 450px;
+  //   }
+
+  //   .mdc-line-ripple,
+  //   .mdc-text-field__ripple {
+  //     display: none;
+  //   }
+  // }
+
+  // .search {
+  //   .mdc-text-field {
+  //     border-radius: 8px;
+  //     background: #f7fcff;
+  //     max-width: 450px;
+  //   }
+
+  //   .mdc-line-ripple,
+  //   .mdc-text-field__ripple {
+  //     display: none;
+  //   }
+  // }
+
+  // .no-subscript .mat-mdc-form-field-subscript-wrapper {
+  //   display: none;
+  // }
+}

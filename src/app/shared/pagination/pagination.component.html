@@ -1,8 +1,50 @@
-<mat-paginator
-  [length]="length"
-  [pageIndex]="pageIndex"
-  [pageSize]="pageSize"
-  [pageSizeOptions]="pageSizeOptions"
-  [showFirstLastButtons]="showFirstLastButtons"
-  (page)="page.emit($event)"
-></mat-paginator>
+@if (length > 0) {
+<div class="app-pagination">
+  <div class="page-size-wrap">
+    <span class="page-size-label">Rows per page</span>
+    <mat-form-field subscriptSizing="dynamic" appearance="fill" class="page-size-field no-subscript">
+      <mat-select [value]="pageSize" (selectionChange)="onPageSizeChange($event.value)">
+        <mat-option *ngFor="let size of pageSizeOptions" [value]="size">{{ size }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <div class="page-controls" *ngIf="totalPages > 1">
+    <button
+      *ngIf="showFirstLastButtons"
+      type="button"
+      class="page-chip nav-chip"
+      aria-label="Previous page"
+      [disabled]="!canGoPrevious"
+      (click)="goToPreviousPage()"
+    >
+      <mat-icon>chevron_left</mat-icon>
+    </button>
+
+    <button
+      type="button"
+      class="page-chip"
+      *ngFor="let item of paginationItems"
+      [disabled]="item === '...'"
+      [ngClass]="{
+        active: item === currentPage,
+        ellipsis: item === '...'
+      }"
+      (click)="onPaginationItemClick(item)"
+    >
+      {{ item }}
+    </button>
+
+    <button
+      *ngIf="showFirstLastButtons"
+      type="button"
+      class="page-chip nav-chip"
+      aria-label="Next page"
+      [disabled]="!canGoNext"
+      (click)="goToNextPage()"
+    >
+      <mat-icon>chevron_right</mat-icon>
+    </button>
+  </div>
+</div>
+}

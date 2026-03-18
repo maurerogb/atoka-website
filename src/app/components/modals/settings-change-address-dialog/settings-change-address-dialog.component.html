@@ -1,0 +1,55 @@
+﻿<div class="">
+  @if (!isSuccess) {
+    <div class="flex items-start justify-between gap-4">
+      <div class="flex flex-col text-[#005677] gap-2 mb-4 w-full items-center">
+        <p class="font-bold text-center text-3xl text-[#003A50]">Change Address</p>
+        <p class="text-base text-center max-w-[380px] text-[#005677] font-semibold">
+          Enter new address
+        </p>
+      </div>
+    </div>
+
+    <p class="text-sm text-center font-light text-red-500 mt-3" *ngIf="message">{{ message }}</p>
+
+    <div class="grid gap-4 mt-4">
+      <app-atoka-search
+        [labelName]="'ATOKA address'"
+        [addressCode]="addressCode"
+        (returnCode)="setAddressCode($event)"
+        (addressInfo)="setAddressInfo($event)"
+      ></app-atoka-search>
+
+      <div class="text-center">
+        <button type="button" class="text-sm font-semibold text-[#0090C7]" (click)="toggleManualEntry()">
+          Don't have ATOKA? <span class="font-semibold">Enter address manually</span>
+        </button>
+      </div>
+
+      <app-address-form
+        [hideForm]="showAddressForm"
+        [prefilledAddress]="selectedAddressInfo"
+        [readOnly]="isAddressFormReadOnly"
+        (formMessage)="handleFormMessage($event)"
+      ></app-address-form>
+    </div>
+
+    <div class="flex justify-center mt-6">
+      <button type="button" mat-flat-button color="primary" class="w-full" (click)="submit()">
+        Save
+      </button>
+    </div>
+  } @else {
+    <div class="items-center grid grid-cols-1 p-5">
+      <div class="flex flex-col text-[#005677] gap-2 mb-4 w-full items-center">
+        <p class="font-bold text-center text-3xl text-[#003A50]">Change Address</p>
+      </div>
+      <div class="flex flex-col justify-center items-center gap-8 pt-5">
+        <img src="assets/images/thumbs-up.svg"/>
+        <div class="flex flex-col items-center gap-2 w-full">
+          <h1 class="font-semibold text-xl text-[#005677]">Addressed Changed Successfully!</h1>
+          <p class="text-sm font-light text-[#003A50]">You've successfully changed your address.</p>
+        </div>
+      </div>
+    </div>
+  }
+</div>

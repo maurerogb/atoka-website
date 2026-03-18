@@ -1,0 +1,118 @@
+﻿.settings-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.settings-pill {
+  border-radius: 0.5rem;
+  // border: 1px solid #e6e6e6;
+  padding: 8px 18px;
+  line-height: 20px;
+  font-size: 14px;
+  // font-weight: 600;
+  color: #667085;
+  // background: #ffffff;
+  transition: all 0.2s ease;
+}
+
+.settings-pill:hover {
+  background: #bcc4c7;
+  // color: #fff;
+}
+
+
+.settings-pill.active {
+  border-color: #0090c7;
+  background: #0090c7;
+  color: #ffffff;
+}
+
+.settings-card {
+  background: #ffffff;
+  border: 1px solid #eaecf0;
+  border-radius: 16px;
+  padding: 24px;
+}
+
+.settings-divider {
+  border-top: 1px solid #eaecf0;
+}
+
+.detail-row {
+  // grid-template-columns: 220px minmax(0, 512px);
+  grid-template-columns: 180px minmax(0, 1fr);
+  display: grid;
+  gap: 16px;
+}
+
+@media (min-width: 768px) {
+  .detail-row {
+    grid-template-columns: 220px minmax(0, 512px);
+    // grid-template-columns: 220px minmax(0, 1fr);
+    align-items: start;
+    gap: 100px;
+  }
+}
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.status-badge.status-active {
+  background: #1f932d;
+  color: #ffffff;
+}
+
+.accordion-item {
+  padding-left: 1rem;
+  padding-right: 1rem;
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid #eaecf0;
+}
+
+.accordion-item:first {
+  border-top: 0
+}
+
+.accordion-item:hover {
+  background: #e9e9e9;
+}
+
+:host ::ng-deep {
+  .mdc-text-field {
+    border-radius: 8px;
+    background: #fff;
+    border: 1px solid #d0d5dd;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .mdc-text-field__input {
+    padding: 0;
+    color: #01171f;
+  }
+
+  .mdc-text-field--filled:not(.mdc-text-field--disabled) {
+    // border-radius: 8px;
+    background: #FFF;
+    background-color: #FFF;
+    // border: 1px solid #D1D5DB;
+  }
+
+  // .mdc-line-ripple,
+  // .mdc-text-field__ripple {
+  //   display: none;
+  // }
+}
+
+:host ::ng-deep .no-subscript .mat-mdc-form-field-subscript-wrapper {
+  display: none;
+}

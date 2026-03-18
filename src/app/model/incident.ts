@@ -1,5 +1,11 @@
 export type IncidentStatus = 'Successful' | 'Draft' | 'Pending' | 'Failed';
 
+export interface IncidentPriority {
+  key: number;
+  name: string;
+  description: string;
+}
+
 export interface Incident {
   id: string;
   // locationCode: string;
@@ -12,6 +18,7 @@ export interface Incident {
   addess: string | null;
   atokaCode: string;
   images: string[];
+  priority?: string;
   incidentDate: string;
   incidentDetails: string;
   incidentLocation: string;

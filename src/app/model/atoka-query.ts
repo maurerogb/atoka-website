@@ -42,9 +42,21 @@ export interface NewStreetRequest {
   houseNumber?: string;
 }
 
-export interface MoveInDate {
-  startFrom: string
+export interface AddressInfo {
+  atokaCode: string;
+  atokaAddressId: number;
 }
+
+export interface MoveInDate {
+  startFrom: string;
+  atokaAddressId: number;
+}
+
+export interface ResidenceStartedWebResponse {
+  residentsStartsId: number;
+  startFrom: string;
+}
+
 export interface StreetDetails {
   cityName:       string;
   cityId:         number;

@@ -1,0 +1,47 @@
+<div class="w-[520px] grid gap-3">
+  <div class="flex justify-between items-start gap-4">
+    <p class="font-semibold text-lg text-[#005677]">Tenant profile</p>
+    <div class="flex justify-end cursor-pointer" (click)="close()">
+      <img src="assets/svg/cancel.svg" alt="" />
+    </div>
+  </div>
+
+  <div class="flex justify-between items-start gap-4">
+    <div class="flex items-center gap-4 bg-[#003A50] rounded-lg p-2 flex-1">
+      <div class="w-16 h-16 rounded-full overflow-hidden bg-white/20">
+        <img [src]="data.imageUrl || 'assets/images/avatar-2.png'" alt="" class="h-full w-full object-cover" />
+      </div>
+      <div class="text-left text-white">
+        <p class="font-semibold text-base text-white">{{ fullname() }}</p>
+        <p class="text-sm text-[#D0E4ED] text-white">{{ data.emailAddress || 'N/A' }}</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="flex flex-col gap-6 mt-6">
+    <div class="flex justify-between gap-2">
+      <p class="text-sm text-[#595B5E]">Gender</p>
+      <p class="font-semibold text-sm text-[#002330]">{{ data.gender || 'N/A' }}</p>
+    </div>
+    <div class="flex justify-between gap-2">
+      <p class="text-sm text-[#595B5E]">Phone Number</p>
+      <p class="font-semibold text-sm text-[#002330]">{{ data.phoneNumber || 'N/A' }}</p>
+    </div>
+    <div class="flex justify-between gap-2">
+      <p class="text-sm text-[#595B5E]">Length At Employment</p>
+      <p class="font-semibold text-sm text-[#002330]">
+        {{ startDate | employmentLength }}
+      </p>
+    </div>
+    <div class="flex justify-between gap-2">
+      <p class="text-sm text-[#595B5E]">Date of Employment</p>
+      <p class="font-semibold text-sm text-[#002330]">{{ startDate | date }}</p>
+    </div>
+    <div class="flex justify-between gap-2">
+      <p class="text-sm text-[#595B5E]">Status</p>
+      <p class="status" [ngClass]="statusClass">
+        <span class="text-xs text-white">{{ statusLabel }}</span>
+      </p>
+    </div>
+  </div>
+</div>

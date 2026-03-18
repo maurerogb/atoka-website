@@ -1,4 +1,4 @@
-import { CommonModule } from "@angular/common";
+﻿import { CommonModule } from "@angular/common";
 import { Component, OnInit, ViewChild } from "@angular/core";
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
 import { MatButtonModule } from "@angular/material/button";
@@ -11,7 +11,7 @@ import { MatInputModule } from "@angular/material/input";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 import { MatSelectModule } from "@angular/material/select";
 import { Router, RouterModule } from "@angular/router";
-import { ListItem } from "../../../../model/atoka-query";
+import { Address, ListItem, AddressInfo } from "../../../../model/atoka-query";
 import { LoaderComponent } from "../../../../components/loader/loader.component";
 import { AtokaSearchComponent } from "../../../../components/atoka-search/atoka-search.component";
 import { AddressFormComponent } from "../../../../components/address-form/address-form.component";
@@ -41,6 +41,10 @@ export class BusinessAccountComponent implements OnInit {
   uploadCAC: boolean = false;
   labelName: string = "Address (Head Office)"
   addressCode: string = "";
+  addressSelection?: AddressInfo;
+  selectedAddressInfo?: Address;
+  isAddressFormReadOnly = false;
+  manualAddressMode = false;
   hideForm: boolean = false;
   businessName: string = "";
   businessForm!: FormGroup;
@@ -97,9 +101,14 @@ export class BusinessAccountComponent implements OnInit {
     const proceedWithBusinessSave = () => {
       const data = this.businessForm.value;
       const businessAddress = data.businessAddress;
+      const atokaAddressId = this.addressSelection?.atokaAddressId;
 
       if (!businessAddress) {
         this.message = 'Please select or enter a business address before continuing.';
+        return;
+      }
+      if (!atokaAddressId) {
+        this.message = 'Please select a valid ATOKA address before continuing.';
         return;
       }
       
@@ -110,7 +119,8 @@ export class BusinessAccountComponent implements OnInit {
       formdata.append('acceptTM', data.hasAcceptedTC);
       formdata.append('cacDocFile', '');
       formdata.append('roleInBusinessId', data.roleInBusiness);
-      formdata.append('atokaCode', data.businessAddress);
+      formdata.append('atokaCode', businessAddress);
+      formdata.append('atokaAddressId', String(atokaAddressId));
       formdata.append('businessLogFile', '');
       formdata.append('businessName', data.businessName);
       formdata.append('businessTypeId', data.businessType);
@@ -147,12 +157,16 @@ export class BusinessAccountComponent implements OnInit {
       });
     };
 
-    if (this.hideForm && this.addressFormComponent) {
+    if (this.manualAddressMode && this.hideForm && this.addressFormComponent) {
       this.addressFormComponent.showFormState
         .pipe(take(1))
         .subscribe({
-          next: (addressCode: string) => {
-            this.businessForm.get('businessAddress')?.patchValue(addressCode);
+          next: (savedAddress: AddressInfo) => {
+            this.addressSelection = savedAddress;
+            this.addressCode = savedAddress.atokaCode;
+            this.manualAddressMode = false;
+            this.isAddressFormReadOnly = false;
+            this.businessForm.get('businessAddress')?.patchValue(savedAddress.atokaCode);
             proceedWithBusinessSave();
           }
         });
@@ -174,19 +188,24 @@ export class BusinessAccountComponent implements OnInit {
   }
 
   showForm() {
-    if (this.hideForm === false) {
-      this.hideForm = true;
-    }
-    else {
-      this.hideForm = false;
-    }
-    
-    return this.hideForm;
+    this.message = '';
+    this.manualAddressMode = true;
+    this.isAddressFormReadOnly = false;
+    this.hideForm = true;
+    this.addressSelection = undefined;
+    this.selectedAddressInfo = undefined;
+    this.addressCode = '';
+    this.businessForm.get('businessAddress')?.patchValue('');
+    this.addressFormComponent?.resetForm();
   }
 
-  setHideForm(event: any) {
-    this.addressCode = event;
-    this.businessForm.get('businessAddress')?.patchValue(event);
+  setHideForm(event: AddressInfo) {
+    this.addressSelection = event;
+    this.selectedAddressInfo = undefined;
+    this.addressCode = event.atokaCode;
+    this.manualAddressMode = false;
+    this.isAddressFormReadOnly = false;
+    this.businessForm.get('businessAddress')?.patchValue(event.atokaCode);
     this.hideForm = false;
   }
 
@@ -198,8 +217,36 @@ export class BusinessAccountComponent implements OnInit {
     this.businessLogo = event;
   }
 
-  setAddressCode(event: any) {
+  setAddressCode(event: string) {
+    this.addressCode = event;
+    if (this.addressSelection?.atokaCode !== event) {
+      this.addressSelection = undefined;
+      this.selectedAddressInfo = undefined;
+      this.isAddressFormReadOnly = false;
+      this.hideForm = false;
+    }
     this.businessForm.get('businessAddress')?.patchValue(event);
+  }
+
+  setAddressInfo(address: Address | undefined): void {
+    if (!address?.atoka || !address?.atokaAddressId) {
+      this.addressSelection = undefined;
+      this.selectedAddressInfo = undefined;
+      this.isAddressFormReadOnly = false;
+      this.hideForm = false;
+      return;
+    }
+
+    this.addressSelection = {
+      atokaCode: address.atoka,
+      atokaAddressId: address.atokaAddressId,
+    };
+    this.selectedAddressInfo = address;
+    this.addressCode = address.atoka;
+    this.manualAddressMode = false;
+    this.isAddressFormReadOnly = true;
+    this.hideForm = true;
+    this.businessForm.get('businessAddress')?.patchValue(address.atoka);
   }
 
   createBusinessForm() {
@@ -216,3 +263,4 @@ export class BusinessAccountComponent implements OnInit {
     });
   }
 }
+

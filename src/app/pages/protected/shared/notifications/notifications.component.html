@@ -1,0 +1,81 @@
+<div class="notifications-page">
+  <div class="notifications-grid with-selection lg:grid-cols-[50%_50%]">
+    <section class="notifications-list">
+      <div class="list-header">
+        <p class="section-title">Notifications</p>
+        <button
+          type="button"
+          class="refresh-btn"
+          mat-icon-button
+          (click)="loadNotifications()"
+          aria-label="Refresh notifications"
+          title="Refresh notifications"
+        >
+          <mat-icon>refresh</mat-icon>
+        </button>
+      </div>
+
+      <div class="list-content">
+        <p class="state-text" *ngIf="isLoading">Loading notifications...</p>
+        <p class="state-text error" *ngIf="!isLoading && errorMessage">{{ errorMessage }}</p>
+        <p class="state-text" *ngIf="!isLoading && !errorMessage && notifications.length === 0">
+          No notifications available.
+        </p>
+
+        <div class="grid gap-4 p-4 notification-item-wrapper">
+          @for (notification of notifications; track notification.notificationId) {
+            <button
+              type="button"
+              class="notification-item"
+              [class.active]="selectedNotification?.notificationId === notification.notificationId"
+              (click)="selectNotification(notification)"
+            >
+              <div class="item-top">
+                <p class="sender">{{ notification.sendersName }}</p>
+                <p class="time">{{ getTimeAgo(notification.createdOn) }}</p>
+              </div>
+
+              <div class="item-bottom">
+                <p class="preview">{{ notification.message }}</p>
+                @if (!notification.isRead) {
+                  <span class="read-state" [class.read]="notification.isRead">
+                    {{ 'Unread' }}
+                  </span>
+                }
+                <!-- <span class="read-state" [class.read]="notification.isRead">
+                  {{ notification.isRead ? 'Read' : 'Unread' }}
+                </span> -->
+              </div>
+            </button>
+          }
+        </div>
+      </div>
+    </section>
+
+    <section class="notification-detail" *ngIf="selectedNotification as selected">
+      <div class="detail-header">
+        <div class="detail-meta">
+          <p class="sender">{{ selected.sendersName }}</p>
+          <p class="time">{{ getTimeAgo(selected.createdOn) }}</p>
+        </div>
+
+        <button
+          type="button"
+          mat-icon-button
+          class="delete-btn"
+          [disabled]="isDeleting"
+          (click)="deleteSelectedNotification($event)"
+          aria-label="Delete notification"
+        >
+          <mat-icon>delete_outline</mat-icon>
+        </button>
+      </div>
+
+      <div class="detail-body">
+        <p class="state-text error" *ngIf="deleteError">{{ deleteError }}</p>
+
+        <p class="message-line">{{ selected.message }}</p>
+      </div>
+    </section>
+  </div>
+</div>

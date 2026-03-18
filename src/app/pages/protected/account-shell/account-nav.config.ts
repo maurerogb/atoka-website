@@ -29,6 +29,7 @@ export const ACCOUNT_NAV_CONFIG: Record<string, INavContent> = {
         routerLink: '/app/tenant/tenant',
         activeIcon: 'assets/svg/tenant.svg',
         inactiveIcon: 'assets/svg/tenant.svg',
+        description: 'Manage and track all tenant property.'
       },
       {
         name: 'Address Verification',
@@ -43,6 +44,7 @@ export const ACCOUNT_NAV_CONFIG: Record<string, INavContent> = {
         routerLink: '/app/tenant/settings',
         activeIcon: 'assets/svg/Setting.svg',
         inactiveIcon: 'assets/svg/Setting.svg',
+        description: 'Manage your profile, notifications, and security preferences.',
       },
       {
         name: 'Logout',
@@ -89,6 +91,7 @@ export const ACCOUNT_NAV_CONFIG: Record<string, INavContent> = {
         routerLink: '/app/user/settings',
         activeIcon: 'assets/svg/Setting.svg',
         inactiveIcon: 'assets/svg/Setting.svg',
+        description: 'Manage your profile, notifications, and security preferences.',
       },
       {
         name: 'Logout',
@@ -125,7 +128,7 @@ export const ACCOUNT_NAV_CONFIG: Record<string, INavContent> = {
         description: 'You can now report incident any time and day'
       },
       {
-        name: 'Confirm Request',
+        name: 'Employees List',
         routerLink: '/app/business-account/employees',
         activeIcon: 'assets/svg/employee.svg',
         inactiveIcon: 'assets/svg/employee.svg',
@@ -157,6 +160,7 @@ export const ACCOUNT_NAV_CONFIG: Record<string, INavContent> = {
         routerLink: '/app/business-account/settings',
         activeIcon: 'assets/svg/Setting.svg',
         inactiveIcon: 'assets/svg/Setting.svg',
+        description: 'Manage your profile, notifications, and security preferences.',
       },
       {
         name: 'Logout',
@@ -221,6 +225,7 @@ export const ACCOUNT_NAV_CONFIG: Record<string, INavContent> = {
         routerLink: '/app/public-service/settings',
         activeIcon: 'assets/svg/Setting.svg',
         inactiveIcon: 'assets/svg/Setting.svg',
+        description: 'Manage your profile, notifications, and security preferences.',
       },
       {
         name: 'Logout',

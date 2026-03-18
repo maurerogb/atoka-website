@@ -1,0 +1,107 @@
+<div class="account flex flex-col gap-6">
+  <div class="flex items-center gap-4">
+    <button type="button" mat-button class="text-sm !min-w-24 !h-10" (click)="goBack()">
+      <mat-icon>arrow_back</mat-icon>
+      Back
+    </button>
+  </div>
+
+  @if (selectedAtokaCode) {
+  <div class="rounded-lg p-4 bg-[#FFF8EB] max-w-[560px]">
+    <p class="text-base font-bold text-[#002330] mb-1">{{ selectedAtokaCode }}</p>
+    <p class="text-sm text-[#003A50]">{{ selectedPropertyAddress || 'N/A' }}</p>
+  </div>
+
+  <div class="flex flex-col md:flex-row gap-4 md:items-center md:justify-between">
+    <div class="flex flex-wrap gap-3 w-full md:max-w-sm">
+      <mat-form-field subscriptSizing="dynamic" class="w-full rounded-xl table-search no-subscript" appearance="fill">
+        <mat-icon matPrefix>search</mat-icon>
+        <input
+          matInput
+          type="text"
+          [(ngModel)]="searchTerm"
+          (ngModelChange)="onSearchChange()"
+          placeholder="Search tenants"
+        />
+      </mat-form-field>
+    </div>
+  </div>
+
+  <div class="card bg-white rounded-lg">
+    @if (filteredTenants.length) {
+    <div class="table-holder">
+      <table class="table-auto">
+        <thead>
+          <tr>
+            <th>Tenant name</th>
+            <th>Tenant's Address</th>
+            <th>Entry Date</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (tenant of paginatedTenants; track tenant.occupantDetailId || $index) {
+          <tr>
+            <td>
+              <div class="flex gap-4 items-center">
+                <mat-icon>person</mat-icon>
+                <p class="font-semibold text-[#003A50] text-sm">{{ fullname(tenant) }}</p>
+              </div>
+            </td>
+            <td>
+              <p class="text-gray-500 text-sm">{{ selectedPropertyAddress || 'N/A' }}</p>
+            </td>
+            <td>
+              <p class="text-gray-500 text-sm">{{ entryDate(tenant) | date }}</p>
+            </td>
+            <td>
+              <p class="status text-xs" [ngClass]="getStatusClass(tenant)">
+                <span>{{ statusLabel(tenant) }}</span>
+                <span>
+                  <img src="assets/svg/badge.svg" alt="" />
+                </span>
+              </p>
+            </td>
+            <td>
+              <div class="flex items-center gap-2">
+                <button type="button" mat-icon-button (click)="requestRemoval(tenant)">
+                  <mat-icon>delete_outline</mat-icon>
+                </button>
+                <button
+                  type="button"
+                  mat-button
+                  class="!min-w-20 !h-9"
+                  (click)="openProfile(tenant)"
+                >
+                  View
+                </button>
+              </div>
+            </td>
+          </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+    <app-pagination
+      [length]="filteredTenants.length"
+      [pageIndex]="pageIndex"
+      [pageSize]="pageSize"
+      [pageSizeOptions]="pageSizeOptions"
+      (page)="onPageChange($event)"
+      [showFirstLastButtons]="true"
+    ></app-pagination>
+    } @else {
+    <div class="p-8 text-center text-sm text-gray-500">No tenants found for this property.</div>
+    }
+  </div>
+  } @else {
+  <div class="card bg-white rounded-lg p-8 text-center text-sm text-gray-500">
+    Select a property first to view the tenant list.
+  </div>
+  }
+</div>
+
+<app-loader *ngIf="loadingService.isLoading$ | async"></app-loader>
+

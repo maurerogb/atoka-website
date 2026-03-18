@@ -1,0 +1,98 @@
+<div class="relative h-full w-full">
+  <google-map
+    [height]="height"
+    width="100%"
+    [center]="center"
+    [zoom]="zoom"
+    [options]="options"
+  >
+    @for (alt of alternateRoutePaths; track alt.index) {
+      <map-polyline
+        [path]="alt.path"
+        [options]="{
+          strokeColor: '#9CA3AF',
+          strokeOpacity: 0.6,
+          strokeWeight: 4,
+          zIndex: 1,
+          clickable: true
+        }"
+        (polylineClick)="onRouteSelected(alt.index)"
+      ></map-polyline>
+    }
+    @if (renderedDirectionsResult) {
+      <map-directions-renderer
+        [directions]="renderedDirectionsResult"
+        [options]="directionsOptions"
+      ></map-directions-renderer>
+    }
+    @if (originPosition) {
+      <map-marker
+        [position]="originPosition"
+      ></map-marker>
+    }
+    @if (destinationPosition) {
+      <map-marker
+        [position]="destinationPosition"
+      ></map-marker>
+    }
+    @if (originIsCurrentLocation && originPosition && currentLocationAccuracyMeters) {
+      <map-circle
+        [center]="originPosition"
+        [radius]="currentLocationAccuracyMeters"
+        [options]="accuracyCircleOptions"
+      ></map-circle>
+    }
+    @if (destinationIsCurrentLocation && destinationPosition && destinationAccuracyMeters) {
+      <map-circle
+        [center]="destinationPosition"
+        [radius]="destinationAccuracyMeters"
+        [options]="accuracyCircleOptions"
+      ></map-circle>
+    }
+    @if (showTraffic) {
+      <map-traffic-layer></map-traffic-layer>
+    }
+  </google-map>
+
+  <div class="absolute left-12 bottom-4 z-5 flex flex-wrap items-end gap-3">
+    <div
+      class="max-w-[340px] rounded-xl border border-white/20 bg-black/55 px-4 py-3 text-white shadow-md backdrop-blur-sm"
+    >
+      <p class="text-[11px] uppercase tracking-wide text-white/75">
+        {{ providerLabel }}
+      </p>
+      <p class="text-base font-semibold">
+        {{ atoka }}
+      </p>
+      <p class="text-xs text-white/90">
+        {{ address }}
+      </p>
+    </div>
+
+    @if (directionsSummary) {
+      <div
+        class="rounded-xl border border-[#E6EEF3] bg-white/95 px-4 py-3 shadow-md backdrop-blur"
+      >
+        <div class="flex items-center gap-4">
+          <div>
+            <p class="text-[11px] uppercase tracking-wide text-gray-400">Distance</p>
+            <p class="text-sm font-semibold text-[#003A50]">
+              {{ directionsSummary.distanceText }}
+            </p>
+          </div>
+          <div>
+            <p class="text-[11px] uppercase tracking-wide text-gray-400">ETA</p>
+            <p class="text-sm font-semibold text-[#003A50]">
+              {{ directionsSummary.durationText }}
+            </p>
+            @if (directionsSummary.trafficDeltaText) {
+              <p class="text-[11px] text-gray-500">
+                Traffic +{{ directionsSummary.trafficDeltaText }}
+              </p>
+            }
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+</div>

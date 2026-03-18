@@ -6,7 +6,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { Incident } from '../../../../model/incident';
 import { IncidentViewDialogComponent } from '../../../../components/modals/incident-view-dialog/incident-view-dialog.component';
 import { IncidentReportDialogComponent } from '../../../../components/modals/incident-report-dialog/incident-report-dialog.component';
@@ -15,13 +15,14 @@ import { ButtonComponent } from "../../../../shared/button/button.component";
 import { MatDatepickerModule } from "@angular/material/datepicker";
 import { MatNativeDateModule } from '@angular/material/core';
 import { PageEvent } from '@angular/material/paginator';
-import { PaginationComponent } from "../../../../shared/pagination/pagination.component";
+import { PaginationComponent } from '../../../../shared/pagination/pagination.component';
 
 interface IncidentColumnVisibility {
   location: boolean;
   priority: boolean;
   entryDate: boolean;
   incidentType: boolean;
+  incident: boolean;
   status: boolean;
 }
 
@@ -38,8 +39,8 @@ interface IncidentColumnVisibility {
     MatIconModule,
     MatInputModule,
     ButtonComponent,
-    MatDatepickerModule,
     PaginationComponent,
+    MatDatepickerModule,
     ReactiveFormsModule
 ],
   templateUrl: './incident.component.html',
@@ -52,7 +53,7 @@ export class IncidentComponent {
   incidentForm!: FormGroup;
   incidents: any[] = [];
   pageIndex = 0;
-  pageSize = 10;
+  pageSize = 5;
   pageSizeOptions = [5, 10, 20];
 
   visibleColumns: IncidentColumnVisibility = {
@@ -60,6 +61,7 @@ export class IncidentComponent {
     priority: true,
     entryDate: true,
     incidentType: true,
+    incident: true,
     status: true,
   };
 
@@ -73,7 +75,7 @@ export class IncidentComponent {
 
     this.getAllReportedIncidents();
   }
-  
+
   get filteredIncidents(): Incident[] {
     const term = this.searchTerm.trim().toLowerCase();
     let filtered = this.incidents;
@@ -84,12 +86,14 @@ export class IncidentComponent {
         const address = (incident.address ?? incident.incidentLocation ?? '').toString().toLowerCase();
         const incidentType = (incident.incidentType ?? '').toString().toLowerCase();
         const incidentDetails = (incident.incidentDetails ?? '').toString().toLowerCase();
+        const priority = (incident.priority ?? '').toString().toLowerCase();
 
         return (
           atokaCode.includes(term) ||
           address.includes(term) ||
           incidentType.includes(term) ||
-          incidentDetails.includes(term)
+          incidentDetails.includes(term) ||
+          priority.includes(term)
         );
       });
     }

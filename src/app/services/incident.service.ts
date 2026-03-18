@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { HttpService } from './http.service';
 import { BaseResponse } from '../model/base-response';
-import { of } from 'rxjs';
+import { IncidentPriority } from '../model/incident';
 
 @Injectable({
   providedIn: 'root'
@@ -22,6 +22,11 @@ export class IncidentService extends HttpService<BaseResponse<any>> {
     return this.get<BaseResponse<any>>(url)
   }
 
+  getIncidentPriorities() {
+    const url = `IncidentReport/Incident-priority`
+    return this.get<IncidentPriority[]>(url)
+  }
+
   getIncident() {
     const url = `IncidentReport/GetUserReportedIncident`
     return this.get<BaseResponse<any>>(url)
@@ -33,7 +38,7 @@ export class IncidentService extends HttpService<BaseResponse<any>> {
   }
 
   reportIncident(payload: any) {
-    const url = `IncidentReport`
-    return this.post<BaseResponse<any>>(url, payload);
+    const url = `IncidentReport/Web`
+    return this.filePost(url, payload);
   }
 }

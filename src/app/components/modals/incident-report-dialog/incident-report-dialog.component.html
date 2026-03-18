@@ -8,18 +8,18 @@
   </div>
 </div> -->
 
-<div mat-dialog-content class="items-center">
-  <div class="w-[600px] h-full justify-center mt-5 text-center">
-    <div class="cursor-pointer flex justify-end" (click)="close()">
-      <img src="assets/svg/cancel.svg" alt="" />
-    </div>
+<div mat-dialog-content class="account items-center no-scrollbar">
+  <div class="md:w-[590px] h-full justify-center text-center relative">
     <div
-      class="flex flex-col text-[#005677] h-[100px] gap-6 my-6 w-full items-center"
+      class="flex flex-col text-[#005677] h-[100px] gap-4 mb-6 w-full items-center relative top-0"
     >
-      <p class="font-bold text-center text-xl">Report Incident</p>
-      <p class="text-base text-center max-w-[300px]">
+      <p class="font-bold text-center text-xl text-[#003A50]">Report Incident</p>
+      <p class="text-base text-center max-w-[300px] text-[#002330]">
         Have any complain about any location! Please report incident here.
       </p>
+    </div>
+    <div class="cursor-pointer flex justify-end absolute right-0 top-0" (click)="close()">
+      <img src="assets/svg/cancel.svg" alt="" />
     </div>
 
     <div class="text-left" [formGroup]="reportForm">
@@ -33,27 +33,32 @@
 
         <div class="grid gap-x-4 mt-4">
           <app-atoka-search
+            [showAddress]="true"
             [labelName]="'Location'"
             [addressCode]="addressCode"
             (returnCode)="setAddressCode($event)"
+            (addressInfo)="setAddressInfo($event)"
           ></app-atoka-search>
           <div class="mt-3 mb-3 text-center">
-            <a href="javascript:void(0)" class="primary" (click)="showForm()">
-              Don't have ATOKA ? <b> Enter address manually</b>
+            <a class="text-sm" href="javascript:void(0)" class="primary" (click)="showForm()">
+              Don't have ATOKA? <b> Enter address manually</b>
             </a>
           </div>
           <app-address-form
             [hideForm]="hideForm"
+            [prefilledAddress]="selectedAddressInfo"
+            [readOnly]="isAddressFormReadOnly"
             (showFormState)="setHideForm($event)"
             (formMessage)="message = $event"
           >
           </app-address-form>
         </div>
 
-        <div class="grid grid-cols-1 gap-x-4">
+        <div class="grid grid-cols-1 gap-4">
           <div class="control">
-            <mat-label class="text-sm">Title*</mat-label>
+            <mat-label class="flex text-sm">Title*</mat-label>
             <mat-form-field
+              subscriptSizing="dynamic"
               class="w-full rounded-xl"
               appearance="fill"
               floatLabel="always"
@@ -77,12 +82,11 @@
               </mat-error>
             </mat-form-field>
           </div>
-        </div>
 
-        <div class="grid gap-x-4">
           <div class="control">
-            <mat-label class="text-sm">Incident Details*</mat-label>
+            <mat-label class="flex text-sm">Incident Details*</mat-label>
             <mat-form-field
+              subscriptSizing="dynamic"
               class="w-full rounded-xl"
               appearance="fill"
               floatLabel="always"
@@ -106,12 +110,39 @@
               </mat-error>
             </mat-form-field>
           </div>
-        </div>
 
-        <div class="grid grid-cols-1 gap-x-4">
           <div class="control">
-            <mat-label class="text-sm">Resolution*</mat-label>
+            <mat-label class="flex text-sm">Priority*</mat-label>
             <mat-form-field
+              subscriptSizing="dynamic"
+              class="w-full rounded-xl"
+              appearance="fill"
+              floatLabel="always"
+            >
+              <mat-select
+                placeholder="Select incident priority"
+                formControlName="priority"
+              >
+                @for (item of incidentPriorities; track item.key) {
+                <mat-option [value]="item.name">{{ item.name }}</mat-option>
+                }
+              </mat-select>
+              <mat-error
+                *ngIf="
+                  reportForm.get('priority')?.hasError('required') &&
+                  (reportForm.get('priority')?.dirty ||
+                    reportForm.get('priority')?.touched)
+                "
+              >
+                Priority is required
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="control">
+            <mat-label class="flex text-sm">Resolution*</mat-label>
+            <mat-form-field
+              subscriptSizing="dynamic"
               class="w-full rounded-xl"
               appearance="fill"
               floatLabel="always"
@@ -135,11 +166,9 @@
               </mat-error>
             </mat-form-field>
           </div>
-        </div>
 
-        <div class="grid grid-cols-1 gap-x-4">
           <div class="control">
-            <mat-label class="text-sm"
+            <mat-label class="text-sm pb-2"
               >Attach Picture (optional)</mat-label
             >
             <app-upload-file

@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+﻿import { CommonModule } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -17,8 +17,10 @@ import { RegistrationService } from '../../../../services/registration.service';
 import { AuthenticationService } from '../../../../services/authentication.service';
 import { take } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
+import { BaseResponse } from '../../../../model/base-response';
 import { ResponseCode } from '../../../../model/enums';
 import { LoadingService } from '../../../../services/loading.service';
+import { Address, MoveInDate, ResidenceStartedWebResponse, AddressInfo } from '../../../../model/atoka-query';
 
 @Component({
   selector: 'app-validate-address',
@@ -32,8 +34,12 @@ export class ValidateAddressComponent implements OnInit {
 
   hideForm: boolean = false;
   addressCode?: string;
+  addressSelection?: AddressInfo;
+  selectedAddressInfo?: Address;
+  isAddressFormReadOnly = false;
+  manualAddressMode = false;
   addAddressForm!: FormGroup
-  labelName: string = 'Address Code';
+  labelName: string = 'Address';
   message = '';
 
   constructor(private regitrationService: RegistrationService, private router: Router,
@@ -52,22 +58,54 @@ export class ValidateAddressComponent implements OnInit {
     })
   }
 
-  setAddressCode(value: any) {
-    this.addressCode = value
+  setAddressCode(value: string) {
+    this.addressCode = value;
+    if (this.addressSelection?.atokaCode !== value) {
+      this.addressSelection = undefined;
+      this.selectedAddressInfo = undefined;
+      this.isAddressFormReadOnly = false;
+      this.hideForm = false;
+    }
   }
 
-  setHideForm(value: any) {
-    this.addressCode = value;
+  setAddressInfo(value: Address | undefined) {
+    if (!value?.atoka || !value?.atokaAddressId) {
+      this.addressSelection = undefined;
+      this.selectedAddressInfo = undefined;
+      this.isAddressFormReadOnly = false;
+      this.hideForm = false;
+      return;
+    }
+
+    this.addressSelection = {
+      atokaCode: value.atoka,
+      atokaAddressId: value.atokaAddressId,
+    };
+    this.selectedAddressInfo = value;
+    this.addressCode = value.atoka;
+    this.manualAddressMode = false;
+    this.isAddressFormReadOnly = true;
+    this.hideForm = true;
+  }
+
+  setHideForm(value: AddressInfo) {
+    this.addressCode = value.atokaCode;
+    this.addressSelection = value;
+    this.selectedAddressInfo = undefined;
+    this.manualAddressMode = false;
+    this.isAddressFormReadOnly = false;
     this.hideForm = false;
   }
 
   showForm(): boolean {
-    if (this.hideForm === false) {
-      this.hideForm = true;
-    } else {
-      this.hideForm = false;
-    }
-    
+    this.message = '';
+    this.manualAddressMode = true;
+    this.isAddressFormReadOnly = false;
+    this.hideForm = true;
+    this.addressCode = '';
+    this.addressSelection = undefined;
+    this.selectedAddressInfo = undefined;
+    this.addressFormComponent?.resetForm();
     return this.hideForm;
   }
 
@@ -77,10 +115,14 @@ export class ValidateAddressComponent implements OnInit {
       return;
     }
 
-    const moveInDate: any = this.addAddressForm.value;
     const proceedAfterAddressSaved = () => {
+      const moveInDate = this.buildMoveInPayload();
+      if (!moveInDate) {
+        return;
+      }
+
       this.regitrationService.movedInOn(moveInDate).subscribe({
-        next: (res) => {
+        next: (res: BaseResponse<ResidenceStartedWebResponse>) => {
           if (res.responseCode === ResponseCode.Success) {
             const userData = this.authService.getLoginInfo();
             if (!userData) {
@@ -114,11 +156,16 @@ export class ValidateAddressComponent implements OnInit {
       });
     };
 
-    if (this.hideForm && this.addressFormComponent) {
+    if (this.manualAddressMode && this.hideForm && this.addressFormComponent) {
       this.addressFormComponent.showFormState
         .pipe(take(1))
         .subscribe({
-          next: () => {
+          next: (savedAddress: AddressInfo) => {
+            this.addressCode = savedAddress.atokaCode;
+            this.addressSelection = savedAddress;
+            this.manualAddressMode = false;
+            this.isAddressFormReadOnly = false;
+            this.hideForm = false;
             proceedAfterAddressSaved();
           }
         });
@@ -129,7 +176,20 @@ export class ValidateAddressComponent implements OnInit {
     }
   }
 
-  callDalog(route: string): void {
+  private buildMoveInPayload(): MoveInDate | null {
+    const atokaAddressId = this.addressSelection?.atokaAddressId;
+    if (!atokaAddressId) {
+      this.message = 'Please select a valid ATOKA address before continuing.';
+      return null;
+    }
+
+    return {
+      startFrom: this.addAddressForm.value.startFrom,
+      atokaAddressId,
+    };
+  }
+
+  callDialog(route: string): void {
     // const dialogRef = this.dialog.open(ProccessComletedprivatedialogComponent, {
     //   data: 'Michael',
     //   width: '40%',

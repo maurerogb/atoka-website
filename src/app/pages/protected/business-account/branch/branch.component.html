@@ -1,4 +1,4 @@
-<div class="account flex flex-col gap-6">
+<div class="account flex flex-col gap-4">
   <div class="flex flex-col md:flex-row gap-4 md:items-center md:justify-between">
     <div class="flex flex-wrap gap-3 w-full md:max-w-sm">
       <mat-form-field subscriptSizing="dynamic" class="w-full rounded-xl table-search no-subscript" appearance="fill">
@@ -33,12 +33,12 @@
     </div>
   </div>
 
-  <div *ngIf="headOffice" class="grid grid-cols-2">
+  <div *ngIf="headOffice" class="grid grid-cols-2 pt-3">
     <div class="col-span-1">
-      <div class="card bg-white rounded-lg p-6 gap-2">
-        <p class="text-[#003A50] font-semibold text-base">{{ headOffice.name || 'Head Office' }}</p>
-        <div class="rounded-lg p-4 bg-[#F5F8FA] w-full">
-          <p class="text-base font-bold text-[#002330] mb-1">{{ headOffice.atoka }}</p>
+      <div class="card bg-white rounded-lg px-6 py-4 gap-2">
+        <p class="text-[#003A50] font-semibold text-sm">{{ headOffice.name || 'Head Office' }}</p>
+        <div class="rounded-lg p-3 bg-[#F5F4F7] w-full grid gap-2">
+          <p class="text-base font-bold text-[#002330]">{{ headOffice.atoka }}</p>
           <p class="text-sm text-[#003A50]">{{ headOffice.address }}</p>
         </div>
 
@@ -88,7 +88,7 @@
               <p class="text-[#666666] text-sm">{{ branch.cityName }}</p>
             </td>
             <td>
-              <p class="text-[#666666] text-sm">{{ branch.atokaNumber }}</p>
+              <p class="text-[#666666] text-sm text-center">{{ branch.atokaNumber }}</p>
             </td>
             <td>
               <p class="text-[#666666] text-sm">{{ branch.stateName }}</p>
@@ -97,7 +97,7 @@
               <p class="text-[#666666] text-sm">{{ branch.countries }}</p>
             </td>
             <td>
-              <p class="text-[#666666] text-sm">{{ branch.atoka }}</p>
+              <p class="text-[#666666] text-sm text-nowrap">{{ branch.atoka }}</p>
             </td>
           </tr>
           }

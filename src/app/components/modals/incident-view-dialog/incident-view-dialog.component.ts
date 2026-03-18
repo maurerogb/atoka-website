@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, ViewEncapsulation } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import {
   MatDialogModule,
@@ -14,6 +14,7 @@ import { MatIconModule } from '@angular/material/icon';
   imports: [CommonModule, MatDialogModule, MatButtonModule, MatIconModule],
   templateUrl: './incident-view-dialog.component.html',
   styleUrl: './incident-view-dialog.component.scss',
+  encapsulation: ViewEncapsulation.None
 })
 export class IncidentViewDialogComponent {
   constructor(
