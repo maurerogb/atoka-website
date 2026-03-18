@@ -39,8 +39,9 @@ declare global {
 export class HereProviderMapComponent implements AfterViewInit, OnChanges, OnDestroy {
   @ViewChild('host') hostRef?: ElementRef<HTMLElement>;
 
+  @Input() height = '420px';
   @Input() center: google.maps.LatLngLiteral | null = null;
-  @Input() zoom = 16;
+  @Input() zoom = 19;
   @Input() providerLabel = 'HERE WeGo';
   @Input() atoka = '';
   @Input() address = '';
@@ -70,6 +71,7 @@ export class HereProviderMapComponent implements AfterViewInit, OnChanges, OnDes
     }
 
     if (
+      changes['height'] ||
       changes['center'] ||
       changes['zoom'] ||
       changes['selectedRoutePath'] ||
@@ -116,17 +118,21 @@ export class HereProviderMapComponent implements AfterViewInit, OnChanges, OnDes
 
       if (!this.mapInstance) {
         const platform = new H.service.Platform({ apikey: this.apiKey });
-        const defaultLayers = platform.createDefaultLayers();
-        const vectorLayer = defaultLayers.vector?.normal?.map;
-        if (!vectorLayer) {
-          this.errorMessage = 'HERE vector base layer is unavailable for this API key.';
+        const harpEngine = H.Map?.EngineType?.HARP;
+        const defaultLayers = harpEngine
+          ? platform.createDefaultLayers({ engineType: harpEngine })
+          : platform.createDefaultLayers();
+        const baseLayer = this.resolvePreferredBaseLayer(defaultLayers);
+        if (!baseLayer) {
+          this.errorMessage = 'HERE base layer is unavailable for this API key.';
           return;
         }
 
-        this.mapInstance = new H.Map(host, vectorLayer, {
+        this.mapInstance = new H.Map(host, baseLayer, {
           center,
           zoom: this.zoom,
           pixelRatio: window.devicePixelRatio || 1,
+          engineType: harpEngine,
         });
         this.hostEl = host;
         const mapEvents = new H.mapevents.MapEvents(this.mapInstance);
@@ -225,8 +231,15 @@ export class HereProviderMapComponent implements AfterViewInit, OnChanges, OnDes
   }
 
   private loadStyleOnce(id: string, href: string): void {
-    if (typeof document === 'undefined' || document.getElementById(id)) {
+    if (typeof document === 'undefined') {
       return;
+    }
+    const existing = document.getElementById(id) as HTMLLinkElement | null;
+    if (existing) {
+      if (existing.href === href) {
+        return;
+      }
+      existing.remove();
     }
     const link = document.createElement('link');
     link.id = id;
@@ -249,6 +262,11 @@ export class HereProviderMapComponent implements AfterViewInit, OnChanges, OnDes
 
       const existing = document.getElementById(id) as HTMLScriptElement | null;
       if (existing) {
+        const existingSrc = existing.getAttribute('src') || '';
+        if (existingSrc !== src) {
+          existing.remove();
+          HereProviderMapComponent.scriptLoaders.delete(id);
+        } else {
         const isLoaded = existing.getAttribute('data-loaded') === 'true';
         if (isLoaded) {
           resolve();
@@ -259,6 +277,7 @@ export class HereProviderMapComponent implements AfterViewInit, OnChanges, OnDes
           once: true,
         });
         return;
+        }
       }
 
       const script = document.createElement('script');
@@ -337,5 +356,38 @@ export class HereProviderMapComponent implements AfterViewInit, OnChanges, OnDes
     const first = path[0];
     const last = path[path.length - 1];
     return `${path.length}|${first.lat},${first.lng}|${last.lat},${last.lng}`;
+  }
+
+  private resolvePreferredBaseLayer(defaultLayers: any): any | null {
+    if (!defaultLayers) {
+      return null;
+    }
+
+    // Use vector-only layers to avoid legacy raster (maptile v2) endpoints.
+    const candidatePaths = [
+      'vector.satellite.map',
+      'vector.satellite.base',
+      'vector.hybrid.map',
+      'vector.hybrid.base',
+      'raster.satellite.map',
+      'raster.satellite.base',
+      'raster.satellite.xbase',
+      'vector.normal.map',
+      'vector.normal.base',
+      'raster.normal.map',
+    ];
+
+    for (const path of candidatePaths) {
+      const layer = this.getLayerByPath(defaultLayers, path);
+      if (layer) {
+        return layer;
+      }
+    }
+    return null;
+  }
+
+  private getLayerByPath(source: any, path: string): any | null {
+    const value = path.split('.').reduce<any>((acc, key) => acc?.[key], source);
+    return value ?? null;
   }
 }

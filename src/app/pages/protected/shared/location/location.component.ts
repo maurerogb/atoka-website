@@ -83,6 +83,8 @@ export class LocationComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('mapViewport') mapViewport?: ElementRef<HTMLElement>;
   mapHeight = '420px';
   private routerContainer: HTMLElement | null = null;
+  private mainContent: HTMLElement | null = null;
+  isMapFullscreen = false;
   addressCode = '';
   originCode = '';
   originTyped = '';
@@ -124,13 +126,14 @@ export class LocationComponent implements OnInit, AfterViewInit, OnDestroy {
     preserveViewport: false,
   };
   center = { lat: 6.5937961, lng: 3.3662079 };
-  zoom = 14;
+  zoom = 19;
   mapOptions = {
     disableDefaultUI: false,
     zoomControl: true,
-    fullscreenControl: true,
+    fullscreenControl: false,
     streetViewControl: false,
     mapTypeControl: true,
+    mapTypeId: 'satellite' as const,
     mapId: this.hasMapId ? this.mapIdValue : undefined,
   };
 
@@ -488,7 +491,7 @@ export class LocationComponent implements OnInit, AfterViewInit, OnDestroy {
       this.destinationPosition = this.getLatLng(this.selectedDestination);
     }
     this.center = focusPosition;
-    this.zoom = 16;
+    this.zoom = 19;
   }
 
   private requestDirections(): void {
@@ -860,12 +863,33 @@ export class LocationComponent implements OnInit, AfterViewInit, OnDestroy {
     if (this.routerContainer) {
       this.renderer.addClass(this.routerContainer, 'no-padding');
     }
+
+    this.mainContent = this.el.nativeElement.closest('.main-content');
   }
 
   ngOnDestroy(): void {
+    if (this.mainContent && this.isMapFullscreen) {
+      this.renderer.removeClass(this.mainContent, 'location-map-fullscreen');
+    }
     if (this.routerContainer) {
       this.renderer.removeClass(this.routerContainer, 'no-padding');
     }
+  }
+
+  toggleMapFullscreen(): void {
+    this.isMapFullscreen = !this.isMapFullscreen;
+
+    if (this.mainContent) {
+      if (this.isMapFullscreen) {
+        this.renderer.addClass(this.mainContent, 'location-map-fullscreen');
+      } else {
+        this.renderer.removeClass(this.mainContent, 'location-map-fullscreen');
+      }
+    }
+
+    requestAnimationFrame(() => {
+      this.updateMapHeight();
+    });
   }
 
   @HostListener('window:resize')
@@ -873,9 +897,25 @@ export class LocationComponent implements OnInit, AfterViewInit, OnDestroy {
     this.updateMapHeight();
   }
 
+  @HostListener('document:keydown.escape')
+  onEscape(): void {
+    if (this.isMapFullscreen) {
+      this.toggleMapFullscreen();
+    }
+  }
+
   private updateMapHeight(): void {
     const el = this.mapViewport?.nativeElement;
     if (!el) return;
+
+    if (this.isMapFullscreen && this.mainContent) {
+      const mainContentRect = this.mainContent.getBoundingClientRect();
+      const top = el.getBoundingClientRect().top;
+      const availableHeight = Math.max(mainContentRect.bottom - top, 280);
+      this.mapHeight = `${availableHeight}px`;
+      return;
+    }
+
     const top = el.getBoundingClientRect().top;
     const paddingBottom = 16;
     const minHeight = 420;

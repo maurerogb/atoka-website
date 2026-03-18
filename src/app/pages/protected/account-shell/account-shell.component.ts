@@ -25,6 +25,7 @@ export class AccountShellComponent implements OnInit, OnDestroy {
   showAddressVerificationButton = false;
   addressVerificationLink = '';
   showNav = false;
+  isSidebarCollapsed = false;
   private baseTitle = '';
   private baseDescription = '';
   private readonly subscriptions = new Subscription();
@@ -104,6 +105,10 @@ export class AccountShellComponent implements OnInit, OnDestroy {
   
   toggle() {
     document.getElementById('sidebar')?.classList.toggle("showSidebar")
+  }
+
+  toggleSidebarCollapse(): void {
+    this.isSidebarCollapsed = !this.isSidebarCollapsed;
   }
 
   private updateHeaderForUrl(url: string): void {

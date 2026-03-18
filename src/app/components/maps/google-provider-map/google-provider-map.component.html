@@ -25,19 +25,15 @@
         [options]="directionsOptions"
       ></map-directions-renderer>
     }
-    @if (originPosition && hasMapId) {
-      <map-advanced-marker
+    @if (originPosition) {
+      <map-marker
         [position]="originPosition"
-        [content]="originIsCurrentLocation ? currentLocationContent : originMarkerContent"
-        [zIndex]="originIsCurrentLocation ? 1000 : 900"
-      ></map-advanced-marker>
+      ></map-marker>
     }
-    @if (destinationPosition && hasMapId) {
-      <map-advanced-marker
+    @if (destinationPosition) {
+      <map-marker
         [position]="destinationPosition"
-        [content]="destinationIsCurrentLocation ? currentLocationContent : destinationMarkerContent"
-        [zIndex]="900"
-      ></map-advanced-marker>
+      ></map-marker>
     }
     @if (originIsCurrentLocation && originPosition && currentLocationAccuracyMeters) {
       <map-circle

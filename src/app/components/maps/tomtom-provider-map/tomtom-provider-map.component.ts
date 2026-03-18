@@ -23,6 +23,8 @@ interface TomTomDirectionsSummary {
   trafficDeltaText?: string;
 }
 
+type TomTomMapView = 'map' | 'satellite';
+
 declare global {
   interface Window {
     tt?: {
@@ -43,8 +45,10 @@ declare global {
 export class TomtomProviderMapComponent implements AfterViewInit, OnChanges, OnDestroy {
   @ViewChild('host') hostRef?: ElementRef<HTMLElement>;
 
+  @Input() height = '420px';
   @Input() center: google.maps.LatLngLiteral | null = null;
-  @Input() zoom = 16;
+  @Input() zoom = 19;
+  @Input() mapView: TomTomMapView = 'satellite';
   @Input() providerLabel = 'TomTom Map';
   @Input() atoka = '';
   @Input() address = '';
@@ -55,11 +59,16 @@ export class TomtomProviderMapComponent implements AfterViewInit, OnChanges, OnD
   errorMessage = '';
 
   private readonly apiKey = (environment.tomTomApiKey || '').trim();
+  private readonly mapStyleUrl =
+    'https://api.tomtom.com/style/1/style/*?map=2/basic_street-light&poi=2/poi_light';
+  private readonly satelliteStyleUrl =
+    'https://api.tomtom.com/style/1/style/*?map=2/basic_street-satellite&poi=2/poi_dynamic-satellite';
   private mapInstance: any | null = null;
   private marker: any | null = null;
   private hostEl: HTMLElement | null = null;
   private routeIds: string[] = [];
   private lastFittedRouteKey = '';
+  private lastAppliedStyleUrl = '';
   private pendingRouteRender = false;
   private styleRefreshHandler: (() => void) | null = null;
   private idleReconcileHandler: (() => void) | null = null;
@@ -77,8 +86,10 @@ export class TomtomProviderMapComponent implements AfterViewInit, OnChanges, OnD
     }
 
     if (
+      changes['height'] ||
       changes['center'] ||
       changes['zoom'] ||
+      changes['mapView'] ||
       changes['selectedRoutePath'] ||
       changes['alternateRoutePaths']
     ) {
@@ -93,6 +104,18 @@ export class TomtomProviderMapComponent implements AfterViewInit, OnChanges, OnD
   @HostListener('window:resize')
   onResize(): void {
     this.mapInstance?.resize?.();
+  }
+
+  setMapView(view: TomTomMapView): void {
+    if (this.mapView === view) {
+      return;
+    }
+    this.mapView = view;
+    this.applyMapStyle();
+    if (this.selectedRoutePath.length > 1) {
+      this.lastFittedRouteKey = '';
+      this.scheduleRouteRenderWhenReady();
+    }
   }
 
   private async syncMap(): Promise<void> {
@@ -122,13 +145,16 @@ export class TomtomProviderMapComponent implements AfterViewInit, OnChanges, OnD
       }
 
       if (!this.mapInstance) {
+        const initialStyle = this.getStyleUrl();
         this.mapInstance = tt.map({
           key: this.apiKey,
           container: host,
           center: [center.lng, center.lat],
           zoom: this.zoom,
+          style: initialStyle,
           dragRotate: false,
         });
+        this.lastAppliedStyleUrl = initialStyle;
         this.hostEl = host;
         this.mapInstance.addControl(new tt.NavigationControl(), 'top-right');
         if (typeof this.mapInstance.once === 'function') {
@@ -356,6 +382,7 @@ export class TomtomProviderMapComponent implements AfterViewInit, OnChanges, OnD
     this.hostEl = null;
     this.routeIds = [];
     this.lastFittedRouteKey = '';
+    this.lastAppliedStyleUrl = '';
     this.pendingRouteRender = false;
     this.styleRefreshHandler = null;
     this.idleReconcileHandler = null;
@@ -423,10 +450,35 @@ export class TomtomProviderMapComponent implements AfterViewInit, OnChanges, OnD
       ],
       {
         padding: 72,
-        maxZoom: 16,
+        maxZoom: 19,
         duration: 450,
       },
     );
+  }
+
+  private getStyleUrl(): string {
+    return this.mapView === 'map' ? this.mapStyleUrl : this.satelliteStyleUrl;
+  }
+
+  private applyMapStyle(): void {
+    if (!this.mapInstance || typeof this.mapInstance.setStyle !== 'function') {
+      return;
+    }
+
+    const styleUrl = this.getStyleUrl();
+    if (this.lastAppliedStyleUrl === styleUrl) {
+      return;
+    }
+
+    try {
+      this.mapInstance.setStyle(styleUrl);
+      this.lastAppliedStyleUrl = styleUrl;
+    } catch (error) {
+      const details = error instanceof Error ? error.message : '';
+      this.errorMessage = details
+        ? `Unable to switch TomTom map style. ${details}`
+        : 'Unable to switch TomTom map style.';
+    }
   }
 
   private buildRouteKey(path: google.maps.LatLngLiteral[]): string {
