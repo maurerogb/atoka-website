@@ -1,0 +1,52 @@
+.app-pagination {
+  @apply flex flex-col gap-3 px-4 py-3 border-t border-[#EEF4F7] md:flex-row md:items-center md:justify-between;
+}
+
+.page-size-wrap {
+  @apply flex items-center gap-2;
+}
+
+.page-size-label {
+  @apply text-xs text-[#667085];
+}
+
+.page-size-field {
+  @apply w-20;
+}
+
+.page-controls {
+  @apply flex items-center gap-2;
+}
+
+.page-chip {
+  @apply min-w-8 h-8 px-2 rounded-md border border-transparent text-sm text-[#344054] bg-white transition flex items-center justify-center;
+}
+
+.page-chip:hover:not(:disabled) {
+  @apply border-[#D0D5DD] bg-[#F9FAFB];
+}
+
+.page-chip.active {
+  @apply bg-primary text-white border-primary;
+}
+
+.page-chip.ellipsis {
+  @apply cursor-default text-[#98A2B3] bg-transparent border-transparent;
+}
+
+.nav-chip {
+  @apply p-0;
+}
+
+.nav-chip mat-icon {
+  @apply text-base h-4 w-4;
+  line-height: 1;
+}
+
+.page-chip:disabled {
+  opacity: 1;
+}
+
+:host ::ng-deep .no-subscript .mat-mdc-form-field-subscript-wrapper {
+  display: none;
+}

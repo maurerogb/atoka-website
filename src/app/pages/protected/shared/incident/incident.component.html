@@ -68,16 +68,17 @@
     </div>
   </div>
 
-  <div class="card bg-white mt-5 lg:mt-10">
+  <div class="card bg-white mt-6">
     <ng-container *ngIf="filteredIncidents.length; else emptyState">
       <div class="table-holder">
         <table class="table-auto">
           <thead>
             <tr class="">
               <th *ngIf="visibleColumns.location">Location</th>
-              <!-- <th *ngIf="visibleColumns.priority">Priority</th> -->
+              <th *ngIf="visibleColumns.priority">Priority</th>
               <th *ngIf="visibleColumns.entryDate">Entry Date</th>
               <th *ngIf="visibleColumns.incidentType">Incident Type</th>
+              <th *ngIf="visibleColumns.incident">Incident</th>
               <th *ngIf="visibleColumns.status">Status</th>
             </tr>
           </thead>
@@ -114,28 +115,33 @@
                     />
                   </div>
                   <div class="flex flex-col gap-2">
-                    <p class="font-semibold text-base text-[#003A50]">
+                    <p class="font-semibold text-sm text-[#003A50] text-nowrap">
                       {{ incident.atokaCode }}
                     </p>
-                    <p class="text-gray-500 text-[12px]">
+                    <p class="text-[#72747D] font-light text-[12px]">
                       {{ incident.incidentLocation || 'N/A'}}
                     </p>
                   </div>
                 </div>
               </td>
-              <!-- <td *ngIf="visibleColumns.priority">
+              <td *ngIf="visibleColumns.priority">
                 <p class="font-semibold text-[#666666] text-sm">
-                  {{ incident.priority }}
+                  {{ incident.priority || 'N/A' }}
                 </p>
-              </td> -->
+              </td>
               <td *ngIf="visibleColumns.entryDate">
                 <p class="font-semibold text-[#666666] text-sm">
-                  {{ incident.incidentDate | date }}
+                  {{ incident.incidentDate | date:'MMM d , h:mm' }}{{ incident.incidentDate | date:'a' | lowercase }}
                 </p>
               </td>
               <td *ngIf="visibleColumns.incidentType">
                 <p class="font-semibold text-[#666666] text-sm">
                    {{ incident.incidentType || 'N/A' }}
+                </p>
+              </td>
+              <td *ngIf="visibleColumns.incident">
+                <p class="font-semibold text-[#666666] text-sm line-clamp-2 max-w-[250px]">
+                   {{ incident.incidentDetails }}
                 </p>
               </td>
               <!-- <td *ngIf="visibleColumns.status">
