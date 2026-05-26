@@ -132,9 +132,13 @@ export class LocationComponent implements OnInit, AfterViewInit, OnDestroy {
     zoomControl: true,
     fullscreenControl: false,
     streetViewControl: false,
-    mapTypeControl: true,
-    mapTypeId: 'satellite' as const,
-    mapId: this.hasMapId ? this.mapIdValue : undefined,
+    mapTypeControl: false,
+    mapTypeId: 'hybrid' as const,
+    clickableIcons: false,
+    styles: [
+      { featureType: 'poi', stylers: [{ visibility: 'off' }] },
+      { featureType: 'transit', stylers: [{ visibility: 'off' }] },
+    ],
   };
 
   mapProviders: MapProviderOption[] = [

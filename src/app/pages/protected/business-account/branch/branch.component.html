@@ -1,4 +1,5 @@
-<div class="account flex flex-col gap-4">
+<div class="account branch-page flex flex-col gap-4" [class.map-fullscreen-mode]="isMapFullscreen">
+  @if (!showMapDetails) {
   <div class="flex flex-col md:flex-row gap-4 md:items-center md:justify-between">
     <div class="flex flex-wrap gap-3 w-full md:max-w-sm">
       <mat-form-field subscriptSizing="dynamic" class="w-full rounded-xl table-search no-subscript" appearance="fill">
@@ -13,7 +14,7 @@
     </div>
 
     <div class="flex flex-wrap gap-3 justify-end">
-      <button 
+      <button
         type="button"
         mat-stroked-button
         class="!min-w-24 !bg-white shadow-sm border-input"
@@ -33,18 +34,25 @@
     </div>
   </div>
 
-  <div *ngIf="headOffice" class="grid grid-cols-2 pt-3">
+  <div *ngIf="selectedBranch" class="grid pt-3">
     <div class="col-span-1">
-      <div class="card bg-white rounded-lg px-6 py-4 gap-2">
-        <p class="text-[#003A50] font-semibold text-sm">{{ headOffice.name || 'Head Office' }}</p>
-        <div class="rounded-lg p-3 bg-[#F5F4F7] w-full grid gap-2">
-          <p class="text-base font-bold text-[#002330]">{{ headOffice.atoka }}</p>
-          <p class="text-sm text-[#003A50]">{{ headOffice.address }}</p>
-        </div>
+      <div class="card bg-white rounded-lg px-6 py-4 gap-4">
+        <p class="text-[#003A50] font-semibold text-sm">{{ selectedBranch.name || 'Head Office' }}</p>
 
-        <p class="text-sm text-[#003A50] font-medium">
-          You currently have {{ headOffice.employeeCount }} employees at this business location.
-        </p>
+        <div class="grid gap-4">
+          <div class="flex items-center gap-2">
+            <img src="assets/images/avatar_blink.png"/>
+            <p class="text-sm text-[#003A50] font-medium">
+              You currently have {{ selectedBranch.employeeCount }} employees at this business location.
+            </p>
+          </div>
+          
+          <div class="flex rounded-lg p-3 bg-[#F5F4F7] w-full items-center gap-2">
+            <p class="text-base font-bold text-[#002330]">{{ selectedBranch.atoka }}</p>
+            <p class="text-sm text-[#003A50]">{{ selectedBranch.address }}</p>
+          </div>
+
+        </div>
       </div>
     </div>
   </div>
@@ -59,8 +67,8 @@
         <thead>
           <tr>
             <th>Branch Name</th>
-            <th>Longitude</th>
-            <th>Latitude</th>
+            <!-- <th>Longitude</th>
+            <th>Latitude</th> -->
             <th>Street Name</th>
             <th>City</th>
             <th>House Number</th>
@@ -70,16 +78,17 @@
           </tr>
         </thead>
         <tbody>
-          @for (branch of filteredBranches; track branch.atoka) {
-          <tr>
+          @for (branch of filteredBranches; track trackBranch($index, branch)) {
+          <tr
+            class="branch-row"
+            [class.selected]="isSelectedBranch(branch)"
+            (click)="selectBranch(branch)"
+            (keydown.enter)="selectBranch(branch)"
+            (keydown.space)="selectBranch(branch); $event.preventDefault()"
+            tabindex="0"
+          >
             <td>
               <p class="text-[#003A50] text-sm">{{ branch.branchName }}</p>
-            </td>
-            <td>
-              <p class="text-[#666666] text-sm">{{ branch.longitude }}</p>
-            </td>
-            <td>
-              <p class="text-[#666666] text-sm">{{ branch.latitude }}</p>
             </td>
             <td>
               <p class="text-[#003A50] text-sm">{{ branch.streetName }}</p>
@@ -87,8 +96,8 @@
             <td>
               <p class="text-[#666666] text-sm">{{ branch.cityName }}</p>
             </td>
-            <td>
-              <p class="text-[#666666] text-sm text-center">{{ branch.atokaNumber }}</p>
+            <td class="flex">
+              <p class="text-[#666666] text-sm text-center">{{ branch.atokaNumber || branch.oldNumber }}</p>
             </td>
             <td>
               <p class="text-[#666666] text-sm">{{ branch.stateName }}</p>
@@ -97,7 +106,17 @@
               <p class="text-[#666666] text-sm">{{ branch.countries }}</p>
             </td>
             <td>
-              <p class="text-[#666666] text-sm text-nowrap">{{ branch.atoka }}</p>
+              @if (hasBranchCoordinates(branch)) {
+                <button
+                  type="button"
+                  class="atoka-link text-nowrap"
+                  (click)="openBranchMap(branch); $event.stopPropagation()"
+                >
+                  {{ branch.atoka || 'View Map' }}
+                </button>
+              } @else {
+                <span class="text-[#666666] text-sm text-nowrap">{{ branch.atoka || 'N/A' }}</span>
+              }
             </td>
           </tr>
           }
@@ -105,4 +124,56 @@
       </table>
     </div>
   </div>
+  } @else {
+  <div class="map-view-panel" [class.map-fullscreen]="isMapFullscreen">
+    @if (!isMapFullscreen) {
+    <button type="button" class="branch-back" (click)="closeBranchMap()">
+      <mat-icon>arrow_back</mat-icon>
+      <span>Back</span>
+    </button>
+    }
+
+    <div class="map-shell bg-white rounded-lg overflow-hidden shadow-sm">
+      <div class="map-strip">
+        <div class="map-strip-left">
+          @if (isMapFullscreen) {
+          <button type="button" class="branch-back-strip" (click)="closeBranchMap()">
+            <mat-icon>arrow_back</mat-icon>
+            <span>Back</span>
+          </button>
+          }
+          <img src="assets/images/current-location.png" alt="Location" class="h-auto w-auto object-contain" />
+          <span class="map-strip-address">
+            {{ mapStripLabel }}
+          </span>
+        </div>
+        <button
+          type="button"
+          mat-icon-button
+          class="!min-w-0"
+          [attr.aria-label]="isMapFullscreen ? 'Exit fullscreen map' : 'Fullscreen map'"
+          (click)="toggleMapFullscreen()"
+        >
+          <mat-icon>{{ isMapFullscreen ? 'fullscreen_exit' : 'fullscreen' }}</mat-icon>
+        </button>
+      </div>
+      <div class="map-canvas w-full overflow-hidden">
+        @if (mapCenter; as center) {
+          <app-google-provider-map
+            [height]="mapHeight"
+            [center]="center"
+            [zoom]="mapZoomLevel"
+            [options]="mapOptions"
+            [destinationPosition]="center"
+            [providerLabel]="'Google Map'"
+            [atoka]="selectedBranch.atoka"
+            [address]="selectedBranch.address"
+          ></app-google-provider-map>
+        } @else {
+          <div class="p-6 text-sm text-gray-500">Map unavailable for this branch coordinates.</div>
+        }
+      </div>
+    </div>
+  </div>
+  }
 </div>

@@ -119,6 +119,8 @@ export class LoginComponent implements OnInit {
     const route = this.authService.getNavigateRoute(data);
     if (route) {
       this.router.navigate([route]);
-    }    
+    } else {
+      this.message = 'Unable to determine user role. Please contact support.';
+    }
   }
 }

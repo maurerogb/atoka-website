@@ -5,6 +5,8 @@ export interface ClaimPropertyRequest {
   documentTypeId: number;
   fileExtention: string;
   documentRefNo: string;
+  verifyOwnership?: boolean;
+  propertyManager?: string;
 }
 
 export interface TenantConfirmationStatusRequest {

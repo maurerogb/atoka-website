@@ -3,8 +3,8 @@
 }
 
 .mdc-dialog__surface {
-    padding-left: 3rem !important;
-    padding-right: 3rem !important;
+    padding-left: 2rem !important;
+    padding-right: 2rem !important;
 }
 
 .mdc-text-field {
@@ -15,21 +15,12 @@
     padding-right: 10px;
 }
 
-// .mdc-text-field__input {
-//     padding: 0;
-//     color: #01171f;
-// }
-
 .mdc-text-field,
 .mdc-text-field--filled:not(.mdc-text-field--disabled) {
     border-radius: 8px;
     background: #FFF;
     background-color: #FFF !important;
     border: 1px solid #D1D5DB;
-}
-
-.mat-mdc-form-field {
-    @apply pt-2;
 }
 
 

@@ -87,13 +87,15 @@ export class IncidentComponent {
         const incidentType = (incident.incidentType ?? '').toString().toLowerCase();
         const incidentDetails = (incident.incidentDetails ?? '').toString().toLowerCase();
         const priority = (incident.priority ?? '').toString().toLowerCase();
+        const incidentStatus = (incident.incidentStatus ?? '').toString().toLowerCase();
 
         return (
           atokaCode.includes(term) ||
           address.includes(term) ||
           incidentType.includes(term) ||
           incidentDetails.includes(term) ||
-          priority.includes(term)
+          priority.includes(term) ||
+          incidentStatus.includes(term)
         );
       });
     }

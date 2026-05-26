@@ -1,0 +1,40 @@
+<!-- <div class="verification-action-dialog p-6">
+  <div class="grid gap-5">
+    <p class="text-xl font-semibold text-[#003A50]">Address Verification Request</p>
+    <p class="text-sm leading-6 text-[#475467]">
+      Approving this request confirms that the address provided is accurate to the best of your knowledge. This may be used for identity verification, service activation, or compliance purposes.
+    </p>
+    <div class="flex flex-col gap-3 sm:flex-row sm:justify-end">
+      <button type="button" mat-flat-button color="primary" (click)="approve()">
+        Approve Request
+      </button>
+      <button type="button" mat-stroked-button class="decline-btn" (click)="reject()">
+        Decline Request
+      </button>
+    </div>
+  </div>
+</div> -->
+
+<div class="relative">  
+  <div class="cursor-pointer flex justify-end absolute right-0 top-0" (click)="close()">
+    <img src="assets/svg/cancel.svg" alt="" />
+  </div>
+  <div class="flex flex-col items-center text-center gap-6">
+    <img src="assets/images/accept-icon.svg" alt="Request Approved" class="h-20 w-auto" />    
+    <p class="text-xl font-semibold text-[#003A50]">Approve Verification</p>    
+    <p class="text-sm text-[#354052] max-w-[522px]">
+      Approving this request confirms that the address provided is accurate to the best of your knowledge. This may be used for identity verification, service activation, or compliance purposes.
+    </p>
+    <!-- <button type="button" mat-flat-button color="primary" (click)="close()">
+      Back to requests
+    </button> -->
+    <div class="flex flex-col gap-3 sm:flex-row sm:justify-end">
+      <button type="button" mat-flat-button color="primary" class="!min-w-40" (click)="approve()">
+        Approve Request
+      </button>
+      <button type="button" mat-stroked-button class="decline-btn" class="!min-w-40" (click)="reject()">
+        Decline Request
+      </button>
+    </div>
+  </div>
+</div>

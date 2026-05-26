@@ -23,8 +23,6 @@ interface TomTomDirectionsSummary {
   trafficDeltaText?: string;
 }
 
-type TomTomMapView = 'map' | 'satellite';
-
 declare global {
   interface Window {
     tt?: {
@@ -48,7 +46,6 @@ export class TomtomProviderMapComponent implements AfterViewInit, OnChanges, OnD
   @Input() height = '420px';
   @Input() center: google.maps.LatLngLiteral | null = null;
   @Input() zoom = 19;
-  @Input() mapView: TomTomMapView = 'satellite';
   @Input() providerLabel = 'TomTom Map';
   @Input() atoka = '';
   @Input() address = '';
@@ -59,9 +56,8 @@ export class TomtomProviderMapComponent implements AfterViewInit, OnChanges, OnD
   errorMessage = '';
 
   private readonly apiKey = (environment.tomTomApiKey || '').trim();
-  private readonly mapStyleUrl =
-    'https://api.tomtom.com/style/1/style/*?map=2/basic_street-light&poi=2/poi_light';
-  private readonly satelliteStyleUrl =
+  // Keep a single hybrid-style base map (satellite imagery with street labels).
+  private readonly hybridStyleUrl =
     'https://api.tomtom.com/style/1/style/*?map=2/basic_street-satellite&poi=2/poi_dynamic-satellite';
   private mapInstance: any | null = null;
   private marker: any | null = null;
@@ -89,7 +85,6 @@ export class TomtomProviderMapComponent implements AfterViewInit, OnChanges, OnD
       changes['height'] ||
       changes['center'] ||
       changes['zoom'] ||
-      changes['mapView'] ||
       changes['selectedRoutePath'] ||
       changes['alternateRoutePaths']
     ) {
@@ -104,18 +99,6 @@ export class TomtomProviderMapComponent implements AfterViewInit, OnChanges, OnD
   @HostListener('window:resize')
   onResize(): void {
     this.mapInstance?.resize?.();
-  }
-
-  setMapView(view: TomTomMapView): void {
-    if (this.mapView === view) {
-      return;
-    }
-    this.mapView = view;
-    this.applyMapStyle();
-    if (this.selectedRoutePath.length > 1) {
-      this.lastFittedRouteKey = '';
-      this.scheduleRouteRenderWhenReady();
-    }
   }
 
   private async syncMap(): Promise<void> {
@@ -457,28 +440,7 @@ export class TomtomProviderMapComponent implements AfterViewInit, OnChanges, OnD
   }
 
   private getStyleUrl(): string {
-    return this.mapView === 'map' ? this.mapStyleUrl : this.satelliteStyleUrl;
-  }
-
-  private applyMapStyle(): void {
-    if (!this.mapInstance || typeof this.mapInstance.setStyle !== 'function') {
-      return;
-    }
-
-    const styleUrl = this.getStyleUrl();
-    if (this.lastAppliedStyleUrl === styleUrl) {
-      return;
-    }
-
-    try {
-      this.mapInstance.setStyle(styleUrl);
-      this.lastAppliedStyleUrl = styleUrl;
-    } catch (error) {
-      const details = error instanceof Error ? error.message : '';
-      this.errorMessage = details
-        ? `Unable to switch TomTom map style. ${details}`
-        : 'Unable to switch TomTom map style.';
-    }
+    return this.hybridStyleUrl;
   }
 
   private buildRouteKey(path: google.maps.LatLngLiteral[]): string {

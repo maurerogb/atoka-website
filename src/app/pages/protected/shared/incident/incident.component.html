@@ -90,26 +90,9 @@
             >
               <td *ngIf="visibleColumns.location">
                 <div class="flex gap-4 items-center">
-                  <!-- <div
-                    class="p-3 rounded-full w-[39px] h-[39px]"
-                    [ngClass]="{
-                      'bg-[#F2FCF2]': incident.status === 'Successful',
-                      'bg-[#FFECE8]': incident.status !== 'Successful'
-                    }"
-                  >
+                  <div class="p-3 rounded-full w-[39px] h-[39px] bg-[#FFECE8]">
                     <img
-                      [src]="
-                        incident.status === 'Successful'
-                          ? 'assets/svg/info_green.svg'
-                          : 'assets/svg/info_red.svg'
-                      "
-                      alt=""
-                      class="w-full"
-                    />
-                  </div> -->
-                  <div class="p-3 rounded-full w-[39px] h-[39px] bg-[#F2FCF2]">
-                    <img
-                      [src]="'assets/svg/info_green.svg'"
+                      [src]="'assets/svg/info_red.svg'"
                       alt=""
                       class="w-full"
                     />
@@ -144,31 +127,9 @@
                    {{ incident.incidentDetails }}
                 </p>
               </td>
-              <!-- <td *ngIf="visibleColumns.status">
-                <p
-                  class="status text-xs"
-                  [ngClass]="{
-                    successful: incident.status === 'Successful',
-                    draft: incident.status === 'Draft',
-                    failed: incident.status === 'Failed',
-                    pending: incident.status === 'Pending'
-                  }"
-                >
-                  <span>{{ incident.status }}</span>
-                  <span>
-                    <img src="assets/svg/badge.svg" alt="" />
-                  </span>
-                </p>
-              </td> -->
               <td *ngIf="visibleColumns.status">
-                <p
-                  class="status text-xs"
-                  [ngClass]="'successful'"
-                >
-                  <span>Successful</span>
-                  <span>
-                    <img src="assets/svg/badge.svg" alt="" />
-                  </span>
+                <p class="font-semibold text-[#666666] text-sm">
+                  {{ incident.incidentStatus || 'N/A' }}
                 </p>
               </td>
             </tr>

@@ -11,7 +11,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { Subscription, take } from 'rxjs';
 import { BaseResponse } from '../../../../model/base-response';
 import { PersonalData } from '../../../../model/dto/personal-data-dto';
 import { ResponseCode } from '../../../../model/enums';
@@ -21,6 +21,7 @@ import { SettingsChangePasswordDialogComponent } from '../../../../components/mo
 import { SettingsChangeAddressDialogComponent } from '../../../../components/modals/settings-change-address-dialog/settings-change-address-dialog.component';
 import { SettingsChangeEmploymentStatusDialogComponent } from '../../../../components/modals/settings-change-employment-status-dialog/settings-change-employment-status-dialog.component';
 import { SettingsSuccessDialogComponent } from '../../../../components/modals/settings-success-dialog/settings-success-dialog.component';
+import { EmploymentLengthPipe } from '../../../../shared/pipes/employment-length.pipe';
 import { AuthenticationService } from '../../../../services/authentication.service';
 import { LoadingService } from '../../../../services/loading.service';
 import { RegistrationService } from '../../../../services/registration.service';
@@ -98,6 +99,7 @@ const SETTINGS_NAV_BY_ACCOUNT: Record<string, SettingsSectionId[]> = {
     MatSlideToggleModule,
     UploadProfileImageComponent,
     LoaderComponent,
+    EmploymentLengthPipe,
   ],
   templateUrl: './settings.component.html',
   styleUrl: './settings.component.scss',
@@ -106,9 +108,10 @@ export class SettingsComponent implements OnInit, OnDestroy {
   accountType = '';
   sections: SettingsSection[] = [];
   activeSectionId: SettingsSectionId = 'my-details'; //'security'; //'my-details';
-  profileImageControl = new FormControl('assets/images/avatar-2.png');
+  profileImageControl = new FormControl('');
   personalForm: FormGroup;
   personalDetails?: PersonalData;
+  pendingProfileImageFile?: File;
   personalMessage = '';
   isSavingPersonal = false;
   private readonly subscriptions = new Subscription();
@@ -165,7 +168,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
   }
 
   get canSavePersonal(): boolean {
-    return this.personalForm.dirty && !this.isSavingPersonal;
+    return (this.personalForm.dirty || Boolean(this.pendingProfileImageFile)) && !this.isSavingPersonal;
   }
 
   get titleValue(): string {
@@ -207,8 +210,75 @@ export class SettingsComponent implements OnInit, OnDestroy {
     return id && id > 0 ? String(id) : '';
   }
 
+  get atokaAddressDetailValue(): string {
+    const addressDetails = this.personalDetails?.addressDetails as
+      | {
+          houseName?: string;
+          oldNumber?: string;
+          atokaNumber?: string;
+          streetName?: string;
+          cityName?: string;
+          stateName?: string;
+          countries?: string;
+        }
+      | undefined;
+
+    if (!addressDetails) {
+      return 'Address details unavailable.';
+    }
+
+    const streetLine = [
+      addressDetails.houseName,
+      addressDetails.oldNumber || addressDetails.atokaNumber,
+      addressDetails.streetName,
+    ]
+      .filter(Boolean)
+      .join(' ')
+      .trim();
+
+    const parts = [streetLine, addressDetails.cityName, addressDetails.stateName, addressDetails.countries]
+      .filter(Boolean)
+      .map((value) => String(value).trim())
+      .filter((value) => Boolean(value));
+
+    return parts.join(', ') || 'Address details unavailable.';
+  }
+
+  get dateAtAddressValue(): Date | null {
+    const addressDetails = this.personalDetails?.addressDetails as
+      | { dateAtAddrses?: string }
+      | undefined;
+
+    const value = addressDetails?.dateAtAddrses;
+
+    if (!value) {
+      return null;
+    }
+
+    const parsed = new Date(value);
+    return Number.isNaN(parsed.getTime()) ? null : parsed;
+  }
+
   get accountStatusLabel(): string {
     return this.personalDetails?.confirmationStatus || 'Active';
+  }
+
+  get accountStatusClass(): string {
+    const status = (this.personalDetails?.confirmationStatus || 'ACTIVE').toUpperCase();
+
+    if (status === 'CONFIRMED' || status === 'APPROVED' || status === 'APROVED' || status === 'ACTIVE') {
+      return 'successful';
+    }
+
+    if (status === 'REMOVED' || status === 'REJECTED' || status === 'FAILED' || status === 'INACTIVE') {
+      return 'failed';
+    }
+
+    if (status === 'PENDING') {
+      return 'pending';
+    }
+
+    return 'draft';
   }
 
   get accountSummary(): Array<{ label: string; value: string }> {
@@ -233,8 +303,35 @@ export class SettingsComponent implements OnInit, OnDestroy {
     this.activeSectionId = id;
   }
 
+  onProfileImageSelected(file: File | null): void {
+    if (!file) {
+      this.pendingProfileImageFile = undefined;
+      return;
+    }
+
+    const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/svg+xml'];
+    if (!allowedTypes.includes(file.type)) {
+      this.pendingProfileImageFile = undefined;
+      this.personalMessage = 'Please upload a valid image file (SVG, PNG, JPG, or GIF).';
+      return;
+    }
+
+    const maxSizeBytes = 5 * 1024 * 1024;
+    if (file.size > maxSizeBytes) {
+      this.pendingProfileImageFile = undefined;
+      this.personalMessage = 'Please upload an image smaller than 5MB.';
+      return;
+    }
+
+    this.personalMessage = '';
+    this.pendingProfileImageFile = file;
+  }
+
   savePersonalDetails(): void {
-    if (this.personalForm.invalid || !this.personalForm.dirty || this.isSavingPersonal) {
+    const hasProfileChanges = this.personalForm.dirty;
+    const hasPhotoChange = Boolean(this.pendingProfileImageFile);
+
+    if (this.personalForm.invalid || (!hasProfileChanges && !hasPhotoChange) || this.isSavingPersonal) {
       return;
     }
 
@@ -247,9 +344,72 @@ export class SettingsComponent implements OnInit, OnDestroy {
     this.isSavingPersonal = true;
     this.loadingService.show();
 
+    const finishSaving = () => {
+      this.isSavingPersonal = false;
+      this.loadingService.hide();
+    };
+
+    const uploadUserId =
+      this.authService.getLoginInfo()?.userId || this.personalDetails?.userIdentifer || '';
+
+    const uploadPhoto = () => {
+      if (!hasPhotoChange) {
+        this.pendingProfileImageFile = undefined;
+        this.refreshCachedOccupantDetails();
+        finishSaving();
+        return;
+      }
+
+      if (!uploadUserId) {
+        this.personalMessage =
+          'Profile updated, but photo could not be uploaded because user identity is missing.';
+        if (hasProfileChanges) {
+          this.refreshCachedOccupantDetails();
+        }
+        finishSaving();
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append('ProfilePhoto', this.pendingProfileImageFile!);
+      formData.append('userId', uploadUserId);
+
+      this.registrationService.uploadProfilePhoto(formData).subscribe({
+        next: (res: BaseResponse<any>) => {
+          if (res.responseCode === ResponseCode.Success) {
+            this.pendingProfileImageFile = undefined;
+            this.refreshCachedOccupantDetails();
+            finishSaving();
+            return;
+          }
+
+          this.personalMessage = res.description || 'Unable to upload your profile photo.';
+          if (hasProfileChanges) {
+            this.refreshCachedOccupantDetails();
+          }
+          finishSaving();
+        },
+        error: (err: any) => {
+          this.personalMessage = this.extractErrorMessage(
+            err,
+            'An error occurred while uploading your profile photo.'
+          );
+          if (hasProfileChanges) {
+            this.refreshCachedOccupantDetails();
+          }
+          finishSaving();
+        },
+      });
+    };
+
     const formValue = this.personalForm.value;
+    const atokaAddressIdFromAddressDetails = (
+      this.personalDetails?.addressDetails as { atokaAddressId?: number } | undefined
+    )?.atokaAddressId;
+
     const payload: PersonalData = {
       ...this.personalDetails,
+      atokaAddressId: atokaAddressIdFromAddressDetails ?? this.personalDetails?.atokaAddressId,
       title: formValue.title || '',
       firstName: formValue.firstName || '',
       middleName: formValue.middleName || '',
@@ -260,28 +420,29 @@ export class SettingsComponent implements OnInit, OnDestroy {
       dateOfBirth: this.normalizeDateForApi(formValue.dateOfBirth),
     };
 
+    if (!hasProfileChanges) {
+      uploadPhoto();
+      return;
+    }
+
     this.registrationService.updateProfile(payload).subscribe({
       next: (res: BaseResponse<PersonalData>) => {
-        this.isSavingPersonal = false;
-        this.loadingService.hide();
         if (res.responseCode === ResponseCode.Success) {
           this.personalDetails = res.data || payload;
           this.patchPersonalForm(this.personalDetails);
-          this.personalForm.markAsPristine();
-        } else {
-          this.personalMessage = res.description || 'Unable to update your profile.';
+          uploadPhoto();
+          return;
         }
+
+        this.personalMessage = res.description || 'Unable to update your profile.';
+        finishSaving();
       },
       error: (err: any) => {
-        this.isSavingPersonal = false;
-        this.loadingService.hide();
-        if (err?.error?.description) {
-          this.personalMessage = err.error.description;
-        } else if (err?.description) {
-          this.personalMessage = err.description;
-        } else {
-          this.personalMessage = 'An error occurred. Please try again.';
-        }
+        this.personalMessage = this.extractErrorMessage(
+          err,
+          'An error occurred while updating your profile.'
+        );
+        finishSaving();
       },
     });
   }
@@ -295,11 +456,28 @@ export class SettingsComponent implements OnInit, OnDestroy {
   }
 
   openChangeAddress(): void {
-    this.dialog.open(SettingsChangeAddressDialogComponent, {
+    const dialogRef = this.dialog.open(SettingsChangeAddressDialogComponent, {
       width: '640px',
       maxWidth: '95vw',
+      maxHeight: '90vh',
       autoFocus: false,
     });
+
+    this.subscriptions.add(
+      dialogRef.componentInstance.addressUpdated.subscribe((data) => {
+        this.applyAddressUpdate(data?.addressCode, data?.atokaAddressId);
+      })
+    );
+
+    this.subscriptions.add(
+      dialogRef.afterClosed().subscribe((result) => {
+        if (result?.status !== 'success' || !result?.data) {
+          return;
+        }
+
+        this.applyAddressUpdate(result.data.addressCode, result.data.atokaAddressId);
+      })
+    );
   }
 
   openChangeEmploymentStatus(): void {
@@ -390,6 +568,50 @@ export class SettingsComponent implements OnInit, OnDestroy {
       return value.toISOString();
     }
     return value;
+  }
+
+  private extractErrorMessage(err: any, fallback: string): string {
+    if (err?.error?.description) {
+      return err.error.description;
+    }
+
+    if (err?.description) {
+      return err.description;
+    }
+
+    return fallback;
+  }
+
+  private refreshCachedOccupantDetails(): void {
+    this.subscriptions.add(
+      this.authService
+        .ensureOccupantDetailsCached(true)
+        .pipe(take(1))
+        .subscribe()
+    );
+  }
+
+  private applyAddressUpdate(addressCode?: string, atokaAddressId?: number | string): void {
+    const updatedAtokaAddressId = Number(atokaAddressId);
+    const currentAddressDetails =
+      (this.personalDetails?.addressDetails as
+        | { atoka?: string; atokaCode?: string; atokaAddressId?: number }
+        | undefined) ?? {};
+
+    this.personalDetails = {
+      ...(this.personalDetails ?? {}),
+      atokaAddressId: Number.isFinite(updatedAtokaAddressId)
+        ? updatedAtokaAddressId
+        : this.personalDetails?.atokaAddressId,
+      addressDetails: {
+        ...currentAddressDetails,
+        atoka: addressCode ?? currentAddressDetails.atoka,
+        atokaCode: addressCode ?? currentAddressDetails.atokaCode,
+        atokaAddressId: Number.isFinite(updatedAtokaAddressId)
+          ? updatedAtokaAddressId
+          : currentAddressDetails.atokaAddressId,
+      },
+    };
   }
 
   private formatAccountType(accountType: string): string {

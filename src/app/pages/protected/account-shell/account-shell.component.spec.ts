@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute, provideRouter } from '@angular/router';
 import { BehaviorSubject, of } from 'rxjs';
 import { NotificationService } from '../../../services/notification.service';
+import { AuthenticationService } from '../../../services/authentication.service';
 import { AccountShellComponent } from './account-shell.component';
 
 class NotificationServiceStub {
@@ -14,6 +15,16 @@ class NotificationServiceStub {
   setUnreadCount(count: number): void {
     this.unreadSubject.next(count);
   }
+}
+
+class AuthenticationServiceStub {
+  readonly occupantDetails$ = of(undefined);
+  readonly ensureOccupantDetailsCached = jasmine
+    .createSpy('ensureOccupantDetailsCached')
+    .and.returnValue(of(undefined));
+  readonly getCachedOccupantDetails = jasmine
+    .createSpy('getCachedOccupantDetails')
+    .and.returnValue(undefined);
 }
 
 describe('AccountShellComponent', () => {
@@ -38,6 +49,10 @@ describe('AccountShellComponent', () => {
         {
           provide: NotificationService,
           useClass: NotificationServiceStub,
+        },
+        {
+          provide: AuthenticationService,
+          useClass: AuthenticationServiceStub,
         },
       ],
     }).compileComponents();

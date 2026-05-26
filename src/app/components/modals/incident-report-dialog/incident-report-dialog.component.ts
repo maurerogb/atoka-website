@@ -58,7 +58,6 @@ export class IncidentReportDialogComponent implements OnInit {
   isSubmitting = false;
   reportForm!: FormGroup;
 
-  resolutionOptions: string[] = [ 'Federal Government' ];
   constructor(
     private fb: FormBuilder,
     private dialogRef: MatDialogRef<IncidentReportDialogComponent>,
@@ -74,7 +73,6 @@ export class IncidentReportDialogComponent implements OnInit {
     this.reportForm = this.fb.group({
       incidentTypeId: [null, Validators.required],
       incidentDetails: ['', [Validators.required]],
-      resolution: ['', Validators.required],
       priority: [null, Validators.required],
       locationCode: [''],
     });
@@ -132,7 +130,7 @@ export class IncidentReportDialogComponent implements OnInit {
     this.addressFormComponent?.resetForm();
   }
 
-  setPhoto(file: File): void {
+  setPhoto(file: File | undefined): void {
     this.photoFiles = file ? [file] : [];
   }
 
@@ -157,11 +155,10 @@ export class IncidentReportDialogComponent implements OnInit {
   get canSave(): boolean {
     const titleValid = this.reportForm.get('incidentTypeId')?.valid;
     const detailsValid = this.reportForm.get('incidentDetails')?.valid;
-    const resolutionValid = this.reportForm.get('resolution')?.valid;
     const priorityValid = this.reportForm.get('priority')?.valid;
     const hasLocationSelection = !!this.addressCode || this.hideForm;
 
-    return !!titleValid && !!detailsValid && !!resolutionValid && !!priorityValid && hasLocationSelection;
+    return !!titleValid && !!detailsValid && !!priorityValid && hasLocationSelection;
   }
 
   private submitIncident(locationCode: string, atokaAddressId?: number): void {
@@ -179,10 +176,6 @@ export class IncidentReportDialogComponent implements OnInit {
     payload.append('latitude', '0');
     payload.append('incidentTypeId', String(formValue.incidentTypeId ?? 0));
     payload.append('incidentDate', new Date().toISOString());
-    // to be added later
-    // if (formValue.resolution) {
-    //   payload.append('resolution', String(formValue.resolution));
-    // }
     if (formValue.priority) {
       payload.append('priority', String(formValue.priority));
     }

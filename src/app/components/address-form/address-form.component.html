@@ -34,9 +34,10 @@
         </mat-form-field>
       </div>
     </div>
+    
     <div class="grid grid-cols gap-x-4">
       <div class="control">
-        <mat-label class="flex text-sm">Local Government Area</mat-label>
+        <mat-label class="flex text-sm">Local Government Area (LGA)</mat-label>
         <mat-form-field subscriptSizing="dynamic" class="w-full rounded-xl">
           <input #lgaInput type="text" placeholder="Select LGA" matInput formControlName="lgaName" [matAutocomplete]="auto1" />
           <mat-autocomplete #auto1="matAutocomplete" (optionSelected)="getCity($event)">
@@ -51,6 +52,7 @@
         </mat-form-field>
       </div>
     </div>
+
     <div class="grid grid-cols-2 gap-x-4">
       <div class="control">
         <mat-label class="flex text-sm">City</mat-label>
@@ -67,9 +69,19 @@
           </mat-error>
         </mat-form-field>
       </div>
-
+      
       <div class="control">
-        <mat-label class="flex text-sm">District</mat-label>
+        <mat-label class="flex text-sm">House Number</mat-label>
+        <mat-form-field subscriptSizing="dynamic" class="w-full rounded-xl" appearance="fill" floatLabel="always">
+          <input matInput formControlName="houseNumber" placeholder="House Number" type="text" name="firstname" id="firstname" />
+          <mat-error>Please enter your house number</mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+     
+    <div class="grid grid-cols gap-x-4">
+      <div class="control">
+        <mat-label class="flex text-sm">District (optional)</mat-label>
         <mat-form-field subscriptSizing="dynamic" class="w-full rounded-xl">
           <input type="text" placeholder="District" matInput formControlName="districtName" [matAutocomplete]="auto3" />
           <mat-autocomplete #auto3="matAutocomplete">
@@ -80,8 +92,8 @@
         </mat-form-field>
       </div>
     </div>
-
-    <div class="grid grid-cols-2 gap-x-4">
+    
+    <div class="grid grid-cols gap-x-4">
       <div class="control">
         <mat-label class="flex text-sm">Street Name</mat-label>
         <mat-form-field subscriptSizing="dynamic" class="w-full rounded-xl">
@@ -99,21 +111,16 @@
           </mat-error>
         </mat-form-field>
       </div>
-
+    </div>
+  
+    <div class="grid grid-cols gap-x-4">
       <div class="control">
-        <mat-label class="flex text-sm">House Number</mat-label>
+        <mat-label class="flex text-sm">House Name</mat-label>
         <mat-form-field subscriptSizing="dynamic" class="w-full rounded-xl" appearance="fill" floatLabel="always">
-          <input matInput formControlName="houseNumber" placeholder="House Number" type="text" name="firstname" id="firstname" />
-          <mat-error>Please enter your house number</mat-error>
+          <input matInput formControlName="houseName" placeholder="House Name" type="text" name="houseName" id="houseName" />
+          <mat-error>Please enter your house name</mat-error>
         </mat-form-field>
       </div>
-    </div>
-    <div class="control">
-      <mat-label class="flex text-sm">House Name</mat-label>
-      <mat-form-field subscriptSizing="dynamic" class="w-full rounded-xl" appearance="fill" floatLabel="always">
-        <input matInput formControlName="houseName" placeholder="House Name" type="text" name="houseName" id="houseName" />
-        <mat-error>Please enter your house name</mat-error>
-      </mat-form-field>
     </div>
 
     @if (includeVerify) {

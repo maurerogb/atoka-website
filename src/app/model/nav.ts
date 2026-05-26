@@ -7,6 +7,9 @@ export interface INavItem {
   title?: string;
   description?: string;
   showAddressVerificationButton?: boolean;
+  menuGroup?: string;
+  menuGroupLabel?: string;
+  menuGroupIcon?: string;
 }
 
 export interface INavContent {

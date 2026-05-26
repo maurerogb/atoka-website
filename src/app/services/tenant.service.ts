@@ -24,6 +24,11 @@ export class TenantService extends HttpService<BaseResponse<any>> {
     return this.post<BaseResponse<any>>(url, payload);
   }
 
+  claimPropertyMultipart(payload: FormData): Observable<BaseResponse<any>> {
+    const url = 'PropertyOwner';
+    return this.filePost(url, payload);
+  }
+
   updateConfirmationStatus(
     payload: TenantConfirmationStatusRequest,
   ): Observable<BaseResponse<any>> {

@@ -79,6 +79,7 @@ export class AddressFormComponent implements OnInit, OnChanges {
       this.showFormState.emit({
         atokaCode: this.prefilledAddress.atoka,
         atokaAddressId: this.prefilledAddress.atokaAddressId,
+        residentDetailId: this.prefilledAddress.residentDetailId
       });
       return;
     }

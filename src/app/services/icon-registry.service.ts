@@ -45,6 +45,11 @@ const Icons = {
     <rect width="20" height="20" rx="10" fill="#F2F4F7"/>
     <path d="M10.418 5.83301H7.5013C7.28029 5.83301 7.06833 5.92081 6.91205 6.07709C6.75577 6.23337 6.66797 6.44533 6.66797 6.66634V13.333C6.66797 13.554 6.75577 13.766 6.91205 13.9223C7.06833 14.0785 7.28029 14.1663 7.5013 14.1663H12.5013C12.7223 14.1663 12.9343 14.0785 13.0906 13.9223C13.2468 13.766 13.3346 13.554 13.3346 13.333V8.74967M10.418 5.83301L13.3346 8.74967M10.418 5.83301V8.74967H13.3346" stroke="#475467" stroke-width="0.833333" stroke-linecap="round" stroke-linejoin="round"/>
     </svg>`,
+  uploadFile: `<svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect x="2" y="2" width="32" height="32" rx="16" fill="white"/>
+    <rect x="2" y="2" width="32" height="32" rx="16" stroke="#F1FBFF" stroke-width="4"/>
+    <path d="M18.667 11.3335H14.0003C13.6467 11.3335 13.3076 11.474 13.0575 11.724C12.8075 11.9741 12.667 12.3132 12.667 12.6668V23.3335C12.667 23.6871 12.8075 24.0263 13.0575 24.2763C13.3076 24.5264 13.6467 24.6668 14.0003 24.6668H22.0003C22.3539 24.6668 22.6931 24.5264 22.9431 24.2763C23.1932 24.0263 23.3337 23.6871 23.3337 23.3335V16.0002M18.667 11.3335L23.3337 16.0002M18.667 11.3335V16.0002H23.3337" stroke="#0090C7" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>`,
   share: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path d="M18 22C19.6569 22 21 20.6569 21 19C21 17.3431 19.6569 16 18 16C16.3431 16 15 17.3431 15 19C15 20.6569 16.3431 22 18 22Z" stroke="#005677" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
     <path d="M6 15C7.65685 15 9 13.6569 9 12C9 10.3431 7.65685 9 6 9C4.34315 9 3 10.3431 3 12C3 13.6569 4.34315 15 6 15Z" stroke="#005677" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -63,6 +68,15 @@ const Icons = {
     <path d="M19 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V5C3 4.46957 3.21071 3.96086 3.58579 3.58579C3.96086 3.21071 4.46957 3 5 3H16L21 8V19C21 19.5304 20.7893 20.0391 20.4142 20.4142C20.0391 20.7893 19.5304 21 19 21Z" stroke="#005677" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
     <path d="M17 21V13H7V21" stroke="#005677" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
     <path d="M7 3V8H15" stroke="#005677" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    `,
+  trash: `<svg width="17" height="19" viewBox="0 0 17 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0.832031 4.16634H2.4987M2.4987 4.16634H15.832M2.4987 4.16634V15.833C2.4987 16.275 2.67429 16.699 2.98685 17.0115C3.29941 17.3241 3.72334 17.4997 4.16536 17.4997H12.4987C12.9407 17.4997 13.3646 17.3241 13.6772 17.0115C13.9898 16.699 14.1654 16.275 14.1654 15.833V4.16634H2.4987ZM4.9987 4.16634V2.49967C4.9987 2.05765 5.17429 1.63372 5.48685 1.32116C5.79941 1.0086 6.22334 0.833008 6.66536 0.833008H9.9987C10.4407 0.833008 10.8646 1.0086 11.1772 1.32116C11.4898 1.63372 11.6654 2.05765 11.6654 2.49967V4.16634M6.66536 8.33301V13.333M9.9987 8.33301V13.333" stroke="#667085" stroke-width="1.66667" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    `,
+  navtoggle: `<svg width="20" height="20" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M16.75 18.75H2.75C2.21957 18.75 1.71086 18.5393 1.33579 18.1642C0.960714 17.7891 0.75 17.2804 0.75 16.75V2.75C0.75 2.21957 0.960714 1.71086 1.33579 1.33579C1.71086 0.960714 2.21957 0.75 2.75 0.75H16.75C17.2804 0.75 17.7891 0.960714 18.1642 1.33579C18.5393 1.71086 18.75 2.21957 18.75 2.75V16.75C18.75 17.2804 18.5393 17.7891 18.1642 18.1642C17.7891 18.5393 17.2804 18.75 16.75 18.75Z" stroke="#003A50" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M5 7.75L3.25 9.75L5 11.75M7.25 18.75V0.75" stroke="#003A50" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
     </svg>
     `
 }
@@ -86,8 +100,11 @@ export class IconRegistryService {
     this.iconRegistry.addSvgIconLiteral('graph-decline', this.sanitizer.bypassSecurityTrustHtml(Icons.graphDecline));
     this.iconRegistry.addSvgIconLiteral('graph-growth', this.sanitizer.bypassSecurityTrustHtml(Icons.graphGrowth));
     this.iconRegistry.addSvgIconLiteral('feature-file', this.sanitizer.bypassSecurityTrustHtml(Icons.featureFile));
+    this.iconRegistry.addSvgIconLiteral('upload-file', this.sanitizer.bypassSecurityTrustHtml(Icons.uploadFile));
     this.iconRegistry.addSvgIconLiteral('share', this.sanitizer.bypassSecurityTrustHtml(Icons.share));
     this.iconRegistry.addSvgIconLiteral('save', this.sanitizer.bypassSecurityTrustHtml(Icons.save));
     this.iconRegistry.addSvgIconLiteral('direction', this.sanitizer.bypassSecurityTrustHtml(Icons.direction));
+    this.iconRegistry.addSvgIconLiteral('trash', this.sanitizer.bypassSecurityTrustHtml(Icons.trash));
+    this.iconRegistry.addSvgIconLiteral('sidebar-toggle', this.sanitizer.bypassSecurityTrustHtml(Icons.navtoggle));
  }
 }

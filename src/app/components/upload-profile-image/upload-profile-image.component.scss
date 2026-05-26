@@ -5,3 +5,22 @@
 input[type="file"]{
   color:transparent
 }
+
+.profile-image-preview {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #d4d6d9;
+  overflow: hidden;
+  border-radius: 9999px;
+  flex: 0 0 75px;
+  width: 75px;
+  height: 75px;
+}
+
+.profile-image-fallback {
+  color: #667085;
+  width: 30px;
+  height: 30px;
+  font-size: 30px;
+}

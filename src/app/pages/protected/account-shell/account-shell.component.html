@@ -1,93 +1,76 @@
-<!-- <div class="min-h-screen flex bg-[#F5F7FB]">
-  <aside class="w-64 bg-white border-r border-gray-200 p-4">
-    <div class="text-lg font-semibold mb-4 text-[#003A50]">
-      {{ title }}
-    </div>
-
-    <nav class="flex flex-col gap-2">
-      <a
-        *ngFor="let item of navItems"
-        [routerLink]="[item.path]"
-        [routerLinkActiveOptions]="{ exact: item.path === '' }"
-        routerLinkActive="bg-[#00ADEF] text-white"
-        class="px-3 py-2 rounded cursor-pointer hover:bg-[#E6F7FD] text-sm text-[#003A50]"
-      >
-        {{ item.label }}
-      </a>
-    </nav>
-  </aside>
-
-  <main class="flex-1 p-6">
-    <router-outlet></router-outlet>
-  </main>
-</div> -->
-
 <!-- <meta http-equiv="cache-control" content="no-cache" />
 <meta http-equiv="expires" content="0" />
 <meta http-equiv="pragma" content="no-cache" /> -->
 
 <div class="layout min-h-screen flex bg-[#F3F4F6] font-display" [class.sidebar-collapsed]="isSidebarCollapsed">
-  <!-- <app-dashboard-nav (buttonToogle)="openNav()" title="{{currentRoute | titlecase}} " class="!bg-white"></app-dashboard-nav>
-  <app-dashboard-sidebar [navList]="navList" [buttomNav]="bottomNav"></app-dashboard-sidebar> -->
-  
-  <!-- <header class="w-full"> -->
-  <!-- <div class="font-display sticky [z-index:2] top-0 lg:ml-auto lg:w-[calc(100%-270px)] !bg-white">
-    <div class="flex justify-between items-center p-5  pt-5 pb-3 lg:pb-4 border-b border-b-[#D3EEF9]">
-      <div>
-        <p class="text-[32px] p-0 !m-0 text-[#275C70] font-bold">{{title}}</p>
-      </div>
-      <div class="justify-between gap-6 items-center hidden md:flex">
-        <div class="cursor-pointer">
-          <img src="assets/svg/bell.svg" alt="">
-        </div>
-
-        <div class="bg-[#D9EEFF] rounded-md p-2 cursor-pointer">
-          <img src="assets/svg/male-memojis.svg" alt="">
-        </div>
-        <div class="md:hidden">
-          <button (click)="toggle()" mat-icon-button color="primary" aria-label="Example icon button with a menu icon">
-            <mat-icon>menu</mat-icon>
-          </button>
-        </div>
-      </div>
-    </div>
-  </div> -->
-  <!-- </header> -->
-
-  <!-- <aside class="w-full" [ngClass]="showNav ? 'left-0' : 'left-[-300px]'"> -->
-  <!-- <aside class="w-64 bg-white border-r border-gray-200 p-4"> -->
   <div class="sidebar border-r border-gray-200" id="sidebar">
-    <button
-      type="button"
-      mat-icon-button
-      class="sidebar-collapse-toggle hidden lg:inline-flex"
-      [attr.aria-label]="isSidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'"
-      [attr.title]="isSidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'"
-      (click)="toggleSidebarCollapse()"
-    >
-      <mat-icon>{{ isSidebarCollapsed ? 'chevron_right' : 'chevron_left' }}</mat-icon>
-    </button>
-    <div class="logo-div px-5 py-8 flex mx-auto items-center">
-      <div class="sidebar-logo w-[116px]">
-        <img src="assets/svg/logo.svg" alt="" class="w-full">
+    <div class="flex justify-between items-center py-8">
+      <div class="logo-div px-5 hidden lg:flex">
+        <div class="sidebar-logo w-[116px]">
+          <img src="assets/svg/logo.svg" alt="" class="w-full">
+        </div>
       </div>
+      
+      <button
+        type="button"
+        mat-icon-button
+        class="sidebar-collapse-toggle hidden lg:inline-flex"
+        [attr.aria-label]="isSidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'"
+        [attr.title]="isSidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'"
+        (click)="toggleSidebarCollapse()"
+      >
+        <mat-icon svgIcon="sidebar-toggle" [className]="'h-6'"></mat-icon>
+        <!-- <mat-icon>{{ isSidebarCollapsed ? 'chevron_right' : 'chevron_left' }}</mat-icon> -->
+      </button>
     </div>
 
     <div class="top-nav">
-      <li class="nav-link font-display" *ngFor="let nav of navItems.topNav">
-        <a
-          [routerLink]="nav.routerLink"
-          routerLinkActive
-          #rla="routerLinkActive"
-          [class.activelink]="rla.isActive"
-          [routerLinkActiveOptions]="{ exact: nav.exact || false }"
-          [attr.title]="isSidebarCollapsed ? nav.name : null"
+      <ng-container *ngFor="let entry of sidebarTopEntries; trackBy: trackSidebarTopEntry">
+        <li class="nav-link font-display" *ngIf="entry.kind === 'item'">
+          <a
+            [routerLink]="entry.navItem?.routerLink"
+            routerLinkActive
+            #rla="routerLinkActive"
+            [class.activelink]="rla.isActive"
+            [routerLinkActiveOptions]="{ exact: entry.navItem?.exact || false }"
+            [attr.title]="isSidebarCollapsed ? entry.navItem?.name : null"
           >
-          <img [src]="nav.activeIcon" [class.hidden]="!rla.isActive" alt="" />
-          <img [src]="nav.inactiveIcon" [class.hidden]="rla.isActive" alt="" />
-          <span>{{ nav.name }}</span>
-        </a>
-      </li>
+            <img [src]="entry.navItem?.activeIcon" [class.hidden]="!rla.isActive" alt="" />
+            <img [src]="entry.navItem?.inactiveIcon" [class.hidden]="rla.isActive" alt="" />
+            <span>{{ entry.navItem?.name }}</span>
+          </a>
+        </li>
+
+        <li class="nav-link font-display dropdown-nav" *ngIf="entry.kind === 'dropdown'">
+          <button
+            type="button"
+            class="dropdown-trigger"
+            [class.activelink]="entry.dropdownGroup ? isDropdownGroupActive(entry.dropdownGroup) : false"
+            [attr.title]="isSidebarCollapsed ? entry.dropdownGroup?.label : null"
+            (click)="toggleDropdownMenu(entry.dropdownGroup?.key || '')"
+          >
+            <img [src]="entry.dropdownGroup?.icon" alt="" />
+            <span>{{ entry.dropdownGroup?.label }}</span>
+            <mat-icon
+              class="dropdown-chevron"
+              [class.rotate]="entry.dropdownGroup?.isOpen"
+            >expand_more</mat-icon>
+          </button>
+
+          <div class="dropdown-menu" *ngIf="entry.dropdownGroup?.isOpen && !isSidebarCollapsed">
+            <a
+              *ngFor="let nav of entry.dropdownGroup?.items || []"
+              [routerLink]="nav.routerLink"
+              routerLinkActive
+              #dropdownRla="routerLinkActive"
+              [class.activelink]="dropdownRla.isActive"
+              [routerLinkActiveOptions]="{ exact: nav.exact || false }"
+            >
+              <span>{{ nav.name }}</span>
+            </a>
+          </div>
+        </li>
+      </ng-container>
     </div>
 
     <nav class="bottom-nav">
@@ -107,9 +90,20 @@
       </li>
 
       <div class="border-t border-t-[#F1F3F9] grid grid-cols-[1fr_auto] items-center gap-2 pt-4" *ngIf="navItems.hasProfileDisplay">
-        <div class="w-10 h-10 rounded-full flex justify-center items-center">
-          <img src="assets/images/avatar-1.png" alt="" class="w-full">
-        </div>
+        <a
+          class="w-10 h-10 rounded-full flex justify-center items-center bg-[#D4D6D9] overflow-hidden"
+          [routerLink]="settingsRoute"
+          aria-label="Go to settings"
+        >
+          <img
+            *ngIf="hasProfileImage"
+            [src]="profileImageUrl"
+            alt="Profile image"
+            class="w-full h-full rounded-full object-cover"
+            (error)="onProfileImageError()"
+          />
+          <mat-icon *ngIf="!hasProfileImage" class="text-[#667085]">person</mat-icon>
+        </a>
         <div>
           <p class="text-[#101828] font-medium">Goody's enterprise</p>
           <p class="text-[#667085] text-ellipsis">Goody's&#64;enterprise.com</p>
@@ -122,30 +116,6 @@
   <!-- </aside> -->
 
   <div class="main-content flex-1">
-    <!-- <div class="font-display sticky [z-index:2] top-0 lg:ml-auto lg:w-[calc(100%-270px)] !bg-white"> -->
-    <!-- <div class="font-display sticky [z-index:2] top-0 !bg-white">
-      <div class="flex justify-between items-center p-5  pt-5 pb-3 lg:pb-4 border-b border-b-[#D3EEF9]">
-        <div>
-          <p class="text-[32px] p-0 !m-0 text-[#275C70] font-bold">{{title}}</p>
-        </div>
-        <div class="flex gap-6 items-center">
-          <div class="cursor-pointer">
-            <img src="assets/svg/bell.svg" alt="">
-          </div>
-
-          <div class="bg-[#D9EEFF] rounded-md p-2 cursor-pointer">
-            <img src="assets/svg/male-memojis.svg" alt="">
-          </div>
-
-          <div class="lg:hidden">
-            <button (click)="toggle()" mat-icon-button color="primary" aria-label="Toggle sidebar menu">
-              <mat-icon>menu</mat-icon>
-            </button>
-          </div>
-        </div>
-      </div>
-    </div> -->
-
     <div class="shell-header px-10 pt-8 pb-2 [z-index:2] top-0">
       <div class="flex justify-between items-center gap-6">
         <div class="flex flex-col items-start gap-2">
@@ -159,9 +129,20 @@
               <span *ngIf="unreadCount > 0" class="notification-badge">{{ notificationBadgeLabel }}</span>
             </a>
 
-            <div class="bg-[#D4D6D9] rounded-full p-2 cursor-pointer">
-              <img src="assets/svg/male-memojis.svg" alt="">
-            </div>
+            <a
+              class="rounded-full cursor-pointer w-10 h-10 flex items-center justify-center overflow-hidden"
+              [routerLink]="settingsRoute"
+              aria-label="Go to settings"
+            >
+              <img
+                *ngIf="hasProfileImage"
+                [src]="profileImageUrl"
+                alt="Profile image"
+                class="w-full h-full rounded-full object-cover"
+                (error)="onProfileImageError()"
+              >
+              <mat-icon *ngIf="!hasProfileImage" class="text-[#667085]">person</mat-icon>
+            </a>
 
             <div class="lg:hidden">
               <button (click)="toggle()" mat-icon-button color="primary" aria-label="Toggle sidebar menu">
@@ -180,36 +161,4 @@
       <router-outlet></router-outlet>
     </div>
   </div>
-
-  <!-- <div class="p-10 lg:ml-auto lg:w-[calc(100%-270px)] bg-[#F3F4F6]">
-    <router-outlet></router-outlet>
-  </div> -->
-<!--   
-  <aside class="w-64 bg-white border-r border-gray-200 p-4">
-    <div class="text-lg font-semibold mb-4 text-[#003A50]">
-      {{ title }}
-    </div>
-
-    <nav class="flex flex-col gap-2">
-      <a
-        *ngFor="let item of navItems"
-        [routerLink]="[item.path]"
-        [routerLinkActiveOptions]="{ exact: item.path === '' }"
-        routerLinkActive="bg-[#00ADEF] text-white"
-        class="px-3 py-2 rounded cursor-pointer hover:bg-[#E6F7FD] text-sm text-[#003A50]"
-      >
-        {{ item.label }}
-      </a>
-    </nav>
-  </aside>
-
-  <main class="flex-1 p-6">
-    <router-outlet></router-outlet>
-  </main> -->
-
-  <!-- <main>
-    <div class="max-w-screen-xl mx-auto">
-      <router-outlet></router-outlet>
-    </div>
-  </main> -->
 </div>

@@ -137,7 +137,9 @@ export class HereProviderMapComponent implements AfterViewInit, OnChanges, OnDes
         this.hostEl = host;
         const mapEvents = new H.mapevents.MapEvents(this.mapInstance);
         new H.mapevents.Behavior(mapEvents);
-        H.ui.UI.createDefault(this.mapInstance, defaultLayers);
+        const ui = H.ui.UI.createDefault(this.mapInstance, defaultLayers);
+        // Remove layer toggle UI so users stay on the fixed hybrid basemap.
+        ui.removeControl('mapsettings');
       }
 
       this.mapInstance.setCenter(center);
@@ -365,10 +367,12 @@ export class HereProviderMapComponent implements AfterViewInit, OnChanges, OnDes
 
     // Use vector-only layers to avoid legacy raster (maptile v2) endpoints.
     const candidatePaths = [
-      'vector.satellite.map',
-      'vector.satellite.base',
       'vector.hybrid.map',
       'vector.hybrid.base',
+      'vector.satellite.map',
+      'vector.satellite.base',
+      'raster.hybrid.map',
+      'raster.hybrid.base',
       'raster.satellite.map',
       'raster.satellite.base',
       'raster.satellite.xbase',

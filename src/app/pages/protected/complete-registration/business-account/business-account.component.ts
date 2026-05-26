@@ -209,11 +209,11 @@ export class BusinessAccountComponent implements OnInit {
     this.hideForm = false;
   }
 
-  setCACocument(event: File) {
+  setCACocument(event: File | undefined) {
     this.cacDocument = event;
   }
 
-  setBusinessLogo(event: File) {
+  setBusinessLogo(event: File | undefined) {
     this.businessLogo = event;
   }
 
@@ -240,6 +240,7 @@ export class BusinessAccountComponent implements OnInit {
     this.addressSelection = {
       atokaCode: address.atoka,
       atokaAddressId: address.atokaAddressId,
+      residentDetailId: address.residentDetailId,
     };
     this.selectedAddressInfo = address;
     this.addressCode = address.atoka;
