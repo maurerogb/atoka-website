@@ -3,25 +3,24 @@
 <meta http-equiv="pragma" content="no-cache" /> -->
 
 <div class="layout min-h-screen flex bg-[#F3F4F6] font-display" [class.sidebar-collapsed]="isSidebarCollapsed">
-  <div class="sidebar border-r border-gray-200" id="sidebar">
+  <div class="sidebar relative border-r border-gray-200" id="sidebar">      
+    <button
+      type="button"
+      mat-icon-button
+      class="sidebar-collapse-toggle inline-flex absolute"
+      [attr.aria-label]="sidebarToggleLabel"
+      [attr.title]="sidebarToggleLabel"
+      (click)="handleSidebarToggle()"
+    >
+      <mat-icon svgIcon="sidebar-toggle" [className]="'h-6'"></mat-icon>
+    </button>
+    
     <div class="flex justify-between items-center py-8">
       <div class="logo-div px-5 hidden lg:flex">
         <div class="sidebar-logo w-[116px]">
           <img src="assets/svg/logo.svg" alt="" class="w-full">
         </div>
       </div>
-      
-      <button
-        type="button"
-        mat-icon-button
-        class="sidebar-collapse-toggle hidden lg:inline-flex"
-        [attr.aria-label]="isSidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'"
-        [attr.title]="isSidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'"
-        (click)="toggleSidebarCollapse()"
-      >
-        <mat-icon svgIcon="sidebar-toggle" [className]="'h-6'"></mat-icon>
-        <!-- <mat-icon>{{ isSidebarCollapsed ? 'chevron_right' : 'chevron_left' }}</mat-icon> -->
-      </button>
     </div>
 
     <div class="top-nav">
@@ -34,9 +33,10 @@
             [class.activelink]="rla.isActive"
             [routerLinkActiveOptions]="{ exact: entry.navItem?.exact || false }"
             [attr.title]="isSidebarCollapsed ? entry.navItem?.name : null"
+            (mouseenter)="setHoveredNavKey(getNavKey(entry.navItem))"
+            (mouseleave)="clearHoveredNavKey()"
           >
-            <img [src]="entry.navItem?.activeIcon" [class.hidden]="!rla.isActive" alt="" />
-            <img [src]="entry.navItem?.inactiveIcon" [class.hidden]="rla.isActive" alt="" />
+            <img class="nav-icon" [src]="getNavIcon(entry.navItem, rla.isActive)" alt="" />
             <span>{{ entry.navItem?.name }}</span>
           </a>
         </li>
@@ -48,8 +48,14 @@
             [class.activelink]="entry.dropdownGroup ? isDropdownGroupActive(entry.dropdownGroup) : false"
             [attr.title]="isSidebarCollapsed ? entry.dropdownGroup?.label : null"
             (click)="toggleDropdownMenu(entry.dropdownGroup?.key || '')"
+            (mouseenter)="setHoveredNavKey(getDropdownKey(entry.dropdownGroup))"
+            (mouseleave)="clearHoveredNavKey()"
           >
-            <img [src]="entry.dropdownGroup?.icon" alt="" />
+            <img
+              class="nav-icon"
+              [src]="getDropdownIcon(entry.dropdownGroup, entry.dropdownGroup ? isDropdownGroupActive(entry.dropdownGroup) : false)"
+              alt=""
+            />
             <span>{{ entry.dropdownGroup?.label }}</span>
             <mat-icon
               class="dropdown-chevron"
@@ -82,14 +88,15 @@
           [class.activelink]="rla.isActive"
           [routerLinkActiveOptions]="{ exact: nav.exact || false }"
           [attr.title]="isSidebarCollapsed ? nav.name : null"
+          (mouseenter)="setHoveredNavKey(getNavKey(nav))"
+          (mouseleave)="clearHoveredNavKey()"
         >
-          <img [src]="nav.activeIcon" [class.hidden]="!rla.isActive" alt="" />
-          <img [src]="nav.inactiveIcon" [class.hidden]="rla.isActive" alt="" />
+          <img class="nav-icon" [src]="getNavIcon(nav, rla.isActive)" alt="" />
           <span>{{nav.name}}</span>
         </a>
       </li>
 
-      <div class="border-t border-t-[#F1F3F9] grid grid-cols-[1fr_auto] items-center gap-2 pt-4" *ngIf="navItems.hasProfileDisplay">
+      <div class="border-t border-t-[#F1F3F9] flex items-center gap-2 pt-4" *ngIf="navItems.hasProfileDisplay">
         <a
           class="w-10 h-10 rounded-full flex justify-center items-center bg-[#D4D6D9] overflow-hidden"
           [routerLink]="settingsRoute"
@@ -105,8 +112,8 @@
           <mat-icon *ngIf="!hasProfileImage" class="text-[#667085]">person</mat-icon>
         </a>
         <div>
-          <p class="text-[#101828] font-medium">Goody's enterprise</p>
-          <p class="text-[#667085] text-ellipsis">Goody's&#64;enterprise.com</p>
+          <p class="text-[#0881AF] text-sm font-bold">Goody's enterprise</p>
+          <p class="text-[#667085] text-xs font-medium text-ellipsis">Goody's&#64;enterprise.com</p>
         </div>
       </div>      
     </nav>
@@ -116,42 +123,37 @@
   <!-- </aside> -->
 
   <div class="main-content flex-1">
-    <div class="shell-header px-10 pt-8 pb-2 [z-index:2] top-0">
+    <div class="shell-header px-8 py-6 [z-index:2] top-0">
       <div class="flex justify-between items-center gap-6">
         <div class="flex flex-col items-start gap-2">
           <p class="text-[32px] text-[#275C70] leading-[37px] font-bold">{{title}}</p>
           <p class="text-base text-[#667085]">{{description}}</p>
         </div>
-        <div class="flex flex-col items-end gap-4">
-          <div class="flex gap-6 items-center">            
+        <div class="flex flex-col items-end">
+          <div class="flex gap-3 items-center">            
             <a class="notification-bell cursor-pointer" [routerLink]="notificationRoute" aria-label="Open notifications">
-              <img src="assets/svg/bell.svg" alt="Notifications">
+              <img src="assets/svg/bell.svg" class="p-2 bg-[#FFEDDB] rounded-lg" alt="Notifications">
               <span *ngIf="unreadCount > 0" class="notification-badge">{{ notificationBadgeLabel }}</span>
             </a>
 
             <a
-              class="rounded-full cursor-pointer w-10 h-10 flex items-center justify-center overflow-hidden"
+              class="cursor-pointer flex items-center justify-center w-10 h-10"
               [routerLink]="settingsRoute"
               aria-label="Go to settings"
             >
-              <img
-                *ngIf="hasProfileImage"
-                [src]="profileImageUrl"
-                alt="Profile image"
-                class="w-full h-full rounded-full object-cover"
-                (error)="onProfileImageError()"
-              >
-              <mat-icon *ngIf="!hasProfileImage" class="text-[#667085]">person</mat-icon>
+              <span class="rounded-full overflow-hidden">
+                <img
+                  *ngIf="hasProfileImage"
+                  [src]="profileImageUrl"
+                  alt="Profile image"
+                  class="w-full h-full rounded-full object-cover"
+                  (error)="onProfileImageError()"
+                >
+              </span>
+              <span class="w-full h-full items-center justify-center flex bg-[#FFE1DB] rounded-lg">
+                <mat-icon *ngIf="!hasProfileImage" class="text-[#667085]">person</mat-icon>
+              </span>
             </a>
-
-            <div class="lg:hidden">
-              <button (click)="toggle()" mat-icon-button color="primary" aria-label="Toggle sidebar menu">
-                <mat-icon>menu</mat-icon>
-              </button>
-            </div>
-          </div>
-          <div class="" *ngIf="showAddressVerificationButton">
-            <a class="!min-w-24 !h-10 text-nowrap" [routerLink]="addressVerificationLink" mat-flat-button color="primary">Address Verification</a>
           </div>
         </div>
       </div>

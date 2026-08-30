@@ -3,10 +3,12 @@ import {
   AfterViewInit,
   Component,
   ElementRef,
+  EventEmitter,
   HostListener,
   Input,
   OnChanges,
   OnDestroy,
+  Output,
   SimpleChanges,
   ViewChild,
 } from '@angular/core';
@@ -46,12 +48,17 @@ export class TomtomProviderMapComponent implements AfterViewInit, OnChanges, OnD
   @Input() height = '420px';
   @Input() center: google.maps.LatLngLiteral | null = null;
   @Input() zoom = 19;
+  @Input() originPosition: google.maps.LatLngLiteral | null = null;
+  @Input() destinationPosition: google.maps.LatLngLiteral | null = null;
   @Input() providerLabel = 'TomTom Map';
   @Input() atoka = '';
   @Input() address = '';
   @Input() directionsSummary: TomTomDirectionsSummary | null = null;
   @Input() selectedRoutePath: google.maps.LatLngLiteral[] = [];
   @Input() alternateRoutePaths: TomTomRoutePath[] = [];
+
+  @Output() routeIndexSelected = new EventEmitter<number>();
+  @Output() locationPinSelected = new EventEmitter<'origin' | 'destination'>();
 
   errorMessage = '';
 
@@ -60,9 +67,13 @@ export class TomtomProviderMapComponent implements AfterViewInit, OnChanges, OnD
   private readonly hybridStyleUrl =
     'https://api.tomtom.com/style/1/style/*?map=2/basic_street-satellite&poi=2/poi_dynamic-satellite';
   private mapInstance: any | null = null;
-  private marker: any | null = null;
+  private focusMarker: any | null = null;
+  private originMarker: any | null = null;
+  private destinationMarker: any | null = null;
   private hostEl: HTMLElement | null = null;
   private routeIds: string[] = [];
+  private routeClickHandlers: Array<{ id: string; handler: (...args: unknown[]) => void }> = [];
+  private markerClickHandlers: Array<{ element: HTMLElement; handler: EventListener }> = [];
   private lastFittedRouteKey = '';
   private lastAppliedStyleUrl = '';
   private pendingRouteRender = false;
@@ -170,7 +181,7 @@ export class TomtomProviderMapComponent implements AfterViewInit, OnChanges, OnD
 
       this.mapInstance.setCenter([center.lng, center.lat]);
       this.mapInstance.setZoom(this.zoom);
-      this.updateMarker(center.lat, center.lng);
+      this.updateMarkers(center);
       this.renderRoutes();
       this.mapInstance.resize();
     } catch (error) {
@@ -181,18 +192,83 @@ export class TomtomProviderMapComponent implements AfterViewInit, OnChanges, OnD
     }
   }
 
-  private updateMarker(lat: number, lng: number): void {
+  private updateMarkers(center: google.maps.LatLngLiteral): void {
     const tt = window.tt;
     if (!tt || !this.mapInstance) {
       return;
     }
 
-    const point = [lng, lat];
-    if (!this.marker) {
-      this.marker = new tt.Marker({ color: '#EA4335' }).setLngLat(point).addTo(this.mapInstance);
+    this.clearMarkerClickHandlers();
+
+    if (this.originPosition && this.destinationPosition) {
+      this.focusMarker?.remove?.();
+      this.focusMarker = null;
+
+      this.originMarker = this.upsertMarker(this.originMarker, this.originPosition, '#1A73E8');
+      this.destinationMarker = this.upsertMarker(
+        this.destinationMarker,
+        this.destinationPosition,
+        '#EA4335',
+      );
+
+      this.bindMarkerClick(this.originMarker, 'origin');
+      this.bindMarkerClick(this.destinationMarker, 'destination');
       return;
     }
-    this.marker.setLngLat(point);
+
+    this.originMarker?.remove?.();
+    this.destinationMarker?.remove?.();
+    this.originMarker = null;
+    this.destinationMarker = null;
+
+    this.focusMarker = this.upsertMarker(this.focusMarker, center, '#EA4335');
+  }
+
+  private upsertMarker(
+    marker: any,
+    position: google.maps.LatLngLiteral,
+    color: string,
+  ): any {
+    const tt = window.tt;
+    if (!tt || !this.mapInstance) {
+      return marker;
+    }
+
+    const point = [position.lng, position.lat];
+    if (!marker) {
+      return new tt.Marker({ color }).setLngLat(point).addTo(this.mapInstance);
+    }
+    marker.setLngLat(point);
+    return marker;
+  }
+
+  private bindMarkerClick(marker: any, pin: 'origin' | 'destination'): void {
+    const element = marker?.getElement?.();
+    if (!element) {
+      return;
+    }
+    const handler: EventListener = () => this.locationPinSelected.emit(pin);
+    element.style.cursor = 'pointer';
+    element.addEventListener('click', handler);
+    this.markerClickHandlers.push({ element, handler });
+  }
+
+  private clearMarkerClickHandlers(): void {
+    for (const binding of this.markerClickHandlers) {
+      binding.element.removeEventListener('click', binding.handler);
+    }
+    this.markerClickHandlers = [];
+  }
+
+  private clearRouteClickHandlers(): void {
+    if (!this.mapInstance || typeof this.mapInstance.off !== 'function') {
+      this.routeClickHandlers = [];
+      return;
+    }
+    for (const binding of this.routeClickHandlers) {
+      this.mapInstance.off('click', binding.id, binding.handler);
+    }
+    this.routeClickHandlers = [];
   }
 
   private renderRoutes(): void {
@@ -209,6 +285,7 @@ export class TomtomProviderMapComponent implements AfterViewInit, OnChanges, OnD
         map.removeSource(id);
       }
     };
+    this.clearRouteClickHandlers();
 
     const selectedPath = this.selectedRoutePath;
     if (selectedPath.length < 2) {
@@ -237,6 +314,7 @@ export class TomtomProviderMapComponent implements AfterViewInit, OnChanges, OnD
       path: google.maps.LatLngLiteral[],
       strokeColor: string,
       strokeWidth: number,
+      routeIndex?: number,
     ) => {
       if (path.length < 2) {
         return;
@@ -267,12 +345,17 @@ export class TomtomProviderMapComponent implements AfterViewInit, OnChanges, OnD
           'line-width': strokeWidth,
         },
       });
+      if (routeIndex != null && typeof map.on === 'function') {
+        const handler = () => this.routeIndexSelected.emit(routeIndex);
+        map.on('click', id, handler);
+        this.routeClickHandlers.push({ id, handler });
+      }
       this.routeIds.push(id);
     };
 
     try {
-      this.alternateRoutePaths.forEach((alt, index) => {
-        draw(`route-alt-${index}`, alt.path, '#94A3B8', 4);
+      this.alternateRoutePaths.forEach((alt) => {
+        draw(`route-alt-${alt.index}`, alt.path, '#94A3B8', 4, alt.index);
       });
       draw('route-main', selectedPath, '#2563EB', 6);
       this.fitMapToRoute(selectedPath);
@@ -350,6 +433,8 @@ export class TomtomProviderMapComponent implements AfterViewInit, OnChanges, OnD
   }
 
   private destroyMap(): void {
+    this.clearMarkerClickHandlers();
+    this.clearRouteClickHandlers();
     if (this.mapInstance && this.styleRefreshHandler && typeof this.mapInstance.off === 'function') {
       this.mapInstance.off('style.load', this.styleRefreshHandler);
       this.mapInstance.off('load', this.styleRefreshHandler);
@@ -361,9 +446,13 @@ export class TomtomProviderMapComponent implements AfterViewInit, OnChanges, OnD
       this.mapInstance.remove();
     }
     this.mapInstance = null;
-    this.marker = null;
+    this.focusMarker = null;
+    this.originMarker = null;
+    this.destinationMarker = null;
     this.hostEl = null;
     this.routeIds = [];
+    this.routeClickHandlers = [];
+    this.markerClickHandlers = [];
     this.lastFittedRouteKey = '';
     this.lastAppliedStyleUrl = '';
     this.pendingRouteRender = false;

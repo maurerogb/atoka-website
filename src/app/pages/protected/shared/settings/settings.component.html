@@ -1,4 +1,4 @@
-﻿<div class="settings-page flex flex-col gap-6">
+﻿<div class="account settings-page flex flex-col gap-6">
   <div class="settings-tabs">
     @for (section of sections; track section.id) {
       <button
@@ -53,7 +53,6 @@
           </div>
           <div class="grid gap-4 md:grid-cols-4">
             <mat-form-field class="w-full rounded-xl no-subscript" appearance="fill" floatLabel="always">
-              <mat-label>Title</mat-label>
               <mat-select formControlName="title">
                 <mat-option value="Mr">Mr</mat-option>
                 <mat-option value="Mrs">Mrs</mat-option>
@@ -62,15 +61,12 @@
               </mat-select>
             </mat-form-field>
             <mat-form-field class="w-full rounded-xl no-subscript" appearance="fill" floatLabel="always">
-              <mat-label>First name</mat-label>
               <input matInput type="text" placeholder="Enter first name" formControlName="firstName" />
             </mat-form-field>
             <mat-form-field class="w-full rounded-xl no-subscript" appearance="fill" floatLabel="always">
-              <mat-label>Middle name</mat-label>
               <input matInput type="text" placeholder="Enter middle name" formControlName="middleName" />
             </mat-form-field>
             <mat-form-field class="w-full rounded-xl no-subscript" appearance="fill" floatLabel="always">
-              <mat-label>Surname</mat-label>
               <input matInput type="text" placeholder="Enter surname" formControlName="surname" />
             </mat-form-field>
           </div>
@@ -84,7 +80,6 @@
           </div>
           <div>
             <mat-form-field class="w-full rounded-xl no-subscript" appearance="fill" floatLabel="always">
-              <mat-label>Email address</mat-label>
               <mat-icon matPrefix>mail</mat-icon>
               <input matInput type="email" placeholder="name@domain.com" formControlName="emailAddress" />
             </mat-form-field>
@@ -98,7 +93,10 @@
             <p class="text-sm text-[#344054] font-semibold">Profile photo</p>
           </div>
           <div>
-            <app-upload-profile-image [image]="profileImageControl"></app-upload-profile-image>
+            <app-upload-profile-image
+              [image]="profileImageControl"
+              (selectedFile)="onProfileImageSelected($event)"
+            ></app-upload-profile-image>
           </div>
         </div>
 
@@ -110,7 +108,6 @@
           </div>
           <div>
             <mat-form-field class="w-full rounded-xl no-subscript" appearance="fill" floatLabel="always">
-              <mat-label>Phone number</mat-label>
               <input matInput type="tel" placeholder="+234 000 000 0000" formControlName="phoneNumber" />
             </mat-form-field>
           </div>
@@ -124,7 +121,6 @@
           </div>
           <div>
             <mat-form-field class="w-full rounded-xl no-subscript" appearance="fill" floatLabel="always">
-              <mat-label>Gender</mat-label>
               <mat-select formControlName="gender">
                 <mat-option value="male">Male</mat-option>
                 <mat-option value="female">Female</mat-option>
@@ -142,9 +138,11 @@
           </div>
           <div class="grid gap-2">
             <mat-form-field class="w-full rounded-xl no-subscript" appearance="fill" floatLabel="always">
-              <mat-label>ATOKA address</mat-label>
               <input matInput type="text" placeholder="LA BD2738PK" [value]="atokaAddressValue" />
             </mat-form-field>
+            <p class="text-xs text-[#667085]">
+              Address detail: {{ atokaAddressDetailValue }}
+            </p>
             <button
               type="button"
               class="text-sm font-semibold text-[#0090C7] text-left w-fit"
@@ -159,11 +157,44 @@
 
         <div class="detail-row">
           <div>
+            <p class="text-sm text-[#344054] font-semibold">Date at Address</p>
+          </div>
+          <div>
+            <mat-form-field class="w-full rounded-xl no-subscript" appearance="fill" floatLabel="always">
+              <input
+                matInput
+                readonly
+                [value]="dateAtAddressValue ? (dateAtAddressValue | date: 'mediumDate') : 'Not available'"
+              />
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="settings-divider"></div>
+
+        <div class="detail-row">
+          <div>
+            <p class="text-sm text-[#344054] font-semibold">Time at Address</p>
+          </div>
+          <div>
+            <mat-form-field class="w-full rounded-xl no-subscript" appearance="fill" floatLabel="always">
+              <input
+                matInput
+                readonly
+                [value]="dateAtAddressValue ? (dateAtAddressValue | employmentLength : undefined : 'Not available') : 'Not available'"
+              />
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="settings-divider"></div>
+
+        <div class="detail-row">
+          <div>
             <p class="text-sm text-[#344054] font-semibold">Date of birth</p>
           </div>
           <div>
             <mat-form-field class="w-full rounded-xl no-subscript" appearance="fill" floatLabel="always">
-              <mat-label>Date of birth</mat-label>
               <input
                 matInput
                 placeholder="MM/DD/YYYY"
@@ -182,10 +213,10 @@
 
         <div class="detail-row">
           <div>
-            <p class="text-sm text-[#344054] font-semibold">Account status</p>
+            <p class="text-sm text-[#344054] font-semibold">AVS</p>
           </div>
           <div>
-            <span class="status-badge status-active">{{ accountStatusLabel }}</span>
+            <span class="status-badge" [ngClass]="accountStatusClass">{{ accountStatusLabel }}</span>
           </div>
         </div>
       </div>

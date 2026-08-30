@@ -14,6 +14,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MapDirectionsService } from '@angular/google-maps';
 import { Address } from '../../../../model/atoka-query';
@@ -30,11 +31,11 @@ import { HereProviderMapComponent } from '../../../../components/maps/here-provi
 type MapProvider = 'google' | 'tomtom' | 'here';
 type ActionPanel = 'direction' | null;
 type TravelModeId = 'DRIVING' | 'WALKING' | 'BICYCLING' | 'TRANSIT';
+type FocusedDirectionPin = 'origin' | 'destination' | null;
 
 interface MapProviderOption {
   id: MapProvider;
   label: string;
-  logo: string;
 }
 
 interface TravelModeOption {
@@ -74,6 +75,7 @@ interface DirectionsSummary {
     MatInputModule,
     MatIconModule,
     MatButtonModule,
+    MatSelectModule,
     MatTooltipModule,
 ],
   templateUrl: './location.component.html',
@@ -110,8 +112,18 @@ export class LocationComponent implements OnInit, AfterViewInit, OnDestroy {
   selectedRouteIndexByMode: Partial<Record<TravelModeId, number>> = {};
   selectedRoutePath: google.maps.LatLngLiteral[] = [];
   alternateRoutePaths: GoogleMapRoutePath[] = [];
-  selectedTravelMode: TravelModeId = 'DRIVING';
+  displayedDirectionsResult: google.maps.DirectionsResult | null = null;
+  displayedSelectedRoutePath: google.maps.LatLngLiteral[] = [];
+  displayedAlternateRoutePaths: GoogleMapRoutePath[] = [];
+  displayedDirectionsSummary: DirectionsSummary | null = null;
+  selectedTravelMode: TravelModeId = 'TRANSIT';
+  focusedDirectionPin: FocusedDirectionPin = null;
   private directionsRequestId = 0;
+  private readonly emptyRoutePath: google.maps.LatLngLiteral[] = [];
+  private readonly emptyAlternateRoutePaths: GoogleMapRoutePath[] = [];
+  private readonly focusedPinZoomTarget = 22;
+  private readonly focusedPinZoomBase = 20;
+  private focusZoomTimer: ReturnType<typeof setTimeout> | null = null;
   private readonly currentLocationLabel = 'Current location';
   private readonly mapIdValue = (environment.googleMapId || '').trim();
   readonly hasMapId = Boolean(this.mapIdValue);
@@ -142,9 +154,9 @@ export class LocationComponent implements OnInit, AfterViewInit, OnDestroy {
   };
 
   mapProviders: MapProviderOption[] = [
-    { id: 'google', label: 'Google Map', logo: 'assets/images/google_maps_logo.png' },
-    { id: 'tomtom', label: 'TomTom Map', logo: 'assets/images/tom_tom_logo.png' },
-    { id: 'here', label: 'HERE WeGo', logo: 'assets/images/here_logo.png' },
+    { id: 'google', label: 'Map 1' },
+    { id: 'tomtom', label: 'Map 2' },
+    { id: 'here', label: 'Map 3' },
   ];
 
   travelModes: TravelModeOption[] = [
@@ -162,11 +174,26 @@ export class LocationComponent implements OnInit, AfterViewInit, OnDestroy {
   ngOnInit(): void {}
 
   get mapFocusLocation(): Address | null {
+    if (this.focusedDirectionPin === 'origin' && this.selectedOrigin) {
+      return this.selectedOrigin;
+    }
+    if (this.focusedDirectionPin === 'destination' && this.selectedDestination) {
+      return this.selectedDestination;
+    }
     return this.selectedLocation ?? this.selectedOrigin;
   }
 
   get mapSummaryForView(): GoogleMapSummary | null {
-    return this.directionsSummary;
+    return this.displayedDirectionsSummary;
+  }
+
+  get showResetDirectionsButton(): boolean {
+    return (
+      this.focusedDirectionPin !== null &&
+      this.selectedOrigin !== null &&
+      this.selectedDestination !== null &&
+      this.directionsResult !== null
+    );
   }
 
   onAddressSelected(location?: Address): void {
@@ -341,6 +368,7 @@ export class LocationComponent implements OnInit, AfterViewInit, OnDestroy {
     isCurrentLocation = false,
     accuracyMeters?: number,
   ): void {
+    this.focusedDirectionPin = null;
     this.selectedOrigin = origin;
     if (updateCode) {
       this.originCode = origin.atoka ?? '';
@@ -367,6 +395,7 @@ export class LocationComponent implements OnInit, AfterViewInit, OnDestroy {
     accuracyMeters?: number,
     updateRecent = true,
   ): void {
+    this.focusedDirectionPin = null;
     this.selectedDestination = destination;
     this.selectedLocation = destination;
     if (updateCode) {
@@ -423,6 +452,38 @@ export class LocationComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
+  focusDirectionPin(pin: Exclude<FocusedDirectionPin, null>): void {
+    if (!this.selectedOrigin || !this.selectedDestination || !this.directionsResult) {
+      return;
+    }
+
+    const target = pin === 'origin' ? this.selectedOrigin : this.selectedDestination;
+    if (!target) {
+      return;
+    }
+
+    const position = this.getLatLng(target);
+    if (!position) {
+      return;
+    }
+
+    this.focusedDirectionPin = pin;
+    this.selectedLocation = target;
+    this.center = { ...position };
+    this.applyFocusedPinZoom();
+    this.syncDisplayedDirectionsState();
+  }
+
+  resetDirectionsSnapshot(): void {
+    if (!this.selectedOrigin || !this.selectedDestination || !this.directionsResult) {
+      return;
+    }
+
+    this.focusedDirectionPin = null;
+    this.selectedLocation = this.selectedDestination;
+    this.updateSelectedRoute();
+  }
+
   startEditingDirections(): void {
     if (this.actionPanel !== 'direction') {
       this.actionPanel = 'direction';
@@ -464,6 +525,7 @@ export class LocationComponent implements OnInit, AfterViewInit, OnDestroy {
     this.destinationIsCurrentLocation = false;
     this.currentLocationAccuracyMeters = null;
     this.destinationAccuracyMeters = null;
+    this.focusedDirectionPin = null;
     this.directionsResult = null;
     this.renderedDirectionsResult = null;
     this.directionsSummary = null;
@@ -475,6 +537,10 @@ export class LocationComponent implements OnInit, AfterViewInit, OnDestroy {
     this.selectedRouteIndexByMode = {};
     this.selectedRoutePath = [];
     this.alternateRoutePaths = [];
+    this.displayedDirectionsResult = null;
+    this.displayedSelectedRoutePath = this.emptyRoutePath;
+    this.displayedAlternateRoutePaths = this.emptyAlternateRoutePaths;
+    this.displayedDirectionsSummary = null;
     this.selectedTravelMode = 'DRIVING';
   }
 
@@ -501,6 +567,7 @@ export class LocationComponent implements OnInit, AfterViewInit, OnDestroy {
   private requestDirections(): void {
     const originLocation = this.selectedOrigin;
     if (!originLocation || !this.selectedDestination) {
+      this.focusedDirectionPin = null;
       this.directionsResult = null;
       this.renderedDirectionsResult = null;
       this.directionsSummary = null;
@@ -510,6 +577,8 @@ export class LocationComponent implements OnInit, AfterViewInit, OnDestroy {
       this.routeOptions = [];
       this.selectedRouteIndex = 0;
       this.selectedRoutePath = [];
+      this.alternateRoutePaths = [];
+      this.syncDisplayedDirectionsState();
       return;
     }
 
@@ -517,6 +586,7 @@ export class LocationComponent implements OnInit, AfterViewInit, OnDestroy {
     const destination = this.getLatLng(this.selectedDestination);
 
     if (!origin || !destination) {
+      this.focusedDirectionPin = null;
       this.directionsResult = null;
       this.renderedDirectionsResult = null;
       this.directionsSummary = null;
@@ -526,9 +596,12 @@ export class LocationComponent implements OnInit, AfterViewInit, OnDestroy {
       this.routeOptions = [];
       this.selectedRouteIndex = 0;
       this.selectedRoutePath = [];
+      this.alternateRoutePaths = [];
+      this.syncDisplayedDirectionsState();
       return;
     }
 
+    this.focusedDirectionPin = null;
     this.directionsRequestId += 1;
     const requestId = this.directionsRequestId;
     this.directionsResultsByMode = {};
@@ -537,6 +610,8 @@ export class LocationComponent implements OnInit, AfterViewInit, OnDestroy {
     this.routeOptions = [];
     this.selectedRouteIndex = 0;
     this.selectedRoutePath = [];
+    this.alternateRoutePaths = [];
+    this.syncDisplayedDirectionsState();
 
     for (const mode of this.travelModes) {
       const request: google.maps.DirectionsRequest = {
@@ -564,6 +639,8 @@ export class LocationComponent implements OnInit, AfterViewInit, OnDestroy {
             this.directionsSummary = null;
             this.routeOptions = [];
             this.selectedRoutePath = [];
+            this.alternateRoutePaths = [];
+            this.syncDisplayedDirectionsState();
           }
           return;
         }
@@ -733,12 +810,43 @@ export class LocationComponent implements OnInit, AfterViewInit, OnDestroy {
         ...this.directionsOptions,
         routeIndex: 0,
       };
+      this.syncDisplayedDirectionsState();
       return;
     }
     this.renderedDirectionsResult = null;
     this.selectedRoutePath = [];
     this.alternateRoutePaths = [];
     this.directionsSummary = this.modeSummaries[this.selectedTravelMode] ?? null;
+    this.syncDisplayedDirectionsState();
+  }
+
+  private syncDisplayedDirectionsState(): void {
+    if (this.focusedDirectionPin) {
+      this.displayedDirectionsResult = null;
+      this.displayedSelectedRoutePath = this.emptyRoutePath;
+      this.displayedAlternateRoutePaths = this.emptyAlternateRoutePaths;
+      this.displayedDirectionsSummary = null;
+      return;
+    }
+
+    this.displayedDirectionsResult = this.renderedDirectionsResult;
+    this.displayedSelectedRoutePath = this.selectedRoutePath;
+    this.displayedAlternateRoutePaths = this.alternateRoutePaths;
+    this.displayedDirectionsSummary = this.directionsSummary;
+  }
+
+  private applyFocusedPinZoom(): void {
+    if (this.focusZoomTimer) {
+      clearTimeout(this.focusZoomTimer);
+      this.focusZoomTimer = null;
+    }
+
+    // Force a visible zoom refresh on every pin click.
+    this.zoom = Math.min(this.focusedPinZoomBase, this.focusedPinZoomTarget - 1);
+    this.focusZoomTimer = setTimeout(() => {
+      this.zoom = this.focusedPinZoomTarget;
+      this.focusZoomTimer = null;
+    }, 0);
   }
 
   private extractRoutePath(route: google.maps.DirectionsRoute): google.maps.LatLngLiteral[] {
@@ -872,6 +980,10 @@ export class LocationComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    if (this.focusZoomTimer) {
+      clearTimeout(this.focusZoomTimer);
+      this.focusZoomTimer = null;
+    }
     if (this.mainContent && this.isMapFullscreen) {
       this.renderer.removeClass(this.mainContent, 'location-map-fullscreen');
     }

@@ -64,10 +64,8 @@ const Icons = {
     <path d="M7 3V8H15" stroke="#005677" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
     </svg>
     `,
-  direction: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M19 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V5C3 4.46957 3.21071 3.96086 3.58579 3.58579C3.96086 3.21071 4.46957 3 5 3H16L21 8V19C21 19.5304 20.7893 20.0391 20.4142 20.4142C20.0391 20.7893 19.5304 21 19 21Z" stroke="#005677" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M17 21V13H7V21" stroke="#005677" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M7 3V8H15" stroke="#005677" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  direction: `<svg width="18" height="20" viewBox="0 0 18 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path fill-rule="evenodd" clip-rule="evenodd" d="M17.7071 4.29289C18.0976 4.68342 18.0976 5.31658 17.7071 5.70711L13.7071 9.70711C13.3166 10.0976 12.6834 10.0976 12.2929 9.70711C11.9024 9.31658 11.9024 8.68342 12.2929 8.29289L14.5858 6L5 6C4.44771 6 4 5.55228 4 5C4 4.44771 4.44771 4 5 4L14.5858 4L12.2929 1.70711C11.9024 1.31658 11.9024 0.683417 12.2929 0.292893C12.6834 -0.0976313 13.3166 -0.0976313 13.7071 0.292893L17.7071 4.29289ZM3.41421 14L13 14C13.5523 14 14 14.4477 14 15C14 15.5523 13.5523 16 13 16L3.41421 16L5.70711 18.2929C6.09763 18.6834 6.09763 19.3166 5.70711 19.7071C5.31658 20.0976 4.68342 20.0976 4.29289 19.7071L0.292892 15.7071C-0.0976321 15.3166 -0.0976321 14.6834 0.292892 14.2929L4.29289 10.2929C4.68342 9.90237 5.31658 9.90237 5.70711 10.2929C6.09763 10.6834 6.09763 11.3166 5.70711 11.7071L3.41421 14Z" fill="#003A50"/>
     </svg>
     `,
   trash: `<svg width="17" height="19" viewBox="0 0 17 19" fill="none" xmlns="http://www.w3.org/2000/svg">

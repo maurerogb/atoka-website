@@ -3,10 +3,12 @@ import {
   AfterViewInit,
   Component,
   ElementRef,
+  EventEmitter,
   HostListener,
   Input,
   OnChanges,
   OnDestroy,
+  Output,
   SimpleChanges,
   ViewChild,
 } from '@angular/core';
@@ -42,6 +44,8 @@ export class HereProviderMapComponent implements AfterViewInit, OnChanges, OnDes
   @Input() height = '420px';
   @Input() center: google.maps.LatLngLiteral | null = null;
   @Input() zoom = 19;
+  @Input() originPosition: google.maps.LatLngLiteral | null = null;
+  @Input() destinationPosition: google.maps.LatLngLiteral | null = null;
   @Input() providerLabel = 'HERE WeGo';
   @Input() atoka = '';
   @Input() address = '';
@@ -49,13 +53,20 @@ export class HereProviderMapComponent implements AfterViewInit, OnChanges, OnDes
   @Input() selectedRoutePath: google.maps.LatLngLiteral[] = [];
   @Input() alternateRoutePaths: HereRoutePath[] = [];
 
+  @Output() routeIndexSelected = new EventEmitter<number>();
+  @Output() locationPinSelected = new EventEmitter<'origin' | 'destination'>();
+
   errorMessage = '';
 
   private readonly apiKey = (environment.hereMapsApiKey || '').trim();
   private mapInstance: any | null = null;
-  private marker: any | null = null;
+  private focusMarker: any | null = null;
+  private originMarker: any | null = null;
+  private destinationMarker: any | null = null;
   private hostEl: HTMLElement | null = null;
   private routeObjects: any[] = [];
+  private markerTapHandlers: Array<{ object: any; handler: (...args: unknown[]) => void }> = [];
+  private routeTapHandlers: Array<{ object: any; handler: (...args: unknown[]) => void }> = [];
   private lastFittedRouteKey = '';
   private static scriptLoaders = new Map<string, Promise<void>>();
 
@@ -144,7 +155,7 @@ export class HereProviderMapComponent implements AfterViewInit, OnChanges, OnDes
 
       this.mapInstance.setCenter(center);
       this.mapInstance.setZoom(this.zoom);
-      this.updateMarker(center.lat, center.lng);
+      this.updateMarkers(center);
       this.renderRoutes();
       this.mapInstance.getViewPort().resize();
     } catch (error) {
@@ -155,19 +166,73 @@ export class HereProviderMapComponent implements AfterViewInit, OnChanges, OnDes
     }
   }
 
-  private updateMarker(lat: number, lng: number): void {
+  private updateMarkers(center: google.maps.LatLngLiteral): void {
     const H = window.H;
     if (!H || !this.mapInstance) {
       return;
     }
 
-    const point = { lat, lng };
-    if (!this.marker) {
-      this.marker = new H.map.Marker(point);
-      this.mapInstance.addObject(this.marker);
+    this.clearMarkerTapHandlers();
+
+    if (this.originPosition && this.destinationPosition) {
+      this.focusMarker && this.mapInstance.removeObject(this.focusMarker);
+      this.focusMarker = null;
+
+      this.originMarker = this.upsertMarker(this.originMarker, this.originPosition);
+      this.destinationMarker = this.upsertMarker(this.destinationMarker, this.destinationPosition);
+      this.bindMarkerTap(this.originMarker, 'origin');
+      this.bindMarkerTap(this.destinationMarker, 'destination');
       return;
     }
-    this.marker.setGeometry(point);
+
+    if (this.originMarker) {
+      this.mapInstance.removeObject(this.originMarker);
+      this.originMarker = null;
+    }
+    if (this.destinationMarker) {
+      this.mapInstance.removeObject(this.destinationMarker);
+      this.destinationMarker = null;
+    }
+    this.focusMarker = this.upsertMarker(this.focusMarker, center);
+  }
+
+  private upsertMarker(marker: any, position: google.maps.LatLngLiteral): any {
+    const H = window.H;
+    if (!H || !this.mapInstance) {
+      return marker;
+    }
+
+    const point = { lat: position.lat, lng: position.lng };
+    if (!marker) {
+      marker = new H.map.Marker(point);
+      this.mapInstance.addObject(marker);
+      return marker;
+    }
+    marker.setGeometry(point);
+    return marker;
+  }
+
+  private bindMarkerTap(marker: any, pin: 'origin' | 'destination'): void {
+    if (!marker?.addEventListener) {
+      return;
+    }
+    const handler = () => this.locationPinSelected.emit(pin);
+    marker.addEventListener('tap', handler);
+    this.markerTapHandlers.push({ object: marker, handler });
+  }
+
+  private clearMarkerTapHandlers(): void {
+    for (const binding of this.markerTapHandlers) {
+      binding.object?.removeEventListener?.('tap', binding.handler);
+    }
+    this.markerTapHandlers = [];
+  }
+
+  private clearRouteTapHandlers(): void {
+    for (const binding of this.routeTapHandlers) {
+      binding.object?.removeEventListener?.('tap', binding.handler);
+    }
+    this.routeTapHandlers = [];
   }
 
   private renderRoutes(): void {
@@ -176,12 +241,14 @@ export class HereProviderMapComponent implements AfterViewInit, OnChanges, OnDes
       return;
     }
 
+    this.clearRouteTapHandlers();
     for (const object of this.routeObjects) {
       this.mapInstance.removeObject(object);
     }
     this.routeObjects = [];
 
     const draw = (
+      routeIndex: number | null,
       path: google.maps.LatLngLiteral[],
       strokeColor: string,
       lineWidth: number,
@@ -199,14 +266,19 @@ export class HereProviderMapComponent implements AfterViewInit, OnChanges, OnDes
           lineWidth,
         },
       });
+      if (routeIndex != null) {
+        const handler = () => this.routeIndexSelected.emit(routeIndex);
+        polyline.addEventListener('tap', handler);
+        this.routeTapHandlers.push({ object: polyline, handler });
+      }
       this.mapInstance.addObject(polyline);
       this.routeObjects.push(polyline);
     };
 
     this.alternateRoutePaths.forEach((route) => {
-      draw(route.path, 'rgba(148,163,184,0.8)', 4);
+      draw(route.index, route.path, 'rgba(148,163,184,0.8)', 4);
     });
-    draw(this.selectedRoutePath, 'rgba(37,99,235,0.95)', 6);
+    draw(null, this.selectedRoutePath, 'rgba(37,99,235,0.95)', 6);
     this.fitMapToRoute(this.selectedRoutePath);
   }
 
@@ -307,11 +379,15 @@ export class HereProviderMapComponent implements AfterViewInit, OnChanges, OnDes
   }
 
   private destroyMap(): void {
+    this.clearMarkerTapHandlers();
+    this.clearRouteTapHandlers();
     if (this.mapInstance?.dispose) {
       this.mapInstance.dispose();
     }
     this.mapInstance = null;
-    this.marker = null;
+    this.focusMarker = null;
+    this.originMarker = null;
+    this.destinationMarker = null;
     this.hostEl = null;
     this.routeObjects = [];
     this.lastFittedRouteKey = '';

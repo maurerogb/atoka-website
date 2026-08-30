@@ -47,9 +47,10 @@ export class ProfileService extends HttpService<BaseResponse<any>> {
     });
   }
 
-  getMyViewRequests(occupantDetailId: number): Observable<BaseResponse<MyViewRequest[]>> {
-    const url = `OccupantDetails/get-my-view-request/${occupantDetailId}`;
-    return this.get<BaseResponse<MyViewRequest[]>>(url);
+  getMyViewRequests(requesterId: number, isBusiness = false): Observable<BaseResponse<MyViewRequest[]>> {
+    const url = `OccupantDetails/get-my-view-request/${requesterId}`;
+    const options = isBusiness ? { params: { isBusiness: true } } : undefined;
+    return this.get<BaseResponse<MyViewRequest[]>>(url, options);
   }
 
   getPendingViewRequests(): Observable<BaseResponse<PendingViewRequest[]>> {

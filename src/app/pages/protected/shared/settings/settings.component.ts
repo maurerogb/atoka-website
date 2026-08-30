@@ -246,10 +246,10 @@ export class SettingsComponent implements OnInit, OnDestroy {
 
   get dateAtAddressValue(): Date | null {
     const addressDetails = this.personalDetails?.addressDetails as
-      | { dateAtAddrses?: string }
+      | { dateAtAddress?: string }
       | undefined;
 
-    const value = addressDetails?.dateAtAddrses;
+    const value = addressDetails?.dateAtAddress;
 
     if (!value) {
       return null;

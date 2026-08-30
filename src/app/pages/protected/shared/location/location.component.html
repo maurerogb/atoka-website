@@ -1,7 +1,7 @@
 <div class="account location-page mb-10 mt-5 lg:mt-0" [class.map-fullscreen-mode]="isMapFullscreen">
   <div class="flex flex-col gap-4">
-    <div class="location-top-controls relative flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between pt-[100px] xl:pt-[0px] px-10">
-      <div class="absolute w-[calc(100%-20px)] left-0 px-10 xl:max-w-md z-10">
+    <div class="location-top-controls relative md:flex gap-4 lg:flex-row lg:items-center lg:justify-between p-4">
+      <div class="relative w-full ps-3 xl:max-w-md z-10">
         <div class="relative flex flex-col gap-3 h-16">
           @if (actionPanel === 'direction' && isEditingDirections) {
             <div class="w-full rounded-xl border border-[#E6EEF3] bg-white p-5 shadow-sm absolute z-20 top-0">
@@ -171,27 +171,12 @@
                 (addressInfo)="resetDirectionsState(); onAddressSelected($event)"
               ></app-atoka-search>
 
-              @if (!actionPanel && selectedLocation) {
-                <div
-                  class="flex flex-wrap items-center gap-3 rounded-b-2xl border border-[#E6EEF3] bg-white px-3 py-2 shadow-sm w-full absolute z-20"
-                >
-                  <button
-                    type="button"
-                    class="action-button"
-                    [ngClass]="{ active: actionPanel === 'direction' }"
-                    (click)="toggleAction('direction')"
-                  >
-                    <mat-icon svgIcon="direction"></mat-icon>
-                    <span>Get direction</span>
-                  </button>
-                </div>
-              }
             <!-- </div> -->
             </div>
             <div class="relative gap-2 hidden">
               <div class="relative">
               <div class="flex flex-wrap items-end">
-                <mat-form-field class="flex-1 table-search no-subscript" appearance="fill">
+                <mat-form-field subscriptSizing="dynamic" class="flex-1 table-search no-subscript" appearance="fill">
                   <mat-label>Search location</mat-label>
                   <mat-icon matPrefix>search</mat-icon>
                   <input
@@ -236,18 +221,33 @@
         </div>
       </div>
 
-      <div class="relative w-full flex flex-wrap gap-2 justify-end xl:top-[0px] top-[-100px]">
-        @for (provider of mapProviders; track provider.id) {
-          <button
-            type="button"
-            class="flex flex-col items-center justify-center gap-3 rounded-2xl px-3 py-2 text-sm font-medium transition"
-            (click)="setProvider(provider.id)"
-            [matTooltip]="provider.label"
+      <div class="relative w-full flex flex-wrap items-center gap-3 justify-end">
+        <button
+          type="button"
+          class="action-button border border-[#E6EEF3] shadow-sm disabled:cursor-not-allowed disabled:opacity-60"
+          [disabled]="!selectedLocation"
+          (click)="toggleAction('direction')"
+        >
+          <mat-icon>directions</mat-icon>
+          <span>Get direction</span>
+        </button>
+        <mat-form-field class="map-provider-select no-subscript" appearance="fill">
+          <mat-select
+            [value]="activeProvider"
+            aria-label="Map provider"
+            (selectionChange)="setProvider($event.value)"
           >
-            <img [src]="provider.logo" [alt]="provider.label" class="h-auto w-auto object-contain" />
-            <span class="text-sm text-[#003A50] leading-none whitespace-nowrap">{{ provider.label }}</span>
-          </button>
-        }
+            <mat-select-trigger>
+              <span>{{ getProviderLabel(activeProvider) }}</span>
+            </mat-select-trigger>
+
+            @for (provider of mapProviders; track provider.id) {
+              <mat-option [value]="provider.id">
+                <span>{{ provider.label }}</span>
+              </mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
       </div>
     </div>
 
@@ -255,15 +255,15 @@
       <div class="flex items-center justify-between border-b border-[#EEF4F7] px-5 py-4">
         <div class="flex flex-col gap-1">
           @if (selectedOrigin) {
-            <a (click)="startEditingDirections()">           
-            <span class="text-base font-bold text-[#003A50] items-center flex gap-3">
-              <img src="assets/images/current-location.png" alt="Location" class="h-auto w-auto object-contain" />
-              <span>{{ formatAddress(selectedOrigin) || selectedOrigin.atoka }}</span>
-              @if (selectedOrigin && selectedDestination) {
-                <mat-icon class="text-base">arrow_forward</mat-icon>
-                <span>{{ formatAddress(selectedDestination) || selectedDestination.atoka }}</span>
-              }
-            </span>
+            <a (click)="startEditingDirections()">
+              <span class="text-base font-bold text-[#003A50] items-center flex gap-3">
+                <img src="assets/images/current-location.png" alt="Location" class="h-auto w-auto object-contain" />
+                <span>{{ formatAddress(selectedOrigin) || selectedOrigin.atoka }}</span>
+                @if (selectedOrigin && selectedDestination) {
+                  <mat-icon class="text-base">arrow_forward</mat-icon>
+                  <span>{{ formatAddress(selectedDestination) || selectedDestination.atoka }}</span>
+                }
+              </span>
             </a>
           } @else {
             <span class="text-base font-bold text-[#003A50] flex gap-3">
@@ -273,8 +273,8 @@
           }
         </div>
         <div class="flex items-center gap-2 text-sm text-gray-500">
-          <mat-icon class="text-primary">public</mat-icon>
-          <span>{{ getProviderLabel(activeProvider) }}</span>
+          <!-- <mat-icon class="text-primary">public</mat-icon> -->
+          <!-- <span>{{ getProviderLabel(activeProvider) }}</span> -->
           <button
             type="button"
             mat-icon-button
@@ -302,40 +302,62 @@
               [destinationIsCurrentLocation]="destinationIsCurrentLocation"
               [currentLocationAccuracyMeters]="currentLocationAccuracyMeters"
               [destinationAccuracyMeters]="destinationAccuracyMeters"
-              [renderedDirectionsResult]="renderedDirectionsResult"
+              [renderedDirectionsResult]="displayedDirectionsResult"
               [directionsOptions]="directionsOptions"
-              [alternateRoutePaths]="alternateRoutePaths"
-              [showTraffic]="!!directionsSummary?.durationTrafficText && selectedTravelMode === 'DRIVING'"
+              [alternateRoutePaths]="displayedAlternateRoutePaths"
+              [showTraffic]="!!displayedDirectionsSummary?.durationTrafficText && selectedTravelMode === 'DRIVING'"
               [providerLabel]="getProviderLabel(activeProvider)"
               [atoka]="mapFocusLocation.atoka ?? ''"
               [address]="formatAddress(mapFocusLocation)"
               [directionsSummary]="mapSummaryForView"
               (routeIndexSelected)="setRouteIndex($event)"
+              (locationPinSelected)="focusDirectionPin($event)"
             ></app-google-provider-map>
           } @else if (activeProvider === 'tomtom') {
             <app-tomtom-provider-map
               [height]="mapHeight"
               [center]="center"
               [zoom]="zoom - 1"
+              [originPosition]="originPosition"
+              [destinationPosition]="destinationPosition"
               [providerLabel]="getProviderLabel(activeProvider)"
               [atoka]="mapFocusLocation.atoka ?? ''"
               [address]="formatAddress(mapFocusLocation)"
               [directionsSummary]="mapSummaryForView"
-              [selectedRoutePath]="selectedRoutePath"
-              [alternateRoutePaths]="alternateRoutePaths"
+              [selectedRoutePath]="displayedSelectedRoutePath"
+              [alternateRoutePaths]="displayedAlternateRoutePaths"
+              (routeIndexSelected)="setRouteIndex($event)"
+              (locationPinSelected)="focusDirectionPin($event)"
             ></app-tomtom-provider-map>
           } @else {
             <app-here-provider-map
               [height]="mapHeight"
               [center]="center"
               [zoom]="zoom"
+              [originPosition]="originPosition"
+              [destinationPosition]="destinationPosition"
               [providerLabel]="getProviderLabel(activeProvider)"
               [atoka]="mapFocusLocation.atoka ?? ''"
               [address]="formatAddress(mapFocusLocation)"
               [directionsSummary]="mapSummaryForView"
-              [selectedRoutePath]="selectedRoutePath"
-              [alternateRoutePaths]="alternateRoutePaths"
+              [selectedRoutePath]="displayedSelectedRoutePath"
+              [alternateRoutePaths]="displayedAlternateRoutePaths"
+              (routeIndexSelected)="setRouteIndex($event)"
+              (locationPinSelected)="focusDirectionPin($event)"
             ></app-here-provider-map>
+          }
+          @if (showResetDirectionsButton) {
+            <div class="absolute left-4 top-4 z-20">
+              <button
+                type="button"
+                mat-icon-button
+                class="rounded-full !bg-white border border-[#E6EEF3] text-primary shadow-sm"
+                matTooltip="Get directions"
+                (click)="resetDirectionsSnapshot()"
+              >
+                <mat-icon>directions</mat-icon>
+              </button>
+            </div>
           }
         } @else {
           <div class="flex h-full flex-col items-center justify-center gap-3 text-center">

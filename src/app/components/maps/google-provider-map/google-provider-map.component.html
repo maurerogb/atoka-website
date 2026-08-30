@@ -28,13 +28,15 @@
     @if (originPosition) {
       <map-marker
         [position]="originPosition"
-        [options]="passiveMarkerOptions"
+        [options]="originMarkerOptions"
+        (mapClick)="onLocationSelected('origin')"
       ></map-marker>
     }
     @if (destinationPosition) {
       <map-marker
         [position]="destinationPosition"
-        [options]="passiveMarkerOptions"
+        [options]="destinationMarkerOptions"
+        (mapClick)="onLocationSelected('destination')"
       ></map-marker>
     }
     @if (originIsCurrentLocation && originPosition && currentLocationAccuracyMeters) {
@@ -61,7 +63,7 @@
       class="max-w-[340px] rounded-xl border border-white/20 bg-black/55 px-4 py-3 text-white shadow-md backdrop-blur-sm"
     >
       <p class="text-[11px] uppercase tracking-wide text-white/75">
-        {{ providerLabel }}
+        ATOKA
       </p>
       <p class="text-base font-semibold text-white/45">
         {{ atoka }}
