@@ -14,7 +14,7 @@ import { LoaderComponent } from '../../loader/loader.component';
 import { UploadFileComponent } from '../../upload-file/upload-file.component';
 import { Address, AddressInfo } from '../../../model/atoka-query';
 import { ResponseCode } from '../../../model/enums';
-import { ClaimPropertyRequest, DocumentType } from '../../../model/tenant';
+import { DocumentType } from '../../../model/tenant';
 import { AtokaSearchService } from '../../../services/atoka-search.service';
 import { LoadingService } from '../../../services/loading.service';
 import { TenantService } from '../../../services/tenant.service';
@@ -117,6 +117,7 @@ export class ClaimPropertyDialogComponent {
     this.addressSelection = {
       atokaCode: value.atoka,
       atokaAddressId: value.atokaAddressId,
+      residentDetailId: value.residentDetailId,
     };
     this.addressCode = value.atoka;
     this.manualAddressMode = false;
@@ -144,7 +145,7 @@ export class ClaimPropertyDialogComponent {
     this.addressFormComponent?.resetForm();
   }
 
-  setDocument(value: File): void {
+  setDocument(value: File | undefined): void {
     this.uploadedDocument = value;
   }
 
@@ -238,11 +239,7 @@ export class ClaimPropertyDialogComponent {
           this.message = 'Unable to resolve property address id.';
           return;
         }
-        const payload = this.buildClaimPayload(
-          atokaCode,
-          resolvedAtokaAddressId,
-          resolvedAddress,
-        );
+        const payload = this.buildClaimFormData(atokaCode, resolvedAtokaAddressId, resolvedAddress);
 
         this.tenantService.claimProperty(payload).subscribe({
           next: (res) => {
@@ -291,27 +288,24 @@ export class ClaimPropertyDialogComponent {
     });
   }
 
-  private buildClaimPayload(
+  private buildClaimFormData(
     atokaCode: string,
     atokaAddressId: number,
     address?: Address,
-  ): ClaimPropertyRequest {
-    return {
-      atokaCode,
-      atokaAddressId,
-      houseNo: address?.oldNumber ?? address?.atokaNumber ?? '',
-      documentTypeId: Number(this.claimForm.value.documentTypeId),
-      fileExtention: this.getFileExtension(this.uploadedDocument?.name ?? ''),
-      documentRefNo: String(this.claimForm.value.documentRefNo ?? '').trim(),
-    };
-  }
+  ): FormData {
+    const formData = new FormData();
 
-  private getFileExtension(fileName: string): string {
-    const extensionIndex = fileName.lastIndexOf('.');
-    if (extensionIndex < 0 || extensionIndex === fileName.length - 1) {
-      return '';
+    formData.append('AtokaCode', atokaCode);
+    formData.append('HouseNo', address?.oldNumber ?? address?.atokaNumber ?? '');
+    formData.append('DocumentTypeId', String(Number(this.claimForm.value.documentTypeId)));
+    if (this.uploadedDocument) {
+      formData.append('File', this.uploadedDocument, this.uploadedDocument.name);
     }
+    formData.append('DocumentRefNo', String(this.claimForm.value.documentRefNo ?? '').trim());
+    formData.append('VerifyOwnership', String(Boolean(this.claimForm.value.verifyOwnership)));
+    formData.append('PropertyManager', String(this.claimForm.value.ownerManager ?? '').trim());
+    formData.append('AtokaAddressId', String(atokaAddressId));
 
-    return fileName.slice(extensionIndex + 1).toLowerCase();
+    return formData;
   }
 }
