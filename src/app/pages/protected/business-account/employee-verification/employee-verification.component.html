@@ -1,0 +1,311 @@
+<div class="account flex flex-col gap-8"> 
+  
+  @if (!showDetails) {
+  <small>
+    phoneNumber: '0801 234 5678',
+    placeOfWork: 'Goody Enterprise - Lekki HQ',
+  </small>
+
+  <div class="card bg-white rounded-lg p-6 gap-4">
+    <div class="flex">
+      <div class="relative">
+        <p class="text-base font-bold text-[#000000] relative flex">Enter the flowing details to verify an employeer</p>
+        @if (searchPerformed && !isSearching) {
+          @if (searchResult) {
+            <div class="w-full absolute md:top-0 md:ml-[115px] py-1 md:py-1">
+              <span class="status text-xs absolute md:right-0" [ngClass]="'successful'">
+                <span>User Found</span>
+                <span>
+                  <img src="assets/svg/badge.svg" alt="" />
+                </span>
+              </span>
+            </div>
+          } @else {
+            <div class="w-full absolute md:top-0 md:ml-[137px] py-1 md:py-0">
+              <span class="status text-xs absolute md:right-0" [ngClass]="'failed'">
+                <span>User Not Found</span>
+                <span>
+                  <img src="assets/svg/badge.svg" alt="" />
+                </span>
+              </span>
+            </div>
+          }
+        }
+      </div>
+    </div>
+    <div class="grid md:grid-cols-2 gap-3 md:pt-0" [ngClass]="searchPerformed && !isSearching ? 'pt-8' : 'pt-0'">
+      <div class="control grid w-full">
+        <mat-label class="text-sm text-[#003A50]">Phone Number</mat-label>
+        <mat-form-field subscriptSizing="dynamic" appearance="fill" class="phone-search">
+          <input
+            matInput
+            type="tel"
+            [(ngModel)]="searchPhone"
+            (keyup.enter)="onSearch()"
+            placeholder="Enter phone number"
+          />
+        </mat-form-field>
+      </div>
+      
+      <div class="control grid w-full">
+        <mat-label class="text-sm text-[#003A50]">Place of work</mat-label>
+        <mat-form-field subscriptSizing="dynamic" appearance="fill" class="workplace-search">
+          <input
+            matInput
+            type="text"
+            [(ngModel)]="searchPlaceOfWork"
+            (keyup.enter)="onSearch()"
+            placeholder="Enter place of work"
+          />
+        </mat-form-field>
+      </div>
+    </div>
+      
+    <div class="flex gap-3">      
+      @if (!searchResult) {
+      <button
+        type="button"
+        mat-flat-button
+        color="primary"
+        class="!min-w-0 w-[193px]"
+        [disabled]="isSearching || !canSearch"
+        (click)="onSearch()"
+      >
+        {{ isSearching ? 'Searching...' : 'Search' }}
+      </button>
+      } @else {
+      <button
+        type="button"
+        mat-flat-button
+        color="primary"
+        class="!min-w-0 w-[407px]"
+        (click)="showDetails = true"
+      >
+        Request Verification
+      </button>
+
+      <button
+        type="button"
+        mat-stroked-button
+        class="!min-w-0 w-[193px]"
+        (click)="showDetails = false; searchResult = null; searchPerformed = false; searchPhone = ''; searchPlaceOfWork = ''"
+      >
+        Reset
+      </button>
+      }
+    </div>
+  </div>
+
+  <div class="card bg-white border border-[#F1F3F9] rounded-lg px-6 py-12">
+    <div class="flex items-center gap-6">
+      <div class="rounded-full overflow-hidden">
+        <img src="assets/images/address-verification-icon.png" class="object-cover" />
+      </div>
+      <div class="flex flex-col gap-2 max-w-[725px]">
+        <p class="text-lg text-[#00739F] font-semibold">Employee Verification</p>
+        <p class="text-base text-[#7C8493]">
+          All found addresses registered on the platform will be displayed here with all the necessary information
+        </p>
+      </div>
+    </div>
+  </div>
+  }
+  
+  @if (!isSearching && searchPerformed) {
+    @if (searchResult; as result) {
+      @if (showDetails) {
+        <div class="">
+          <button type="button">
+            <span
+              class="flex gap-3 select-none cursor-pointer text-sm text-center py-4 text-[#002330]"
+              (click)="showDetails = false;"
+            >
+              <mat-icon>&#xe5c4;</mat-icon>
+              <span>Back</span>
+            </span>
+          </button>
+          <div class="flex flex-col gap-4">
+            <div class="grid xl:grid-cols-9 bg-[#f6f5f5] rounded-lg overflow-hidden shadow-sm">
+              <div class="xl:col-span-4 bg-white flex flex-col gap-4 py-12 px-5">
+                <div class="py-2 px-3 flex flex-col gap-4">
+                  <div class="flex">
+                    <div class="flex w-full items-center gap-3">
+                      <div class="w-20 h-20 rounded-full overflow-hidden bg-[#F2F4F7]">
+                        <img [src]="result.avatarUrl" [alt]="result.fullName" class="w-full h-full object-cover" />
+                      </div>
+                      <div class="flex flex-col gap-1">
+                        <p class="font-semibold text-[#003A50]">{{ result.email }}</p>
+                        <p class="text-sm text-gray-500">{{ result.fullName }}</p>
+                      </div>
+                    </div>
+                    <div class="flex justify-end items-center">
+                      <p class="ml-auto status text-xs" [ngClass]="result.verified ? 'successful' : 'pending'">
+                        <span class="text-nowrap">{{ result.verified ? 'Verified' : 'Pending' }}</span>
+                        <span>
+                          <img src="assets/svg/badge.svg" alt="" />
+                        </span>
+                      </p>
+                    </div>
+                  </div>
+
+                  <hr />
+
+                  <div class="grid gap-4 text-sm">
+                    <div class="grid md:grid-cols-2 gap-4">
+                      <div class="grid gap-2">
+                        <p class="text-sm text-[#003A50]">Phone Number</p>
+                        <p class="text-sm bg-gray-50 p-3 rounded-lg text-[#003A50] flex">
+                          <span>{{ result.phoneNumber }}</span>
+                          <span class="ml-auto text-[#02934D]" [ngClass]="'successful'">
+                            <mat-icon class="text-sm !h-auto !w-auto">task_alt</mat-icon>
+                          </span>
+                        </p>
+                      </div>
+                      <div class="grid gap-2">
+                        <p class="text-sm text-[#003A50]">Gender</p>
+                        <p class="text-sm bg-gray-50 p-3 rounded-lg text-[#003A50]">{{ result.gender }}</p>
+                      </div>
+                    </div>
+                    <div class="grid gap-2">
+                      <p class="text-sm text-[#003A50]">Address</p>
+                      <p class="text-sm bg-gray-50 p-3 rounded-lg text-[#003A50]">{{ result.address }}</p>
+                    </div>
+                    <div class="grid md:grid-cols-2 gap-4">
+                      <div class="grid gap-2">
+                        <p class="text-sm text-[#003A50]">Date at address</p>
+                        <p class="text-sm bg-gray-50 p-3 rounded-lg text-[#003A50]">
+                          {{ result.dateAtAddress ? (result.dateAtAddress | date: 'mediumDate') : 'Not available' }}
+                        </p>
+                      </div>
+                      <div class="grid gap-2">
+                        <p class="text-sm text-[#003A50]">Time at address</p>
+                        <p class="text-sm bg-gray-50 p-3 rounded-lg text-[#003A50]">{{ result.timeAtAddress }}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="xl:col-span-5 overflow-hidden">
+                @if (mapUrl; as safeMapUrl) {
+                  <iframe
+                    class="map-frame"
+                    [src]="safeMapUrl"
+                    loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade"
+                  ></iframe>
+                } @else {
+                  <div class="p-6 text-sm text-gray-500">Map unavailable.</div>
+                }
+              </div>
+            </div>
+          </div>
+        </div>
+      }
+    }    
+  }
+
+  @if (!showDetails) {
+    <div class="flex flex-col gap-4">
+      <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+        <p class="font-semibold text-base">Recent Employee Searches</p>
+        <div class="flex flex-row gap-3 w-full md:max-w-md md:justify-end">
+          <mat-form-field
+            subscriptSizing="dynamic"
+            class="w-full table-search no-subscript shadow-sm border-input"
+            appearance="fill"
+          >
+            <mat-icon matPrefix>search</mat-icon>
+            <input
+              matInput
+              type="text"
+              [(ngModel)]="tableFilter"
+              (keyup.enter)="applyTableFilter()"
+              placeholder="Search by user phone number"
+            />
+          </mat-form-field>
+          <button
+            type="button"
+            mat-stroked-button
+            class="!min-w-24 !bg-white shadow-sm border-input"
+            (click)="applyTableFilter()"
+          >
+            <mat-icon class="mr-2">filter_list</mat-icon>
+            Filters
+          </button>
+        </div>
+      </div>
+
+      @if (!filteredRecentSearches.length) {
+        <div class="flex justify-center items-center mx-auto">
+          <div class="mt-4 flex flex-col justify-center items-center min-w-[535px] p-10 gap-6">
+            <div>
+              <img src="assets/images/asking-question.png" alt="" class="w-full" />
+            </div>
+            <p class="font-bold text-base">No recent employee search</p>
+          </div>
+        </div>
+      } @else {
+        <div class="card bg-white rounded-lg">
+          <div class="table-holder">
+            <table class="table-auto">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Place of Work</th>
+                  <th>Phone Number</th>
+                  <th>Date</th>
+                  <th>Status</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (record of filteredRecentSearches; track record.id) {
+                  <tr>
+                    <td>
+                      <div class="flex gap-2 items-center">
+                        <mat-icon svgIcon="feature-file" [className]="'h-6'"></mat-icon>
+                        <p class="font-semibold text-[#003A50] text-sm">{{ record.fullName }}</p>
+                      </div>
+                    </td>
+                    <td>
+                      <p class="text-gray-500 text-sm max-w-[260px]">{{ record.placeOfWork }}</p>
+                    </td>
+                    <td>
+                      <p class="text-gray-500 text-sm">{{ record.phoneNumber }}</p>
+                    </td>
+                    <td>
+                      <p class="text-gray-500 text-sm text-nowrap">{{ record.searchedAt | date }}</p>
+                    </td>
+                    <td>
+                      <p class="status text-xs" [ngClass]="getStatusClass(record.status)">
+                        <span class="text-nowrap">{{ record.status }}</span>
+                        <span>
+                          <img src="assets/svg/badge.svg" alt="" />
+                        </span>
+                      </p>
+                    </td>
+                    <td>
+                      <div class="flex items-center gap-2">
+                        <button type="button" mat-icon-button>
+                          <mat-icon svgIcon="trash" [className]="'h-6'"></mat-icon>
+                        </button>
+                        <button
+                          type="button"
+                          mat-button
+                          class="!min-w-0 !h-9"
+                          (click)="viewSearch(record)"
+                        >
+                          {{ record.status === 'Not found' ? 'Retry' : 'View' }}
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        </div>
+      }
+    </div>
+  }
+</div>

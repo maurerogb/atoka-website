@@ -110,6 +110,7 @@ export class AddBranchDialogComponent {
     this.addressSelection = {
       atokaCode: value.atoka,
       atokaAddressId: value.atokaAddressId,
+      residentDetailId: value.residentDetailId,
     };
     this.selectedAddressInfo = value;
     this.addressCode = value.atoka;

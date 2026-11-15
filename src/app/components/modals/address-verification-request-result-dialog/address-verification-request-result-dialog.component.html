@@ -1,0 +1,10 @@
+<div class="verification-result-dialog">
+  <div class="flex flex-col items-center text-center gap-6">
+    <img [src]="iconAsset" [alt]="titleText" class="h-20 w-auto" />    
+    <p class="text-xl font-semibold text-[#003A50]">{{ titleText }}</p>    
+    <p class="text-sm text-[#354052] max-w-[368px]">{{ messageText }}</p>
+    <button type="button" mat-flat-button color="primary" (click)="close()">
+      Back to requests
+    </button>
+  </div>
+</div>

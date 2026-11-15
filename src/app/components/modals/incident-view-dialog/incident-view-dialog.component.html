@@ -50,9 +50,8 @@
     </div>
     <div class="flex justify-between gap-2">
       <p class="font-bold text-base text-primary-800">Status</p>
-      <p class="status successful">
-        <span class="text-sm">Successful</span>
-        <span><img src="assets/svg/badge.svg" alt=""></span>
+      <p class="text-sm text-gray-500">
+        {{ data.incidentStatus || 'N/A' }}
       </p>
     </div>
   </div>

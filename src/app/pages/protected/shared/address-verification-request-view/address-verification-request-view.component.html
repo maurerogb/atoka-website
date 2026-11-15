@@ -1,0 +1,110 @@
+<div class="request-view flex flex-col gap-2">
+  <button type="button" mat-button class="back-btn !min-w-24" (click)="backToRequests()">
+    <mat-icon>arrow_back</mat-icon>
+    Back to requests
+  </button>
+
+  @if (isLoading) {
+    <div class="state-card">
+      <p class="text-[#003A50] font-medium">Loading request details...</p>
+    </div>
+  } @else if (errorMessage) {
+    <div class="state-card border border-[#FECACA] bg-[#FEF2F2]">
+      <p class="text-[#B42318]">{{ errorMessage }}</p>
+      <button type="button" mat-flat-button color="primary" (click)="backToRequests()">
+        Back to requests
+      </button>
+    </div>
+  } @else if (request) {
+    <div class="content-wrap items-center">
+      <div class="logo-box">
+        <img src="assets/svg/logo.svg" alt="Atoka logo" class="logo" />
+      </div>
+
+      <h2 class="title">Address Verification Request</h2>
+      <p class="subtitle">
+        You've received a request to verify an address. Please review the details below and choose
+        to approve or reject the request.
+      </p>
+
+      <div class="summary-card grid">
+
+        <div class="field flex gap-2 relative">
+          <p class="field-label">Requested By:</p>
+          <p class="field-value">
+            {{ requestedByText }}
+          </p>
+        </div>
+
+        <div class="field flex gap-2 relative">
+          <p class="field-label">Relationship:</p>
+          <p class="field-value">
+            {{ relationshipText }}
+          </p>
+        </div>
+
+        <div class="field flex gap-2 relative">
+          <p class="field-label">Request Date:</p>
+          <p class="field-value">
+            {{
+              requestDateText === 'Not available'
+                ? 'Not available'
+                : (requestDateText | date: 'medium')
+            }}
+          </p>
+        </div>
+
+        <!-- <div class="field">
+          <p class="field-label">Requested By</p>
+          <p class="field-value">{{ requestedByText }}</p>
+          <p class="field-sub">{{ request.phoneNumber || 'No phone number provided' }}</p>
+          <p class="field-sub">{{ request.email || 'No email provided' }}</p>
+        </div>
+
+        <div class="field">
+          <p class="field-label">Relationship</p>
+          <p class="field-value">{{ relationshipText }}</p>
+        </div>
+
+        <div class="field">
+          <p class="field-label">Request Date</p>
+          <p class="field-value">
+            {{
+              requestDateText === 'Not available'
+                ? 'Not available'
+                : (requestDateText | date: 'medium')
+            }}
+          </p>
+        </div> -->
+      </div>
+
+      <div class="action-card max-w-[796px]">
+        <p class="action-copy">
+          Approving this request confirms that the address provided is accurate to the best of your
+          knowledge. This may be used for identity verification, service activation, or compliance
+          purposes.
+        </p>
+        <div class="action-buttons items-center">
+          <button
+            type="button"
+            mat-flat-button
+            color="primary"
+            [disabled]="isSubmitting"
+            (click)="approveRequest()"
+          >
+            {{ isSubmitting ? 'Processing...' : 'Approve Request' }}
+          </button>
+          <button
+            type="button"
+            mat-stroked-button
+            class="reject-btn"
+            [disabled]="isSubmitting"
+            (click)="rejectRequest()"
+          >
+            Reject Request
+          </button>
+        </div>
+      </div>
+    </div>
+  }
+</div>

@@ -8,17 +8,12 @@ export interface IncidentPriority {
 
 export interface Incident {
   id: string;
-  // locationCode: string;
-  // locationDescription: string;
-  // priority: string;
-  // entryDate: string;
-  // status: IncidentStatus;
   details: string;
-  // resolution: string;
   addess: string | null;
   atokaCode: string;
   images: string[];
   priority?: string;
+  incidentStatus?: string | null;
   incidentDate: string;
   incidentDetails: string;
   incidentLocation: string;

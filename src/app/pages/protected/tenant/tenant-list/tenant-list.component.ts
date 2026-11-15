@@ -177,7 +177,9 @@ export class TenantListComponent {
     this.tenantService.getTenantsAtProperty(atokaCode).subscribe({
       next: (res) => {
         if (res.responseCode === ResponseCode.Success && Array.isArray(res.data)) {
-          this.tenants = this.normalizeTenantList(res.data);
+          this.tenants = this.normalizeTenantList(res.data).filter((tenant) =>
+            this.isActiveTenantStatus(tenant.confirmationStatus || tenant.status || ''),
+          );
           return;
         }
 
@@ -195,17 +197,17 @@ export class TenantListComponent {
 
       return {
         title: item.title ?? '',
-        firstName: item.firstName ?? item.firstname ?? '',
+        firstName: item.firstName ?? '',
         middleName: item.middleName ?? '',
-        surname: item.surname ?? item.lastName ?? '',
+        surname: item.surname ?? '',
         gender: item.gender ?? '',
         phoneNumber: item.phoneNumber ?? '',
         emailAddress: item.emailAddress ?? item.email ?? '',
-        occupantDetailId: Number(item.occupantDetailId ?? item.occupantId ?? item.id ?? 0),
+        occupantDetailId: Number(item.occupantDetailId ?? 0),
         confirmationStatus: status,
         status: this.toTitleCase(status),
         imageUrl: item.imageUrl ?? '',
-        startFrom: item.startFrom ?? item.employmentStartDate ?? item.createdOn ?? '',
+        startFrom: item.startFrom ?? '',
         createdOn: item.createdOn ?? new Date().toISOString(),
       };
     });
@@ -264,5 +266,10 @@ export class TenantListComponent {
       .split(' ')
       .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
       .join(' ');
+  }
+
+  private isActiveTenantStatus(status: string): boolean {
+    const normalized = status.toUpperCase();
+    return normalized === 'APPROVED' || normalized === 'APROVED' || normalized === 'CONFIRMED';
   }
 }

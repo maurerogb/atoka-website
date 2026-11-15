@@ -308,7 +308,7 @@ export class TenantComponent {
   private loadClaimedProperties(preselectAtokaCode?: string): void {
     this.tenantService.getAllClaimedProperties().subscribe({
       next: (res) => {
-        if (res.responseCode === ResponseCode.Success && Array.isArray(res.data)) {
+        if (res.responseCode === ResponseCode.Success && Array.isArray(res.data) && res.data.length > 0) {
           this.claimedProperties = res.data;
           this.filterClaimedProperties(this.propertySearchControl.value);
 

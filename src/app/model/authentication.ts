@@ -24,6 +24,7 @@ export interface loginResponse extends BaseResponse<any> {
 
 export interface loginInfo {
   accountTypeId: number,
+  occupantDetailId?: number,
   userId: string,
   userName: string,
   token: string,

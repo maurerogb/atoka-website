@@ -1,0 +1,16 @@
+.verification-result-dialog {
+  min-width: 360px;
+}
+
+.verification-result-dialog .mdc-button {
+  min-width: 180px;
+}
+
+.verification-result-dialog-container .mdc-dialog__surface {
+  border-radius: 16px !important;
+}
+
+.mdc-dialog__surface {
+    padding-left: 2rem !important;
+    padding-right: 2rem !important;
+}

@@ -48,12 +48,17 @@
 }
 
 .action-button {
-  @apply flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium transition;
-  @apply text-[#003A50] bg-white hover:bg-primary-light;
+  @apply flex items-center gap-3 rounded-lg p-2 text-sm font-bold transition;
+  @apply text-[#005677] bg-[#EBF9FF] hover:bg-primary-light;
+  @apply h-[44px] justify-center;
 }
 
 .action-button.active {
   @apply bg-primary text-white border-primary;
+}
+
+.map-provider-select {
+  width: 120px;
 }
 
 
@@ -97,6 +102,27 @@
   .mdc-text-field__input {
     padding: 0;
     color: #01171f;
+  }
+
+  .mdc-line-ripple,
+  .mdc-text-field__ripple {
+    display: none;
+  }
+}
+
+:host ::ng-deep .map-provider-select {
+  .mat-mdc-form-field-infix {
+    height: 42px !important;
+    font-size: 14px !important;
+    padding-top: 10px !important;
+    padding-bottom: 10px !important;
+  }
+
+  .mdc-text-field {
+    border-radius: 8px;
+    background: #fff;
+    border: 1px solid #e6eef3;
+    box-shadow: 0 1px 2px rgb(16 24 40 / 6%);
   }
 
   .mdc-line-ripple,

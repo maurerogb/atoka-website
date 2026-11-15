@@ -50,6 +50,7 @@ export class ValidateAddressComponent implements OnInit {
   ngOnInit(): void {
     const userData = this.authService.getLoginInfo();
     if (!userData || userData.validatedAddress || userData.accountTypeId > 2) {
+      console.log("user data not found or valid");
       this.router.navigate(['/login']);
     }
 
@@ -80,6 +81,7 @@ export class ValidateAddressComponent implements OnInit {
     this.addressSelection = {
       atokaCode: value.atoka,
       atokaAddressId: value.atokaAddressId,
+      residentDetailId: value.residentDetailId,
     };
     this.selectedAddressInfo = value;
     this.addressCode = value.atoka;
@@ -177,15 +179,15 @@ export class ValidateAddressComponent implements OnInit {
   }
 
   private buildMoveInPayload(): MoveInDate | null {
-    const atokaAddressId = this.addressSelection?.atokaAddressId;
-    if (!atokaAddressId) {
+    const residentDetailId = this.addressSelection?.residentDetailId;
+    if (!residentDetailId) {
       this.message = 'Please select a valid ATOKA address before continuing.';
       return null;
     }
 
     return {
       startFrom: this.addAddressForm.value.startFrom,
-      atokaAddressId,
+      atokaAddressId: residentDetailId,
     };
   }
 

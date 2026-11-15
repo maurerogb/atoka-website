@@ -4,9 +4,13 @@ export interface INavItem {
   exact?: boolean;
   activeIcon: string;
   inactiveIcon: string;
+  hoverIcon?: string;
   title?: string;
   description?: string;
   showAddressVerificationButton?: boolean;
+  menuGroup?: string;
+  menuGroupLabel?: string;
+  menuGroupIcon?: string;
 }
 
 export interface INavContent {

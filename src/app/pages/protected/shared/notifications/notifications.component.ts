@@ -42,7 +42,10 @@ export class NotificationsComponent implements OnInit, OnDestroy {
     this.subscriptions.add(
       this.notificationService.getNotifications().subscribe({
         next: (response) => {
-          this.notifications = response.data;
+          this.notifications = [...response.data].sort(
+            (current, next) =>
+              Date.parse(next.createdOn) - Date.parse(current.createdOn)
+          );
           this.notificationService.syncUnreadCount(this.notifications);
 
           if (this.selectedNotification) {

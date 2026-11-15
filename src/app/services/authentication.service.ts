@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, of, switchMap, map, throwError } from 'rxjs';
+import { BehaviorSubject, Observable, of, switchMap, map, throwError, catchError } from 'rxjs';
 import {
   loginInfo,
   loginRequest,
@@ -13,13 +13,18 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { LocalStorageService } from './local-storage.service';
 import { jwtDecode } from 'jwt-decode';
+import { PersonalData } from '../model/dto/personal-data-dto';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthenticationService extends HttpService<BaseResponse<any>> {
   private readonly loginKey = 'atk_login';
+  private readonly occupantDetailsKey = 'atk_occupant_details';
   private loginInfoValue?: loginInfo;
+  private occupantDetailsValue?: PersonalData;
+  private occupantDetailsSubject = new BehaviorSubject<PersonalData | undefined>(undefined);
+  occupantDetails$ = this.occupantDetailsSubject.asObservable();
 
   constructor(
     private http: HttpClient,
@@ -27,6 +32,12 @@ export class AuthenticationService extends HttpService<BaseResponse<any>> {
     private storage: LocalStorageService
   ) {
     super(http);
+
+    const cachedDetails = this.storage.getItem<PersonalData>(this.occupantDetailsKey);
+    if (cachedDetails) {
+      this.occupantDetailsValue = cachedDetails;
+      this.occupantDetailsSubject.next(cachedDetails);
+    }
   }
 
   login(request: loginRequest): Observable<loginResponse>{
@@ -52,8 +63,12 @@ export class AuthenticationService extends HttpService<BaseResponse<any>> {
         }
 
         const claims: any = jwtDecode(res.token ?? '');
+        const occupantDetailId = Number(
+          claims.OccupantDetailId ?? claims.occupantDetailId ?? claims.nameid,
+        );
         const data: loginInfo = {
           accountTypeId: Number(claims.AccountTypeId),
+          occupantDetailId: Number.isFinite(occupantDetailId) ? occupantDetailId : undefined,
           userName: claims.unique_name,
           userId: claims.nameid,
           token: res.token,
@@ -144,9 +159,48 @@ export class AuthenticationService extends HttpService<BaseResponse<any>> {
     return this.loginInfoValue;
   }
 
+  ensureOccupantDetailsCached(forceRefresh = false): Observable<PersonalData | undefined> {
+    if (!forceRefresh) {
+      const cached = this.getCachedOccupantDetails();
+      if (cached?.occupantDetailId) {
+        return of(cached);
+      }
+    }
+
+    return this.get<BaseResponse<PersonalData>>('OccupantDetails/Get').pipe(
+      map((response) => {
+        if (response.responseCode === ResponseCode.Success && response.data) {
+          this.setOccupantDetails(response.data);
+          this.syncLoginInfoWithOccupantDetails(response.data);
+          return response.data;
+        }
+
+        return this.getCachedOccupantDetails();
+      }),
+      catchError(() => of(this.getCachedOccupantDetails()))
+    );
+  }
+
+  getCachedOccupantDetails(): PersonalData | undefined {
+    if (this.occupantDetailsValue) {
+      return this.occupantDetailsValue;
+    }
+
+    const stored = this.storage.getItem<PersonalData>(this.occupantDetailsKey);
+    if (stored) {
+      this.occupantDetailsValue = stored;
+      this.occupantDetailsSubject.next(stored);
+    }
+
+    return this.occupantDetailsValue;
+  }
+
   private clearLogin(): void {
     this.loginInfoValue = undefined;
+    this.occupantDetailsValue = undefined;
+    this.occupantDetailsSubject.next(undefined);
     this.storage.removeItem(this.loginKey);
+    this.storage.removeItem(this.occupantDetailsKey);
   }
 
   isLoggedIn(): boolean {
@@ -185,5 +239,28 @@ export class AuthenticationService extends HttpService<BaseResponse<any>> {
 
     const url = 'Auth/register2'
     return this.post<BaseResponse<any>>(url, user);
+  }
+
+  private setOccupantDetails(details: PersonalData): void {
+    this.occupantDetailsValue = details;
+    this.occupantDetailsSubject.next(details);
+    this.storage.setItem<PersonalData>(this.occupantDetailsKey, details);
+  }
+
+  private syncLoginInfoWithOccupantDetails(details: PersonalData): void {
+    const occupantDetailId = Number(details.occupantDetailId);
+    if (!Number.isFinite(occupantDetailId) || occupantDetailId <= 0) {
+      return;
+    }
+
+    const currentLogin = this.getLoginInfo();
+    if (!currentLogin || currentLogin.occupantDetailId === occupantDetailId) {
+      return;
+    }
+
+    this.setLoginInfo({
+      ...currentLogin,
+      occupantDetailId,
+    });
   }
 }

@@ -1,5 +1,16 @@
 <div class="flex mx-auto gap-4">
-  <img [src]="image.value" class="w-[75px] h-[75px] border border-[#EAECF0] rounded-full" alt="" />
+  <div class="profile-image-preview w-[75px] h-[75px] border border-[#EAECF0] rounded-full">
+    @if (hasImagePreview) {
+      <img
+        [src]="image.value"
+        class="w-full h-full rounded-full object-cover"
+        alt="Profile image"
+        (error)="onImageError()"
+      />
+    } @else {
+      <mat-icon class="profile-image-fallback">person</mat-icon>
+    }
+  </div>
   <div class="border border-[#EAECF0] w-[428px] h-[126px] rounded-lg py-3">
     <div class="flex flex-col mx-auto gap-4">
       <div class="flex mx-auto">

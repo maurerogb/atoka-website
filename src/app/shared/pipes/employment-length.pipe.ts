@@ -9,6 +9,7 @@ export class EmploymentLengthPipe implements PipeTransform {
     startDate: string | Date | null | undefined,
     endDate: string | Date = new Date(),
     fallback = 'N/A',
+    fullBreakdown = false,
   ): string {
     if (!startDate) {
       return fallback;
@@ -22,7 +23,7 @@ export class EmploymentLengthPipe implements PipeTransform {
     }
 
     if (start > end) {
-      return '0y 0m 0d';
+      return fullBreakdown ? '0 years, 0 months, 0 days' : '0y 0m 0d';
     }
 
     let years = end.getFullYear() - start.getFullYear();
@@ -41,7 +42,15 @@ export class EmploymentLengthPipe implements PipeTransform {
     }
 
     if (years <= 0 && months <= 0 && days <= 0) {
-      return '0 days';
+      return fullBreakdown ? '0 years, 0 months, 0 days' : '0 days';
+    }
+
+    if (fullBreakdown) {
+      return [
+        `${years} ${years === 1 ? 'year' : 'years'}`,
+        `${months} ${months === 1 ? 'month' : 'months'}`,
+        `${days} ${days === 1 ? 'day' : 'days'}`,
+      ].join(', ');
     }
 
     if (years > 0) {

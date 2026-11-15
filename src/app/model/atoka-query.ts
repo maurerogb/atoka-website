@@ -45,6 +45,7 @@ export interface NewStreetRequest {
 export interface AddressInfo {
   atokaCode: string;
   atokaAddressId: number;
+  residentDetailId: number | undefined;
 }
 
 export interface MoveInDate {

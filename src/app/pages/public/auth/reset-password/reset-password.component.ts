@@ -54,7 +54,10 @@ export class ResetPasswordComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    const userNameFromQuery = this.route.snapshot.queryParamMap.get('user') || '';
+    const userNameFromQuery =
+      this.route.snapshot.queryParamMap.get('userName') ||
+      this.route.snapshot.queryParamMap.get('user') ||
+      '';
     this.createForm(userNameFromQuery);
   }
 
@@ -75,6 +78,20 @@ export class ResetPasswordComponent implements OnInit {
     const confirmPassword = control.get('confirmPassword');
     return newPassword?.value === confirmPassword?.value ? null : { notmatched: true };
   };
+
+  get canContinue(): boolean {
+    if (!this.resetForm || this.resetForm.invalid) {
+      return false;
+    }
+
+    const password: string = this.resetForm.get('newPassword')?.value || '';
+    return (
+      this.regex.hasUppercase.test(password) &&
+      this.regex.hasLowercase.test(password) &&
+      this.regex.hasNumeric.test(password) &&
+      this.regex.specialChar.test(password)
+    );
+  }
 
   resetPassword(): void {
     if (this.resetForm.invalid) {

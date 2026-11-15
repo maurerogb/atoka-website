@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { BaseResponse } from '../model/base-response';
 import {
-  ClaimPropertyRequest,
   ClaimedProperty,
   DocumentType,
   TenantConfirmationStatusRequest,
@@ -19,9 +18,9 @@ export class TenantService extends HttpService<BaseResponse<any>> {
     super(http);
   }
 
-  claimProperty(payload: ClaimPropertyRequest): Observable<BaseResponse<any>> {
+  claimProperty(payload: FormData): Observable<BaseResponse<any>> {
     const url = 'PropertyOwner';
-    return this.post<BaseResponse<any>>(url, payload);
+    return this.filePost(url, payload);
   }
 
   updateConfirmationStatus(

@@ -21,3 +21,117 @@
 :host ::ng-deep .no-subscript .mat-mdc-form-field-subscript-wrapper {
   display: none;
 }
+
+:host {
+  .branch-row {
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+  }
+
+  .branch-row:hover {
+    background: #f8f9fc;
+  }
+
+  .branch-row.selected {
+    background: #eaf7fc;
+  }
+
+  .atoka-link {
+    color: #00739f;
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-underline-offset: 2px;
+  }
+
+  .atoka-link:focus-visible {
+    outline: 2px solid #00739f;
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  .branch-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    width: fit-content;
+    color: #002330;
+    font-size: 0.875rem;
+    padding: 0.25rem 0;
+  }
+
+  .branch-back-strip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    border: 1px solid #e6eef3;
+    border-radius: 8px;
+    background: #fff;
+    color: #003a50;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.25rem 0.5rem;
+    flex-shrink: 0;
+  }
+
+  .map-view-panel {
+    display: grid;
+    gap: 0.75rem;
+  }
+
+  .map-strip {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #eef4f7;
+    padding: 0.875rem 1.25rem;
+  }
+
+  .map-strip-left {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    min-width: 0;
+  }
+
+  .map-strip-address {
+    color: #003a50;
+    font-size: 1rem;
+    font-weight: 700;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .map-canvas {
+    min-height: 70vh;
+  }
+}
+
+.branch-page.map-fullscreen-mode {
+  margin: 0 !important;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  background: #fff;
+}
+
+.branch-page.map-fullscreen-mode .map-view-panel {
+  height: 100%;
+  gap: 0;
+  padding: 0;
+}
+
+.branch-page.map-fullscreen-mode .map-shell {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.branch-page.map-fullscreen-mode .map-canvas {
+  flex: 1 1 auto;
+  min-height: 0;
+}

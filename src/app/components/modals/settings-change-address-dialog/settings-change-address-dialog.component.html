@@ -1,4 +1,4 @@
-﻿<div class="">
+<div class="account items-center no-scrollbar">
   @if (!isSuccess) {
     <div class="flex items-start justify-between gap-4">
       <div class="flex flex-col text-[#005677] gap-2 mb-4 w-full items-center">
@@ -13,14 +13,14 @@
 
     <div class="grid gap-4 mt-4">
       <app-atoka-search
-        [labelName]="'ATOKA address'"
+        [labelName]="'Property address'"
         [addressCode]="addressCode"
         (returnCode)="setAddressCode($event)"
         (addressInfo)="setAddressInfo($event)"
       ></app-atoka-search>
 
       <div class="text-center">
-        <button type="button" class="text-sm font-semibold text-[#0090C7]" (click)="toggleManualEntry()">
+        <button type="button" class="text-sm font-semibold" (click)="toggleManualEntry()">
           Don't have ATOKA? <span class="font-semibold">Enter address manually</span>
         </button>
       </div>
@@ -31,10 +31,34 @@
         [readOnly]="isAddressFormReadOnly"
         (formMessage)="handleFormMessage($event)"
       ></app-address-form>
+
+      <div class="control" [formGroup]="moveInForm">
+        <mat-label class="flex text-sm">When did you move to this address?</mat-label>
+        <mat-form-field class="w-full rounded-xl" appearance="fill" floatLabel="always">
+          <input
+            formControlName="startFrom"
+            (click)="moveDate.open()"
+            (focus)="moveDate.open()"
+            placeholder="Select Date"
+            matInput
+            [matDatepicker]="moveDate"
+          />
+          <mat-datepicker-toggle matIconSuffix [for]="moveDate"></mat-datepicker-toggle>
+          <mat-datepicker #moveDate></mat-datepicker>
+          <mat-error>Please select move date</mat-error>
+        </mat-form-field>
+      </div>
     </div>
 
     <div class="flex justify-center mt-6">
-      <button type="button" mat-flat-button color="primary" class="w-full" (click)="submit()">
+      <button
+        type="button"
+        mat-flat-button
+        color="primary"
+        class="w-full"
+        [disabled]="moveInForm.invalid || isSavingAddress"
+        (click)="submit()"
+      >
         Save
       </button>
     </div>
@@ -53,3 +77,6 @@
     </div>
   }
 </div>
+
+<app-loader *ngIf="loadingService.isLoading$ | async"></app-loader>
+

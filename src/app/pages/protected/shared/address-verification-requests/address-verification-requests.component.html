@@ -1,0 +1,129 @@
+<div class="account requests-page flex flex-col gap-8">
+  <div class="request-banner rounded-lg relative overflow-hidden justify-between flex bg-[linear-gradient(90deg,_#002330_0%,_#002330_68%,_#006D96_100%)]">
+    <div class="px-5 py-3">
+      <div class="flex items-center gap-6 justify-between">
+        <div class="flex flex-col gap-1 py-6">
+          <div class="max-w-[727px] gap-2 grid">
+            <p class="text-lg text-white text-[#10BCFD]">Address Verification Requests</p>
+            <p class="text-base text-[#E1E6EE]">
+              You've received a request to verify an address. Please review the details below and choose to approve or reject the request.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="relative rounded-full bottom-[-8px] right-[20px]">        
+      <img src="assets/images/address-verification-icon-tilted.png" class="max-w-[unset]" />
+    </div>
+  </div>
+
+  <div class="flex flex-col gap-4">
+    <!-- <div class="flex items-center justify-between gap-3">
+      <p class="font-semibold text-base">Incoming Requests</p>
+      <button
+        type="button"
+        mat-stroked-button
+        class="!bg-white !min-w-24"
+        [disabled]="isLoading"
+        (click)="loadRequests()"
+      >
+        <mat-icon>refresh</mat-icon>
+        Refresh
+      </button>
+    </div> -->
+
+    @if (isLoading) {
+      <div class="state-card">
+        <p class="text-[#003A50] font-medium">Loading verification requests...</p>
+      </div>
+    } @else if (errorMessage && !requests.length) {
+      <div class="state-card border border-[#FECACA] bg-[#FEF2F2]">
+        <p class="text-[#B42318]">{{ errorMessage }}</p>
+        <button type="button" mat-flat-button color="primary" (click)="loadRequests()">Refresh</button>
+      </div>
+    } @else if (!requests.length) {
+      <div class="justify-center items-center mx-auto">
+        <div class="mt-4 flex flex-col justify-center items-center min-w-[535px] p-10 gap-6">
+          <div>
+            <img src="assets/images/get-a-job-promotion.png" alt="No requests" class="w-full" />
+          </div>
+          <div class="grid gap-2 text-center w-full">
+            <p class="font-bold text-lg">Address Verification Request</p>
+            <p class="text-base">Once a request is sent to you, it will be shown here.</p>
+          </div>
+        </div>
+      </div>
+    } @else {
+      <div class="card bg-white rounded-lg">
+        <div class="table-holder">
+          <table class="table-auto">
+            <thead>
+              <tr>
+                <th>Requested By</th>
+                <th>Email Address</th>
+                <th>Phone Number</th>
+                <th>Request Date</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (request of requests; track trackRequest($index, request)) {
+                <tr>
+                  <td>
+                    <div class="flex gap-2 items-center">
+                      <div class="avatar">
+                        <img
+                          [src]="request.photo || 'assets/svg/male-memojis.svg'"
+                          [alt]="request.fullName || 'Requester photo'"
+                          class="w-full h-full object-cover"
+                        />
+                      </div>
+                      <p class="font-semibold text-[#003A50] text-sm">{{ request.fullName || 'Not available' }}</p>
+                    </div>
+                  </td>
+                  <td>
+                    <p class="text-gray-500 text-sm">{{ request.email || 'Not available' }}</p>
+                  </td>
+                  <td>
+                    <p class="text-gray-500 text-sm">{{ request.phoneNumber || 'Not available' }}</p>
+                  </td>
+                  <td>
+                    <p class="text-gray-500 text-sm text-nowrap">
+                      {{
+                        getRequestDate(request) === 'Not available'
+                          ? 'Not available'
+                          : (getRequestDate(request) | date: 'mediumDate')
+                      }}
+                    </p>
+                  </td>
+                  <td>
+                    <div class="flex items-center gap-4">
+                      <button
+                        type="button"
+                        mat-button
+                        class="action-link approve-link !min-w-0 !p-2"
+                        [disabled]="isAnyActionProcessing(request.accessRequestId)"
+                        (click)="approveRequest(request)"
+                      >
+                        {{ isActionProcessing(request.accessRequestId, 'approve') ? 'Approving...' : 'Approve' }}
+                      </button>
+                      <button
+                        type="button"
+                        mat-button
+                        class="action-link decline-link !min-w-0 !p-2"
+                        [disabled]="isAnyActionProcessing(request.accessRequestId)"
+                        (click)="declineRequest(request)"
+                      >
+                        {{ isActionProcessing(request.accessRequestId, 'reject') ? 'Declining...' : 'Decline' }}
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+    }
+  </div>
+</div>

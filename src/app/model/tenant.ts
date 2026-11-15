@@ -1,12 +1,3 @@
-export interface ClaimPropertyRequest {
-  atokaCode: string;
-  atokaAddressId: number;
-  houseNo: string;
-  documentTypeId: number;
-  fileExtention: string;
-  documentRefNo: string;
-}
-
 export interface TenantConfirmationStatusRequest {
   title: string;
   firstName: string;

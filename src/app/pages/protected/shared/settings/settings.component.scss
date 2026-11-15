@@ -63,11 +63,23 @@
   border-radius: 999px;
   font-size: 12px;
   font-weight: 600;
-}
-
-.status-badge.status-active {
-  background: #1f932d;
   color: #ffffff;
+
+  &.successful {
+    background: #1f932d;
+  }
+
+  &.draft {
+    background: #ca8828;
+  }
+
+  &.failed {
+    background: #d83a3a;
+  }
+
+  &.pending {
+    background: #ca8828;
+  }
 }
 
 .accordion-item {

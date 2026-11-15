@@ -140,36 +140,8 @@
           </div>
 
           <div class="control">
-            <mat-label class="flex text-sm">Resolution*</mat-label>
-            <mat-form-field
-              subscriptSizing="dynamic"
-              class="w-full rounded-xl"
-              appearance="fill"
-              floatLabel="always"
-            >
-              <mat-select
-                placeholder="Please select resolution team"
-                formControlName="resolution"
-              >
-                @for (item of resolutionOptions; track item) {
-                <mat-option [value]="item">{{ item }}</mat-option>
-                }
-              </mat-select>
-              <mat-error
-                *ngIf="
-                  reportForm.get('resolution')?.hasError('required') &&
-                  (reportForm.get('resolution')?.dirty ||
-                    reportForm.get('resolution')?.touched)
-                "
-              >
-                Resolution is required
-              </mat-error>
-            </mat-form-field>
-          </div>
-
-          <div class="control">
-            <mat-label class="text-sm pb-2"
-              >Attach Picture (optional)</mat-label
+            <mat-label class="flex text-sm pb-2"
+              >Add Picture (optional)</mat-label
             >
             <app-upload-file
               [fileType]="'file'"
